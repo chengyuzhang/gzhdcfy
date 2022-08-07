@@ -1,0 +1,108 @@
+<template lang="pug">
+.ysjs-container
+	.con
+		.top
+			img(src="@/assets/imgs/people.png")
+			.r
+				h5 张晓红
+				h6 <i>主任医师</i>儿内科
+				p 东城区妇幼保健院
+		.bottom
+			h5 擅长疾病
+			p 新生儿疾病、小儿呼吸系统疾病、中西医结合
+			h5(style="margin-top: .48rem") 专家介绍
+			p 科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。
+			h5 出诊科室
+			ul
+				li <span>儿内科</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage" alt="">
+				li <span>儿内科</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage" alt="">
+				li <span>儿内科</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage" alt="">
+</template>
+
+<script>
+export default {
+
+	name: 'Ysjs',
+
+	data () {
+		return {
+
+		}
+	},
+	methods: {
+		toPage(){
+			this.$router.push({
+				path: '/xzhy'
+			})
+		}
+	}
+}
+</script>
+
+<style lang="stylus" scoped>
+.ysjs-container
+	width 100%
+	height 100%
+	background linear-gradient(180deg, #DBD3FA 0%, #F8F8F8 100%)
+	overflow hidden
+	.con
+		margin 0 auto
+		margin-top .32rem
+		width 6.9rem
+		padding .3rem
+		padding-top .4rem
+		background #fff
+		border-radius .2rem
+		.top
+			display flex
+			align-items center
+			img
+				margin-right .32rem
+				width 1.08rem
+				height 1.08rem
+			.r
+				h5
+					font-size .36rem
+					line-height .5rem
+					color #000
+				h6
+					margin .08rem 0
+					font-size .24rem
+					line-height .34rem
+					color #333
+					i
+						margin-right .04rem
+						padding 0 .02rem
+						color #64338E
+						border 1px solid #64338E
+						border-radius .02rem
+				p
+					font-size .24rem
+					line-height .34rem
+					color #333
+		.bottom
+			margin-top .44rem
+			h5
+				margin-bottom .16rem
+				font-size .28rem
+				line-height .4rem
+				color #333
+			p
+				margin-bottom .48rem
+				font-size .24rem
+				line-height .34rem
+				color #888
+			ul
+				margin-top .3rem
+				li
+					display flex
+					justify-content space-between
+					margin-bottom .28rem
+					span
+						font-size .28rem
+						line-height .4rem
+						color #666
+					img
+						width 1.26rem
+						height .56rem
+</style>

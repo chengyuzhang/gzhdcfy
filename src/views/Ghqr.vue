@@ -1,0 +1,185 @@
+<template lang="pug">
+.ghqr-container
+	.con
+		h6 挂号信息
+		ul
+			li
+				span 挂号信息
+				p 2022-10-10 周一
+			li
+				span 挂号信息
+				p 2022-10-10 周一
+			li
+				span 挂号信息
+				p 2022-10-10 周一
+			li
+				span 挂号信息
+				p 2022-10-10 周一
+			li
+				span 挂号信息
+				p 2022-10-10 周一
+			li
+				span 挂号信息
+				p 哮喘慢咳、反复感冒、急性慢性支气管炎哮喘慢咳、反复感冒、急性慢性支气管炎哮喘慢咳、反复感冒、急性慢性支气管炎
+		h6(style="margin-top:.48rem") 就诊人信息
+		.add
+			div.img(v-if="false" @click="toAddPage")
+				img(src="@/assets/imgs/add-bg.png")
+			div.con(v-if="true" @click="toAddPage")
+				.l 星星
+				.m
+					p 1578 944 9888
+					p <i>北京社保卡</i><span>医保报销</span>
+				.b
+					i 更换
+					img(src="@/assets/imgs/r.png")
+			p 请仔细阅读<span @click="toPage">《挂号须知》</span>
+	.btn
+		button(@click="toSuccessPage") 确认
+</template>
+
+<script>
+export default {
+
+	name: 'Ghqr',
+
+	data () {
+		return {
+
+		}
+	},
+	methods: {
+		toPage(){
+			this.$router.push({
+				path: '/ghxz'
+			})
+		},
+		toAddPage(){
+			this.$router.push({
+				path: '/tjjzr'
+			})
+		},
+		toSuccessPage(){
+			this.$router.push({
+				path: '/ghcg'
+			})
+		}
+	}
+}
+</script>
+
+<style lang="stylus" scoped>
+.ghqr-container
+	width 100%
+	height 100%
+	padding-top .3rem
+	background #F8F8F8
+	>.con
+		margin 0 auto
+		width 6.9rem
+		padding .3rem
+		padding-top .18rem
+		background #fff
+		h6
+			margin-bottom .28rem
+			font-size .36rem
+			line-height .5rem
+			color #000
+		ul
+			li
+				display flex
+				justify-content space-between
+				align-items center
+				margin-bottom .24rem
+				span
+					font-size .28rem
+					line-height .48rem
+					color #888
+				p
+					width 4rem
+					text-align right
+					font-size .28rem
+					line-height .4rem
+					color #333
+					-webkit-line-clamp 2
+					text-overflow ellipsis
+					display -webkit-box
+					-webkit-box-orient vertical
+					overflow hidden
+		.add
+			padding-bottom .8rem
+			div.img
+				padding .5rem .3rem
+				border 1px solid #ddd
+				background #FDFDFD
+				border-radius .08rem
+				img
+					width 2.06rem
+					height .44rem
+			div.con
+				display flex
+				align-items center
+				width 6.3rem
+				height 1.48rem
+				padding 0 .3rem
+				background #FBF6FF
+				border-radius .08rem
+				.l
+					margin-right .48rem
+					font-size .28rem
+					color #333
+					line-height .4rem
+				.m
+					margin-right 1.36rem
+					p
+						font-size .28rem
+						color #888
+						line-height .36rem
+					p:first-of-type
+					p:last-of-type
+						i
+							margin-right .2rem
+							font-size .26rem
+							color #888
+							line-height .36rem
+						span
+							font-size .24rem
+							color #FF8336
+							line-height .34rem
+							background #FFF4E8
+				.b
+					display flex
+					align-items center
+					i
+						font-size .26rem
+						color #888
+						line-height .36rem
+					img
+						margin-left .06rem
+						width .26rem
+						height .26rem
+			>p
+				margin-top .16rem
+				font-size .24rem
+				line-height .34rem
+				color #888
+				span
+					color #64338E
+	.btn
+		margin-top .88rem
+		width 100%
+		height 1.16rem
+		line-height 1.16rem
+		text-align center
+		border-top 1px solid #eee
+		border-bottom 1px solid #eee
+		overflow hidden
+		button
+			width 5.5rem
+			height .84rem
+			line-height .84rem
+			font-size .28rem
+			color #fff
+			background #7C509D
+			border-radius .4rem
+</style>
