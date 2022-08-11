@@ -41,9 +41,10 @@ export default {
 				version:"2.0",      // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
 				plugins:[''],       // 需要使用的的插件列表，如比例尺'AMap.Scale'等
 			}).then((AMap)=>{
-				this.map = new AMap.Map("container",{  //设置地图容器id
+				_this.map = new AMap.Map("container",{  //设置地图容器id
 					// viewMode:"3D",    //是否为3D地图模式
-					zoom:15,           //初始化地图级别
+					// zoom:10,           //初始化地图级别
+					resizeEnable: true
 				})
 
 				//获取定位信息
@@ -60,7 +61,7 @@ export default {
 						//  定位按钮的排放位置,  RB表示右下
 						position: 'RB'
 					})
-
+					_this.map.addControl(geolocation)
 					geolocation.getCurrentPosition(function(status,result){
 						if(status=='complete'){
 							onComplete(result)
@@ -74,39 +75,15 @@ export default {
 						// data是具体的定位信息
 					}
 
-					function onError (data) {
-						console.log('data', data)
+					function onError (err) {
+						console.log('err', err)
 						// 定位出错
 					}
 				})
 
 
-				// var androidMap={
-    //                 "android_gaode":"androidamap://navi?sourceApplication=xxxx网&lat="+dlat+"&lon="+dlon+"&dev=1&style=2",
-    //                 "android_baidu":"bdapp://map/navi?location="+bdlat+","+bdlon,
-    //             }
-    //             var iosMap={
-    //                 "ios_gaode":"iosamap://navi?sourceApplication=xxxx网&poiid=BGVIS&lat="+dlat+"&lon="+dlon+"&dev=1&style=2",
-    //                 "ios_baidu":"baidumap://map/navi?location="+bdlat+","+bdlon
-    //             }
+				// location.href = `https://uri.amap.com/navigation?from=116.478346,39.997361,startpoint&to=116.3246,39.966577,endpoint&via=116.402796,39.936915,midwaypoint&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0`
 
-
-				//获取路线
-				// AMap.plugin('AMap.Driving', function() {
-				// 	var driving = new AMap.Driving({
-				// 		// 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
-				// 		policy: AMap.DrivingPolicy.LEAST_TIME,
-				// 		map: _this.map,
-				// 	})
-
-				// 	var startLngLat = [116.379028, 39.865042]
-				// 	var endLngLat = [116.427281, 39.903719]
-
-				// 	driving.search(startLngLat, endLngLat, function (status, result) {
-				// 		// 未出错时，result即是对应的路线规划方案
-				// 		console.log('路线', result)
-				// 	})
-				// })
 			}).catch(e=>{
 				console.log(e);
 			})
