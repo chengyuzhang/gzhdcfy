@@ -1,7 +1,10 @@
 <template lang="pug">
 .yfdt-container
-	.items
+	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" >
 		Item(v-for="item in 20" :Event="toDetailPage")
+	</van-list>
+	//- .items
+	//- 	Item(v-for="item in 20" :Event="toDetailPage")
 </template>
 
 <script>
@@ -13,13 +16,24 @@ export default {
 
 	data () {
 		return {
-
+			loading: false,
+			finished: false,
 		}
 	},
 	components: {
 		Item,
 	},
 	methods: {
+		onLoad() {
+			setTimeout(() => {
+				// this.loading = false
+			}, 1000)
+
+			// setTimeout(() => {
+			// 	this.finished = true
+			// }, 3000)
+			
+		},
 		toDetailPage(){
 			this.$router.push({
 				path: '/wzxq'

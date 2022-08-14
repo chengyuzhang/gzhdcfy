@@ -26,8 +26,9 @@
 			p {{item.title}}
 	.banner
 		<van-swipe class="my-swipe" :autoplay="3000" autoplay="false" indicator-color="white">
-			<van-swipe-item v-for="(item) in 5">
-				img(src="@/assets/imgs/example.png")
+			<van-swipe-item v-for="(item,index) in ads">
+				img(:src="item.picture")
+				a(:href="item.linkUrl") 
 			</van-swipe-item>
 		</van-swipe>
 	.infos
@@ -67,7 +68,7 @@
 <script>
 import Item from '@/components/Item'
 import TabBar from '@/components/TabBar'
-import { indexApi } from '@/service/api.js'
+import { index } from '@/service/api.js'
 
 export default {
 
@@ -83,6 +84,7 @@ export default {
 			showSelectZone: false,
 			showTabBar: true,
 			tabIndex: 0,
+			ads: [],
 			items: [
 				{
 					title: '核酸检测'
@@ -114,19 +116,31 @@ export default {
 		}
 	},
 	async created(){
-		console.log(1)
-		await this.getRes()
-		console.log(3)
+		await this.getAds()
+
+		await this.getYYDTInfoList()
 	},
 	methods: {
-		async getRes(){
-			await indexApi.detailshare({
-				articleId: '43529'
+		async getYYDTInfoList(){
+			await index.getInfoList({
+				type: 2,
+				pageNo: 0,
+				pageSize: 5,
 			}).then(res => {
-				console.log('res', res)
-				console.log(2)
+				console.log('getAds-res', res)
+				this.ads = res.data
 			}).catch(err => {
-				console.log('err'. err)
+				console.log('getAds-err'. err)
+			})
+		},
+		async getAds(){
+			await index.getAds({
+				spaceCode: 'SY-ZB'
+			}).then(res => {
+				console.log('getAds-res', res)
+				this.ads = res.data
+			}).catch(err => {
+				console.log('getAds-err'. err)
 			})
 		},
 		toMore(){
