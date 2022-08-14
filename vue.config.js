@@ -9,7 +9,18 @@ function resolve(dir){
 module.exports = defineConfig({
 	transpileDependencies: true,
 	devServer: {
-		port
+		port,
+        // proxy: {
+        //     //配置跨域
+        //     '/api': {
+        //         target: "http://hzx.ngrok.aojiedu.com",
+        //         ws:true,
+        //         changOrigin: true,
+		// 		pathRewrite: {
+		// 			'^/api': '' //请求的时候使用这个api就可以
+		// 		}
+        //     }
+        // }
 	},
 	chainWebpack(config){
 		config.module

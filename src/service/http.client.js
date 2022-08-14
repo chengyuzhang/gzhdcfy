@@ -2,11 +2,26 @@ import axios from 'axios'
 import { Toast } from 'vant'
 let env = process.env.NODE_ENV
 let requestCount = 0
+import vue from '../main'
+import getCode from '../common/getCode'
 
 export const api = {
 	async get (url, data = {}, headers = {}) {
+		let path = vue.$route.path
 
-		headers = Object.assign({}, headers)
+		if(path !== '/wxsq'){
+			let token = localStorage.getItem('token')
+
+			if(token){
+				headers = Object.assign({token}, headers)
+			}else{
+				console.log('没有取得token')
+				getCode()
+				return
+			}
+		}
+
+		headers = Object.assign({hospitalId: 1}, headers)
 
 		Toast.loading({
 			duration: 0,
@@ -16,15 +31,17 @@ export const api = {
 		requestCount ++
 		try {
 			let res = await axios.get(url, {params: data, headers})
-			res = res.data
 			return new Promise((resolve, reject) => {
 
-				if (res.code === 0) {
-					resolve(res)
+				if (res.data.code === 200) {
+					resolve(res.data)
+				}else if(res.data.code === 401){ //此时没有登录
+					getCode()
+					return
 				} else {
 					reject(res)
 					Toast.loading({
-						message: res.message,
+						message: res.status,
 						duration: 1200
 					})
 				}
@@ -49,7 +66,22 @@ export const api = {
 	},
 
 	async post (url, data = {}, headers = {}) {
-		headers = Object.assign({}, headers)
+		let path = vue.$route.path
+
+		if(path !== '/wxsq'){
+			let token = localStorage.getItem('token')
+
+			if(token){
+				headers = Object.assign({token}, headers)
+			}else{
+				console.log('没有取得token')
+				getCode()
+				return
+			}
+		}
+
+		headers = Object.assign({hospitalId: 1}, headers)
+
 		Toast.loading({
 			duration: 0,
 			message: '',
@@ -67,12 +99,15 @@ export const api = {
 			return new Promise((resolve, reject) => {
 				console.log('try-res', res)
 
-				if (res.head.code === 0) {
-					resolve(res.body)
+				if (res.data.code === 200) {
+					resolve(res.data)
+				}else if(res.data.code === 401){ //此时没有登录
+					getCode()
+					return
 				} else {
 					reject(res)
 					Toast.loading({
-						message: res.message,
+						message: res.status,
 						duration: 1200
 					})
 				}

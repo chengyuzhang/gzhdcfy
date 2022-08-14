@@ -273,10 +273,12 @@ const routes = [
 ]
 
 const router = new VueRouter({
+	mode: 'history',
 	routes
 })
 
 router.beforeEach((to, from, next) => {
+	console.log('to', to)
 	if(to.meta.title){
 		document.title = to.meta.title
 	}

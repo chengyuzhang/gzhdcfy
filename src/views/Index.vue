@@ -120,8 +120,8 @@ export default {
 	},
 	methods: {
 		async getRes(){
-			await indexApi.getInfos({
-				noticeId: '18175'
+			await indexApi.detailshare({
+				articleId: '43529'
 			}).then(res => {
 				console.log('res', res)
 				console.log(2)

@@ -11,7 +11,7 @@
 
 <script>
 import getUrlParam from '@/common/getUrlParam.js'
-// import { userInfo, wxAbout, index } from '@/service/api.js'
+import { login, indexApi } from '@/service/api.js'
 
 export default {
 
@@ -23,50 +23,18 @@ export default {
 		}
 	},
 	async created(){
-		this.login()
+		await this.login()
 	},
 	methods: {
 		async login(){
-			let query = this.$route.query
-			//过滤不必要的携带参数
-			let queryArr = Object.keys(query).map((item, index) => {
-				if(item != 'path' && item != 'code' && item != 'state'){
-					return `${item}=${query[item]}`
-				}else{
-					return
-				}
+			await login.getCode({
+				code: 12
+			}).then(res => {
+				console.log('getcode-res', res)
+				localStorage.setItem('token', res.data)
+			}).catch(err => {
+				console.log('getcode-err', err)
 			})
-			//过滤数组里的空项
-			queryArr = queryArr.filter((item, index) => {
-				return !!item
-			})
-			//拼接url需要的携带参数
-			let queryStr = queryArr.join('&')
-			//拼接完整将要跳转到的url
-			let originUrl = `${this.$route.query.path}?${queryStr}`
-
-			await this.getUserInfo()
-
-			this.$router.replace({
-				path: originUrl
-			})
-		},
-		async getUserInfo(){
-			let userAbout = localStorage.getItem('userInfo')
-			userAbout = userAbout && JSON.parse(userAbout)
-
-			if(userAbout) {
-				this.userInfo = userAbout
-				return
-			}
-
-			let code = getUrlParam('code')
-
-			let res = await userInfo.getUserInfo({
-				code: code
-			})
-			this.userInfo = res.data
-			localStorage.setItem('userInfo', JSON.stringify(res.data))
 		}
 	}
 }
