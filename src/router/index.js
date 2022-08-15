@@ -267,13 +267,21 @@ const routes = [
 				path: '/wxsq',
 				name: 'Wxsq',
 				component: () => import(/* webpackChunkName: "about" */ '../views/Wxsq.vue')
+			},
+			{
+				meta: {
+					title: '微信授权'
+				},
+				path: '/login',
+				name: 'GetLogin',
+				component: () => import(/* webpackChunkName: "about" */ '../views/GetLogin.vue')
 			}
 		]
 	}
 ]
 
 const router = new VueRouter({
-	mode: 'history',
+	// mode: 'history',
 	routes
 })
 

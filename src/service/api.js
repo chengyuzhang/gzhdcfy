@@ -19,6 +19,9 @@ export const index = {
 	},
 	async getJzxzDetails (data, headers) {
 		return await get(baseURL + `/notice/detail`, data, headers)
+	},
+	async getGhxzDetails (data, headers) {
+		return await get(baseURL + `/notice/detailGuahao`, data, headers)
 	}
 }
 

@@ -9,7 +9,7 @@ export const api = {
 	async get (url, data = {}, headers = {}) {
 		let path = vue.$route.path
 
-		if(path !== '/wxsq'){
+		if(path !== '/login'){
 			let token = localStorage.getItem('token')
 
 			if(token){
@@ -68,7 +68,7 @@ export const api = {
 	async post (url, data = {}, headers = {}) {
 		let path = vue.$route.path
 
-		if(path !== '/wxsq'){
+		if(path !== '/login'){
 			let token = localStorage.getItem('token')
 
 			if(token){

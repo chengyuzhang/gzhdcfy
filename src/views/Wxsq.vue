@@ -11,7 +11,7 @@
 
 <script>
 import getUrlParam from '@/common/getUrlParam.js'
-import { login, indexApi } from '@/service/api.js'
+import { login } from '@/service/api.js'
 
 export default {
 
@@ -19,16 +19,17 @@ export default {
 
 	data () {
 		return {
-
+			code: ''
 		}
 	},
 	async created(){
+		this.code = getUrlParam('code')
 		await this.login()
 	},
 	methods: {
 		async login(){
 			await login.getCode({
-				code: 12
+				code: this.code
 			}).then(res => {
 				console.log('getcode-res', res)
 				localStorage.setItem('token', res.data)
