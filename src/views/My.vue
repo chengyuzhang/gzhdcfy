@@ -34,15 +34,24 @@
 			li(@click="toPage(3)")
 				img(src="@/assets/imgs/m4.png")
 				p 体检报告
+	transition(name="fade")
+		TabBar(v-if="showTabBar" idx="1")
 </template>
 
 <script>
+import TabBar from '@/components/TabBar'
+
 export default {
 
 	name: 'My',
 
+	components: {
+		TabBar
+	},
+
 	data () {
 		return {
+			showTabBar: true,
 			peopleList: [
 				{
 					name: '星星'
@@ -209,4 +218,10 @@ export default {
 					font-size .22rem
 					line-height .32rem
 					color #000
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .2s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+	}
 </style>
