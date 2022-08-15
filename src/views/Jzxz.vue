@@ -1,37 +1,42 @@
 <template lang="pug">
 .jzxz-container
 	ul
-		li
-			h5 就诊流程
-			p 就诊全流程速览，就医不迷茫
-		li
-			h5 实名制就诊
-			p 携带身份证就诊
-		li(@click="toPage(2)")
-			h5 挂号流程
-			p 挂号规则
-		li
-			h5 疫情就诊流程
-			p 挂号规则
+		li(v-for="(item, index) in jzxzList" @click="toPage(item.id)")
+			h5 {{item.title}}
+			p {{item.intro}}
 </template>
 
 <script>
+import { index } from '@/service/api.js'
+
 export default {
 
 	name: 'Jzxz',
 
 	data () {
 		return {
-
+			jzxzList: [],
 		}
 	},
+	created(){
+		this.getJzxzList()
+	},
 	methods: {
-		toPage(idx){
+		getJzxzList(){
+			index.getJzxzList({
+			}).then(res => {
+				console.log('getJzxzList-res', res)
+				this.jzxzList = res.data
+			}).catch(err => {
+				console.log('getJzxzList-err'. err)
+			})
+		},
+		toPage(id){
 			let path = ''
 
-			switch(idx){
-				case 2:
-					path = '/ghlc'
+			switch(id){
+				case 1:
+					path = `/ghlc?id=${id}`
 				break;
 			}
 			this.$router.push({

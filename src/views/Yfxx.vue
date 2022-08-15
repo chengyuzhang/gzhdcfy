@@ -1,13 +1,13 @@
 <template lang="pug">
 .yfxx-container
-	.items
-		Item(v-if="items.length" v-for="item in items" :Event="toDetailPage")
-		img(src="@/assets/imgs/none.png" v-if="!items.length")
-		p(v-if="!items.length") 暂时没有文章
+	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" >
+		Item(v-for="(item, index) in yfxxList" :item="item" :Event="toDetailPage")
+	</van-list>
 </template>
 
 <script>
 import Item from '@/components/Item'
+import { index } from '@/service/api.js'
 
 export default {
 
@@ -15,15 +15,35 @@ export default {
 
 	data () {
 		return {
-			items: [
-				{},{},{},{},{},{},{},{}
-			]
+			loading: false,
+			finished: false,
+			pageNo: 1,
+			pageSize: 15,
+			yfxxList: []
 		}
 	},
 	components: {
 		Item,
 	},
 	methods: {
+		onLoad() {
+			this.getYydtInfoList()
+		},
+		async getYydtInfoList(){
+			return await index.getInfoList({
+				type: 2,
+				pageNo: this.pageNo,
+				pageSize: this.pageSize,
+			}).then(res => {
+				let list = res.data
+				if(!list.length) this.finished = true
+				this.yfxxList = this.yfxxList.concat(list)
+				this.pageNo ++
+				this.loading = false
+			}).catch(err => {
+				console.log('getYydtInfoList-err'. err)
+			})
+		},
 		toDetailPage(){
 			this.$router.push({
 				path: '/wzxq'

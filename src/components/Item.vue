@@ -1,21 +1,26 @@
 <template lang="pug">
 .item-container(@click="toPage")
 	.l
-		h5 抗疫前线的最强战斗堡垒！
-		p 危难险重时刻更显支部堡垒战斗力 2020年,医政党支部及全体党员干部危难险重时刻更显支部堡垒战斗力 2020年,医政党支部及全体党员干部
+		h5 {{dataItem.title}}
+		p {{dataItem.intro}}
 	.r
-		img(src="@/assets/imgs/img-bg.png")
+		img(v-if="dataItem.picture" :src="dataItem.picture")
+		img(v-else src="@/assets/imgs/img-bg.png")
 </template>
 
 <script>
 export default {
 
 	name: 'Item',
-	props: ['Event'],
+	props: ['Event', 'item'],
 	data () {
 		return {
-
+			dataItem: []
 		}
+	},
+	created(){
+		this.dataItem = this.item || {}
+		console.log('item', this.item)
 	},
 	methods: {
 		toPage(){

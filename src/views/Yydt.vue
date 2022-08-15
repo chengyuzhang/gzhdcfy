@@ -1,7 +1,7 @@
 <template lang="pug">
 .yfdt-container
 	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" >
-		Item(v-for="item in 20" :Event="toDetailPage")
+		Item(v-for="(item, index) in yydtList" :item="item" :Event="toDetailPage")
 	</van-list>
 	//- .items
 	//- 	Item(v-for="item in 20" :Event="toDetailPage")
@@ -9,6 +9,7 @@
 
 <script>
 import Item from '@/components/Item'
+import { index } from '@/service/api.js'
 
 export default {
 
@@ -18,21 +19,35 @@ export default {
 		return {
 			loading: false,
 			finished: false,
+			pageNo: 1,
+			pageSize: 15,
+			yydtList: []
 		}
 	},
 	components: {
 		Item,
 	},
+	async created(){
+		// this.getYydtInfoList()
+	},
 	methods: {
 		onLoad() {
-			setTimeout(() => {
-				// this.loading = false
-			}, 1000)
-
-			// setTimeout(() => {
-			// 	this.finished = true
-			// }, 3000)
-			
+			this.getYydtInfoList()
+		},
+		async getYydtInfoList(){
+			return await index.getInfoList({
+				type: 1,
+				pageNo: this.pageNo,
+				pageSize: this.pageSize,
+			}).then(res => {
+				let list = res.data
+				if(!list.length) this.finished = true
+				this.yydtList = this.yydtList.concat(list)
+				this.pageNo ++
+				this.loading = false
+			}).catch(err => {
+				console.log('getYydtInfoList-err'. err)
+			})
 		},
 		toDetailPage(){
 			this.$router.push({

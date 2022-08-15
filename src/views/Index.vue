@@ -42,9 +42,9 @@
 					span
 			.more(@click="toMore") 更多
 		.items(v-if="tabIndex == 0")
-			Item(v-for="item in 6" :Event="toDetailPage")
+			Item(v-for="(item, index) in yydtList" :item="item" :Event="toDetailPage")
 		.items(v-if="tabIndex == 1")
-			Item(v-for="item in 6")
+			Item(v-for="(item, index) in yyxxList" :item="item" :Event="toDetailPage")
 	transition(name="fade")
 		TabBar(v-if="showTabBar" idx="0")
 	transition(name="fade")
@@ -85,6 +85,8 @@ export default {
 			showTabBar: true,
 			tabIndex: 0,
 			ads: [],
+			yydtList: [],
+			yyxxList: [],
 			items: [
 				{
 					title: '核酸检测'
@@ -116,21 +118,33 @@ export default {
 		}
 	},
 	async created(){
-		await this.getAds()
-
-		await this.getYYDTInfoList()
+		this.getAds()
+		this.getYydtInfoList()
+		this.getYyxxInfoList()
 	},
 	methods: {
-		async getYYDTInfoList(){
+		async getYydtInfoList(){
 			await index.getInfoList({
 				type: 2,
-				pageNo: 0,
+				pageNo: 1,
 				pageSize: 5,
 			}).then(res => {
-				console.log('getAds-res', res)
-				this.ads = res.data
+				console.log('getYydtInfoList-res', res)
+				this.yydtList = res.data
 			}).catch(err => {
-				console.log('getAds-err'. err)
+				console.log('getYydtInfoList-err'. err)
+			})
+		},
+		async getYyxxInfoList(){
+			await index.getInfoList({
+				type: 1,
+				pageNo: 1,
+				pageSize: 5,
+			}).then(res => {
+				console.log('getYyxxInfoList-res', res)
+				this.yyxxList = res.data
+			}).catch(err => {
+				console.log('getYyxxInfoList-err'. err)
 			})
 		},
 		async getAds(){

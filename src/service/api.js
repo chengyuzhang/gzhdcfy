@@ -13,8 +13,15 @@ export const index = {
 	},
 	async getInfoList (data, headers) {
 		return await get(baseURL + `/news/pageList`, data, headers)
+	},
+	async getJzxzList (data, headers) {
+		return await get(baseURL + `/notice/allList`, data, headers)
+	},
+	async getJzxzDetails (data, headers) {
+		return await get(baseURL + `/notice/detail`, data, headers)
 	}
 }
+
 export const login = {
 	async getCode (data, headers) {
 		return await get(baseURL + `/wxlogin/login`, data, headers)
