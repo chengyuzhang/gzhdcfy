@@ -5,7 +5,7 @@
 		.l
 			h5 东城妇幼保健院(南区)
 			p 北京市东城区法华南里25号楼
-			div <span>7:30</span><i>放第15天号</i>
+			//- div <span>7:30</span><i>放第15天号</i>
 		.r
 			img(src="@/assets/imgs/select-bg.png")
 	.side-tab

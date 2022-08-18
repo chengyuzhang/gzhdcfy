@@ -1,6 +1,6 @@
 
 function getCode(){
-
+	return
 	let originUrl = location.hash.split('?')[0].slice(1)
 		//首个?的参数
 	let queryStrSearch = location.search.slice(1)
