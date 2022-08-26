@@ -52,15 +52,10 @@
 			.con
 				h5 选择院区
 				ul
-					li(@click="selectZone(0)")
+					li(@click="selectZone(item)" v-for="(item, index) in areaList")
 						.l
-							h6 东城妇幼保健院(南区)
-							p 北京市东城区法华南里25号楼
-						img(src="@/assets/imgs/r.png")
-					li(@click="selectZone(1)")
-						.l
-							h6 东城妇幼保健院(北区)
-							p 北京市东城区交道口南大街136号
+							h6 {{item.name}}
+							p {{item.address}}
 						img(src="@/assets/imgs/r.png")
 				button(@click="showSelectZone = false") 取消
 	transition(name="fade")
@@ -159,14 +154,26 @@ export default {
 			],
 			actions: [],
 			sheetVisible: true,
+			areaList: []
 		}
 	},
 	async created(){
 		this.getAds()
 		this.getYydtInfoList()
 		this.getYyxxInfoList()
+		this.getAreaList()
 	},
 	methods: {
+		getAreaList(){
+			index.getAreaList({
+
+			}).then(res => {
+				console.log('getAreaList-res', res)
+				this.areaList = res.data
+			}).catch(err => {
+				console.log('getAreaList-err', err)
+			})
+		},
 		agreeGhxz(){
 			this.showGhxz = false
 		},
@@ -265,12 +272,11 @@ export default {
 		changeTab(idx){
 			this.tabIndex = idx
 		},
-		selectZone(idx){
+		selectZone(obj){
 			this.showSelectZone = false
 			this.$router.push({
-				path: '/xzks'
+				path: `/xzks?id=${obj.id}`
 			})
-			console.log(idx)
 		}
 	}
 }

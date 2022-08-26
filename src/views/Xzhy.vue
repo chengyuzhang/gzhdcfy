@@ -2,29 +2,29 @@
 .xzhy-container
 	.top
 		h5
-			i 儿内科
+			i {{officeName}}
 			p(@click="toPage") 科室介绍<img src="@/assets/imgs/r.png" alt="">
 		ul
 			li
 				img(src="@/assets/imgs/ly.png")
-				p 东城妇幼保健院(南区)
+				p {{areaName}}
 			li
 				img(src="@/assets/imgs/gps.png")
-				p 北京市东城区法华南里25号楼备份
+				p {{areaAddress}}
 	.tab-bar
 		ul
 			li(v-for="(item, index) in dateList" :class="{'active': tabIndex == index}" @click="changeTab(index)")
 				p {{item.title}}
 				p {{item.str}}
-				p.has(v-if="item.status == 1") 有号
-				p.none(v-if="item.status == 2") 无号
+				p.has(v-if="item.status == 1") 无号
+				p.none(v-if="item.status == 2") 有号
 				p.full(v-if="item.status == 3") 约满
 				p.ready(v-if="item.status == 4") 即将放号
 		.r(@click="showCalendar = true")
 			.con
 				p 全部日期
 				img(src="@/assets/imgs/arrow-down2.png")
-	.tab-con.has(v-if="tabStatus == 1")
+	.tab-con.has(v-if="tabStatus == 2")
 		.morning
 			h5 上午号源
 			ul
@@ -47,7 +47,7 @@
 						p ￥50
 						button.full(v-if="false") 约满
 						button(@click="timeShow = true") 剩余20
-	.tab-con.none(v-if="tabStatus == 2")
+	.tab-con.none(v-if="tabStatus == 1")
 		p 当天无号源
 	.tab-con.full(v-if="tabStatus == 3")
 		.morning
@@ -109,12 +109,19 @@
 </template>
 
 <script>
+const util= require('../util/util.js')
+import { xzhy } from '@/service/api.js'
+
 export default {
 
 	name: 'Xzhy', //选择号源
 
 	data () {
 		return {
+			areaAddress: '',
+			areaName: '',
+			officeName: '',
+			officeId: 1,
 			showCalendar: false,
 			activeIndex: 3,
 			orderDate: [
@@ -291,6 +298,9 @@ export default {
 		}
 	},
 	created(){
+		this.officeId = this.$route.query.id
+		this.getDutyDate()
+
 		let orderDate = this.orderDate.map((item, index) => {
 			let splitDate = item.date.split('-')
 			item.year = splitDate[0]
@@ -336,6 +346,29 @@ export default {
 		this.createCalendar(orderDate[0].date, orderDate[orderDate.length-1].date)
 	},
 	methods: {
+		getDutyDate(){
+			xzhy.getDutyDate({
+				officeId: this.officeId
+			}).then(res => {
+				console.log('getDutyDate-res', res)
+				this.areaAddress = res.data.areaAddress
+				this.areaName = res.data.areaName
+				this.officeName = res.data.officeName
+
+				let dateList = res.data.ddList
+
+				this.dateList = dateList.map((item, index) => {
+					item.title = util.formatDay(item.date)
+					let arr = item.date.split('-')
+					item.str = `${arr[1]}-${arr[2]}`
+					return item
+				})
+				console.log('dateList', dateList)
+
+			}).catch(err => {
+				console.log('getDutyDate-err', err)
+			})
+		},
 		getDate(idx, item){
 			if(item.status != 0) return
 			this.activeIndex = idx

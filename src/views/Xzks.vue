@@ -7,16 +7,28 @@
 			p 北京市东城区法华南里25号楼
 			//- div <span>7:30</span><i>放第15天号</i>
 		.r
-			img(src="@/assets/imgs/select-bg.png")
+			img(src="@/assets/imgs/select-bg.png" @click="showSelectZone = true")
 	.side-tab
 		ol
-			li(v-for="(item, index) in sideTabs" :class="{'active': tabIndex == index}" @click="changeTab(index)") {{item.title}}
+			li(v-for="(item, index) in sideTabs" :class="{'active': tabIndex == index}" @click="changeTab(index)") {{item.name}}
 		ul
-			li(v-for="(item, index) in sideTabs" @click="toPage") {{item.title}}
+			li(v-for="(item, index) in childrenList" @click="toPage(item)") {{item.name}}
+	transition(name="fade")
+		.select-zone(v-if="showSelectZone")
+			.con
+				h5 选择院区
+				ul
+					li(@click="selectZone(item)" v-for="(item, index) in areaList")
+						.l
+							h6 {{item.name}}
+							p {{item.address}}
+						img(src="@/assets/imgs/r.png")
+				button(@click="showSelectZone = false") 取消
 </template>
 
 <script>
 const util= require('../util/util.js')
+import { index, xzks } from '@/service/api.js'
 
 export default {
 
@@ -24,6 +36,8 @@ export default {
 
 	data () {
 		return {
+			showSelectZone: false,
+			id: 1,
 			tabIndex: 0,
 			sideTabs: [
 				{
@@ -74,13 +88,42 @@ export default {
 				{
 					title: 76575
 				}
-			]
+			],
+			childrenList: [],
+			areaList: []
 		}
 	},
+	created(){
+		this.id = this.$route.query.id
+		this.getOfficeTree()
+		this.getAreaList()
+	},
 	methods: {
-		toPage(){
+
+		getAreaList(){
+			index.getAreaList({
+
+			}).then(res => {
+				console.log('getAreaList-res', res)
+				this.areaList = res.data
+			}).catch(err => {
+				console.log('getAreaList-err', err)
+			})
+		},
+		getOfficeTree(){
+			xzks.getOfficeTree({
+				areaId: this.id
+			}).then(res => {
+				console.log('getOfficeTree-res', res)
+				this.sideTabs = res.data
+				this.childrenList = this.sideTabs[0].children
+			}).catch(err => {
+				console.log('getOfficeTree-err', err)
+			})
+		},
+		toPage(obj){
 			this.$router.push({
-				path: '/xzhy'
+				path: `/xzhy?id=${obj.id}`
 			})
 		},
 		setElHeight(){
@@ -95,10 +138,24 @@ export default {
 		},
 		changeTab(idx){
 			this.tabIndex = idx
+			this.childrenList = this.sideTabs[idx].children
+			console.log('childrenList', this.childrenList)
+		},
+		selectZone(obj){
+			this.showSelectZone = false
+			this.$router.push({
+				path: `/xzks?id=${obj.id}`
+			})
 		}
 	},
 	mounted(){
 		this.setElHeight()
+	},
+	watch: {
+		$route(to, from){
+			this.id = to.query.id
+			this.getOfficeTree()
+		}
 	}
 }
 </script>
@@ -190,4 +247,69 @@ export default {
 				border-bottom 1px solid rgba(235, 235, 235, .6)
 			li:last-of-type
 				border none
+	
+	.select-zone
+		position fixed
+		left 0
+		top 0
+		width 100%
+		height 100%
+		background rgba(0,0,0,.5)
+		z-index 2
+		.con
+			position absolute
+			left 0
+			bottom 0
+			z-index 1
+			width 100%
+			background #F8F8F8
+			border-radius .2rem .2rem 0 0
+			h5
+				height 1.08rem
+				font-size .32rem
+				font-weight 500
+				color #000
+				line-height 1.08rem
+				text-align center
+				border-bottom 1px solid #E5E5E5
+			ul
+				li
+					display flex
+					justify-content space-between
+					align-items center
+					// padding-top .34rem
+					// padding-bottom .3rem
+					height 1.5rem
+					padding 0 .3rem
+					border-bottom 1px solid #E5E5E5
+					.l
+						h6
+							font-size .32rem
+							font-weight 500
+							color #000
+							line-height .44rem
+						p
+							margin-top .04rem
+							font-size .28rem
+							font-weight 500
+							color #999
+							line-height .44rem
+					img
+						width .32rem
+						height .32rem
+			button
+				width 100%
+				height 1.1rem
+				line-height 1.1rem
+				font-size .32rem
+				font-weight 500
+				text-align center
+				color #999
+	
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .2s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+	}
 </style>

@@ -22,7 +22,22 @@ export const index = {
 	},
 	async getGhxzDetails (data, headers) {
 		return await get(baseURL + `/notice/detailGuahao`, data, headers)
+	},
+	async getAreaList (data, headers) {
+		return await get(baseURL + `/area/allList`, data, headers)
 	}
+}
+
+export const xzks = {
+	async getOfficeTree (data, headers) {
+		return await get(baseURL + `/office/officeTree`, data, headers)
+	},
+}
+
+export const xzhy = {
+	async getDutyDate (data, headers) {
+		return await get(baseURL + `/office/dutyDate`, data, headers)
+	},
 }
 
 export const login = {
