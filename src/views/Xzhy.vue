@@ -16,8 +16,8 @@
 			li(v-for="(item, index) in dateList" :class="{'active': tabIndex == index}" @click="changeTab(index)")
 				p {{item.title}}
 				p {{item.str}}
-				p.has(v-if="item.status == 1") 无号
-				p.none(v-if="item.status == 2") 有号
+				p.none(v-if="item.status == 1") 无号
+				p.has(v-if="item.status == 2") 有号
 				p.full(v-if="item.status == 3") 约满
 				p.ready(v-if="item.status == 4") 即将放号
 		.r(@click="showCalendar = true")
@@ -28,25 +28,25 @@
 		.morning
 			h5 上午号源
 			ul
-				li(v-for="item in 3")
+				li(v-for="(item, index) in swList")
 					.l
-						h6 儿科专家（正高）
+						h6 {{item.name}}
 						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
 					.r
-						p ￥50
-						button.full(v-if="true") 约满
-						button(v-if="false") 剩余20
+						p ￥{{item.prePrice}}
+						button.full(v-if="item.remainCount == 0") 约满
+						button(v-else) 剩余{{item.remainCount}}
 		.afternoon
 			h5 下午号源
 			ul
-				li(v-for="item in 3")
+				li(v-for="(item, index) in xwList")
 					.l
-						h6 儿科专家（正高）
+						h6 {{item.name}}
 						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
 					.r
-						p ￥50
-						button.full(v-if="false") 约满
-						button(@click="timeShow = true") 剩余20
+						p ￥{{item.prePrice}}
+						button.full(v-if="item.remainCount == 0") 约满
+						button(v-else) 剩余{{item.remainCount}}
 	.tab-con.none(v-if="tabStatus == 1")
 		p 当天无号源
 	.tab-con.full(v-if="tabStatus == 3")
@@ -102,10 +102,10 @@
 					li(v-for="(item, index) in orderDate" :class="{'active': activeIndex == index}" @click="getDate(index, item)")
 						em {{item.dayStr}}
 						i {{item.day}}
-						span.has(v-if="item.status == 0") {{item.statusStr}}
+						span.has(v-if="item.status == 2") {{item.statusStr}}
 						span.none(v-if="item.status == 1") {{item.statusStr}}
-						span.full(v-if="item.status == 2") {{item.statusStr}}
-						span.ready(v-if="item.status == 3") {{item.statusStr}}
+						span.full(v-if="item.status == 3") {{item.statusStr}}
+						span.ready(v-if="item.status == 4") {{item.statusStr}}
 </template>
 
 <script>
@@ -118,6 +118,9 @@ export default {
 
 	data () {
 		return {
+			swList: [],
+			xwList: [],
+			clinicDate: '',
 			areaAddress: '',
 			areaName: '',
 			officeName: '',
@@ -297,27 +300,27 @@ export default {
 			]
 		}
 	},
-	created(){
+	async created(){
 		this.officeId = this.$route.query.id
-		this.getDutyDate()
-
-		let orderDate = this.orderDate.map((item, index) => {
+		await this.getDutyDate()
+		console.log('this.dateList', this.dateList)
+		let orderDate = this.dateList.map((item, index) => {
 			let splitDate = item.date.split('-')
 			item.year = splitDate[0]
 			item.month = splitDate[1]
 			item.day = splitDate[2]
 
 			switch(item.status){
-				case 0:
+				case 2:
 					item.statusStr = '有号'
 				break;
 				case 1:
 					item.statusStr = '无号'
 				break;
-				case 2:
+				case 3:
 					item.statusStr = '约满'
 				break;
-				case 3:
+				case 4:
 					item.statusStr = '即将放号'
 				break;
 			}
@@ -346,8 +349,8 @@ export default {
 		this.createCalendar(orderDate[0].date, orderDate[orderDate.length-1].date)
 	},
 	methods: {
-		getDutyDate(){
-			xzhy.getDutyDate({
+		async getDutyDate(){
+			await xzhy.getDutyDate({
 				officeId: this.officeId
 			}).then(res => {
 				console.log('getDutyDate-res', res)
@@ -367,6 +370,18 @@ export default {
 
 			}).catch(err => {
 				console.log('getDutyDate-err', err)
+			})
+		},
+		officeDutyDay(){
+			xzhy.officeDutyDay({
+				officeId: this.officeId,
+				clinicDate: this.clinicDate
+			}).then(res => {
+				console.log('officeDutyDay-res', res)
+				this.swList = res.data.swList
+				this.xwList = res.data.xwList
+			}).catch(err => {
+				console.log('officeDutyDay-err', err)
 			})
 		},
 		getDate(idx, item){
@@ -435,7 +450,12 @@ export default {
 		},
 		changeTab(idx){
 			this.tabIndex = idx
+			this.clinicDate = this.dateList[idx].date
 			this.tabStatus = this.dateList[idx].status
+
+			if(this.tabStatus == 2){
+				this.officeDutyDay()
+			}
 		}
 	},
 	mounted(){

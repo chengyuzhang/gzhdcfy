@@ -38,6 +38,9 @@ export const xzhy = {
 	async getDutyDate (data, headers) {
 		return await get(baseURL + `/office/dutyDate`, data, headers)
 	},
+	async officeDutyDay (data, headers) {
+		return await get(baseURL + `/office/officeDutyDay`, data, headers)
+	},
 }
 
 export const login = {
