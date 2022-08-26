@@ -99,7 +99,7 @@
 					li 六
 				ul
 					li(v-for="item in weekDay")
-					li(v-for="(item, index) in orderDate" :class="{'active': activeIndex == index}" @click="getDate(index, item)")
+					li(v-for="(item, index) in orderDate" :class="{'active': tabIndex == index}" @click="getDate(index, item)")
 						em {{item.dayStr}}
 						i {{item.day}}
 						span.has(v-if="item.status == 2") {{item.statusStr}}
@@ -126,7 +126,7 @@ export default {
 			officeName: '',
 			officeId: 1,
 			showCalendar: false,
-			activeIndex: 3,
+			// activeIndex: 3,
 			orderDate: [
 				{
 					date: '2022-8-5',
@@ -385,10 +385,16 @@ export default {
 			})
 		},
 		getDate(idx, item){
-			if(item.status != 0) return
+			if(item.status != 2) return
 			this.activeIndex = idx
 			console.log(item)
 			this.showCalendar = false
+			this.tabIndex = idx
+			this.clinicDate = item.date
+			this.tabStatus = item.status
+			if(this.tabStatus == 2){
+				this.officeDutyDay()
+			}
 		},
 		createCalendar(startDateStr, endDateStr){
 			let setDateStart = new Date(startDateStr)
