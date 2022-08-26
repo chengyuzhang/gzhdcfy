@@ -110,7 +110,7 @@
 
 <script>
 const util= require('../util/util.js')
-import { xzhy } from '@/service/api.js'
+import { officeAbout } from '@/service/api.js'
 
 export default {
 
@@ -352,7 +352,7 @@ export default {
 	},
 	methods: {
 		async getDutyDate(){
-			await xzhy.getDutyDate({
+			await officeAbout.getDutyDate({
 				officeId: this.officeId
 			}).then(res => {
 				console.log('getDutyDate-res', res)
@@ -375,7 +375,7 @@ export default {
 			})
 		},
 		officeDutyDay(){
-			xzhy.officeDutyDay({
+			officeAbout.officeDutyDay({
 				officeId: this.officeId,
 				clinicDate: this.clinicDate
 			}).then(res => {

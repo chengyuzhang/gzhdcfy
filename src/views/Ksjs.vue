@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { xzks, doctotAbout } from '@/service/api.js'
+import { officeAbout, doctotAbout } from '@/service/api.js'
 
 export default {
 
@@ -46,7 +46,7 @@ export default {
 	},
 	methods: {
 		getOfficeDetail(){
-			xzks.getOfficeDetail({
+			officeAbout.getOfficeDetail({
 				officeId: this.officeId
 			}).then(res => {
 				console.log('getOfficeDetail-res', res)

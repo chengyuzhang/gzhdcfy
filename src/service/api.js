@@ -28,7 +28,16 @@ export const index = {
 	}
 }
 
-export const xzks = {
+export const officeAbout = {
+	async getDutyDate (data, headers) {
+		return await get(baseURL + `/office/dutyDate`, data, headers)
+	},
+	async officeDutyDay (data, headers) {
+		return await get(baseURL + `/office/officeDutyDay`, data, headers)
+	},
+	async getDutyDateHs (data, headers) {
+		return await get(baseURL + `/office/dutyDateHs`, data, headers)
+	},
 	async getOfficeTree (data, headers) {
 		return await get(baseURL + `/office/officeTree`, data, headers)
 	},
@@ -37,24 +46,9 @@ export const xzks = {
 	},
 }
 
-export const officeAbout = {
-	async getDutyDateHs (data, headers) {
-		return await get(baseURL + `/office/dutyDateHs`, data, headers)
-	},
-}
-
 export const doctotAbout = {
 	async getDoctorList (data, headers) {
 		return await get(baseURL + `/doctor/pageList`, data, headers)
-	},
-}
-
-export const xzhy = {
-	async getDutyDate (data, headers) {
-		return await get(baseURL + `/office/dutyDate`, data, headers)
-	},
-	async officeDutyDay (data, headers) {
-		return await get(baseURL + `/office/officeDutyDay`, data, headers)
 	},
 }
 

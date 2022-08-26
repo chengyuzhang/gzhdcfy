@@ -28,7 +28,7 @@
 
 <script>
 const util= require('../util/util.js')
-import { index, xzks } from '@/service/api.js'
+import { index, officeAbout } from '@/service/api.js'
 
 export default {
 
@@ -90,7 +90,9 @@ export default {
 				}
 			],
 			childrenList: [],
-			areaList: []
+			areaList: [],
+			name: '',
+			address: ''
 		}
 	},
 	created(){
@@ -99,19 +101,25 @@ export default {
 		this.getAreaList()
 	},
 	methods: {
-
 		getAreaList(){
 			index.getAreaList({
 
 			}).then(res => {
 				console.log('getAreaList-res', res)
 				this.areaList = res.data
+
+				let area = this.areaList.filter((item, index) => {
+					return item.id == this.id
+				})
+
+				this.name = area.name
+				this.address = area.address
 			}).catch(err => {
 				console.log('getAreaList-err', err)
 			})
 		},
 		getOfficeTree(){
-			xzks.getOfficeTree({
+			officeAbout.getOfficeTree({
 				areaId: this.id
 			}).then(res => {
 				console.log('getOfficeTree-res', res)

@@ -110,7 +110,7 @@
 
 <script>
 const util= require('../util/util.js')
-import { officeAbout, xzhy } from '@/service/api.js'
+import { officeAbout } from '@/service/api.js'
 
 export default {
 
@@ -376,7 +376,7 @@ export default {
 			})
 		},
 		officeDutyDay(){
-			xzhy.officeDutyDay({
+			officeAbout.officeDutyDay({
 				officeId: this.officeId,
 				clinicDate: this.clinicDate
 			}).then(res => {
