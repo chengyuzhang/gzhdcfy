@@ -32,6 +32,21 @@ export const xzks = {
 	async getOfficeTree (data, headers) {
 		return await get(baseURL + `/office/officeTree`, data, headers)
 	},
+	async getOfficeDetail (data, headers) {
+		return await get(baseURL + `/office/detail`, data, headers)
+	},
+}
+
+export const officeAbout = {
+	async getDutyDateHs (data, headers) {
+		return await get(baseURL + `/office/dutyDateHs`, data, headers)
+	},
+}
+
+export const doctotAbout = {
+	async getDoctorList (data, headers) {
+		return await get(baseURL + `/doctor/pageList`, data, headers)
+	},
 }
 
 export const xzhy = {

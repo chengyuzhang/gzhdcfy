@@ -3,36 +3,73 @@
 	.con
 		.top
 			.l
-				h6 东城妇幼保健院(南区) <img src="@/assets/imgs/r.png" alt="">
-				h5 儿内科门诊
+				h6 {{areaName}} <img src="@/assets/imgs/r.png" alt="">
+				h5 {{name}}
 			button(@click="toPage") 去挂号
 		.middle
 			h5 擅长疾病
-			p 新生儿疾病、小儿呼吸系统疾病、中西医结合
+			p {{skill}}
 			h5(style="margin-top:.48rem") 科室介绍
-			p 科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。
-		.bottom
+			p {{intro}}
+		.bottom(v-if="doctorList.length")
 			.bar
 				span 科室医生（6个）
 				p(@click="toDoctorList") 全部医生 <img src="@/assets/imgs/r.png" alt="">
 			ul
-				li(v-for="item in 6" @click="toDoctorDetail")
+				li(v-for="(item, index) in doctorList" @click="toDoctorDetail")
 					img(src="@/assets/imgs/people.png")
-					h6 张晓红
-					p 主任医师
+					h6 {{item.name}}
+					p {{item.academic}}
 </template>
 
 <script>
+import { xzks, doctotAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Ksjs',
 
 	data () {
 		return {
+			areaName: '',
+			name: '',
+			skill: '',
+			intro: '',
+			doctorList: []
 
 		}
 	},
+	created(){
+		this.officeId = this.$route.query.id
+		this.getOfficeDetail()
+		this.getDoctorList()
+	},
 	methods: {
+		getOfficeDetail(){
+			xzks.getOfficeDetail({
+				officeId: this.officeId
+			}).then(res => {
+				console.log('getOfficeDetail-res', res)
+				this.areaName = res.data.areaName
+				this.name = res.data.name
+				this.skill = res.data.skill
+				this.intro = res.data.intro
+			}).catch(err => {
+				console.log('getOfficeDetail-err', err)
+			})
+		},
+		getDoctorList(){
+			doctotAbout.getDoctorList({
+				officeId: this.officeId,
+				pageNo: 1,
+				pageSize: 8
+			}).then(res => {
+				console.log('getDoctorList-res', res)
+				this.doctorList = res.data.records
+			}).catch(err => {
+				console.log('getDoctorList-err', err)
+			})
+		},
 		toPage(){
 			this.$router.push({
 				path: '/xzhy'

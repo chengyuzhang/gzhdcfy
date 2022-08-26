@@ -110,11 +110,11 @@
 
 <script>
 const util= require('../util/util.js')
-import { xzhy } from '@/service/api.js'
+import { officeAbout, xzhy } from '@/service/api.js'
 
 export default {
 
-	name: 'Xzhy', //选择号源
+	name: 'XzhyHs', //选择号源
 
 	data () {
 		return {
@@ -124,7 +124,8 @@ export default {
 			areaAddress: '',
 			areaName: '',
 			officeName: '',
-			officeId: 1,
+			id: 1,
+			officeId: 0,
 			showCalendar: false,
 			remainTime: 0,
 			targetDay: '',
@@ -303,8 +304,8 @@ export default {
 		}
 	},
 	async created(){
-		this.officeId = this.$route.query.id
-		await this.getDutyDate()
+		this.id = this.$route.query.id
+		await this.getDutyDateHs()
 		console.log('this.dateList', this.dateList)
 		let orderDate = this.dateList.map((item, index) => {
 			let splitDate = item.date.split('-')
@@ -351,15 +352,15 @@ export default {
 		this.createCalendar(orderDate[0].date, orderDate[orderDate.length-1].date)
 	},
 	methods: {
-		async getDutyDate(){
-			await xzhy.getDutyDate({
-				officeId: this.officeId
+		async getDutyDateHs(){
+			await officeAbout.getDutyDateHs({
+				areaId: this.id
 			}).then(res => {
-				console.log('getDutyDate-res', res)
+				console.log('getDutyDateHs-res', res)
 				this.areaAddress = res.data.areaAddress
 				this.areaName = res.data.areaName
 				this.officeName = res.data.officeName
-
+				this.officeId = res.data.officeId
 				let dateList = res.data.ddList
 
 				this.dateList = dateList.map((item, index) => {
@@ -371,7 +372,7 @@ export default {
 				console.log('dateList', dateList)
 
 			}).catch(err => {
-				console.log('getDutyDate-err', err)
+				console.log('getDutyDateHs-err', err)
 			})
 		},
 		officeDutyDay(){

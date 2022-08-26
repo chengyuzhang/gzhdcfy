@@ -119,6 +119,7 @@ export default {
 
 	data () {
 		return {
+			isHs: false,
 			showGhxz: false,
 			showSelectZone: false,
 			showTabBar: true,
@@ -237,7 +238,8 @@ export default {
 			switch(idx){
 				case 0:
 					this.showGhxz = true
-					// path = '/xzhy'
+					this.showSelectZone = true
+					this.isHs = true
 				break;
 				case 1:
 					path = '/zjjs'
@@ -262,11 +264,14 @@ export default {
 				break;
 			}
 
-			this.$router.push({
-				path
-			})
+			if(path){
+				this.$router.push({
+					path
+				})
+			}
 		},
 		orderRegister(){
+			this.showGhxz = true
 			this.showSelectZone = true
 		},
 		changeTab(idx){
@@ -274,9 +279,19 @@ export default {
 		},
 		selectZone(obj){
 			this.showSelectZone = false
-			this.$router.push({
-				path: `/xzks?id=${obj.id}`
-			})
+
+			if(this.isHs){
+				this.$router.push({
+					path: `/xzhy-hs?id=${obj.id}`
+				})
+
+				this.isHs = false
+			}else{
+				this.$router.push({
+					path: `/xzks?id=${obj.id}`
+				})
+			}
+
 		}
 	}
 }
