@@ -24,7 +24,7 @@ export default {
 	},
 	methods: {
 		toPage(){
-			this.Event()
+			this.Event(this.item)
 		}
 	}
 }

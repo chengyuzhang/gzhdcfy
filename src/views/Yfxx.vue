@@ -7,7 +7,7 @@
 
 <script>
 import Item from '@/components/Item'
-import { index } from '@/service/api.js'
+import { newsAbout } from '@/service/api.js'
 
 export default {
 
@@ -30,7 +30,7 @@ export default {
 			this.getYydtInfoList()
 		},
 		async getYydtInfoList(){
-			return await index.getInfoList({
+			return await newsAbout.getInfoList({
 				type: 2,
 				pageNo: this.pageNo,
 				pageSize: this.pageSize,

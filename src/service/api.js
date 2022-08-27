@@ -11,9 +11,6 @@ export const index = {
 	async getAds (data, headers) {
 		return await get(baseURL + `/advert/spaceAdvertList`, data, headers)
 	},
-	async getInfoList (data, headers) {
-		return await get(baseURL + `/news/pageList`, data, headers)
-	},
 	async getJzxzList (data, headers) {
 		return await get(baseURL + `/notice/allList`, data, headers)
 	},
@@ -26,6 +23,15 @@ export const index = {
 	async getAreaList (data, headers) {
 		return await get(baseURL + `/area/allList`, data, headers)
 	}
+}
+
+export const newsAbout = {
+	async getInfoList (data, headers) {
+		return await get(baseURL + `/news/pageList`, data, headers)
+	},
+	async getInfoDetail (data, headers) {
+		return await get(baseURL + `/news/detail`, data, headers)
+	},
 }
 
 export const officeAbout = {
@@ -56,6 +62,10 @@ export const doctotAbout = {
 	async getDoctorDetail (data, headers) {
 		return await get(baseURL + `/doctor/detail`, data, headers)
 	},
+	async getDoctorDuty (data, headers) {
+		return await get(baseURL + `/doctor/doctorDuty`, data, headers)
+	},
+
 }
 
 export const login = {
@@ -63,4 +73,3 @@ export const login = {
 		return await get(baseURL + `/wxlogin/login`, data, headers)
 	},
 }
-

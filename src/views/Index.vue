@@ -106,7 +106,7 @@
 <script>
 import Item from '@/components/Item'
 import TabBar from '@/components/TabBar'
-import { index } from '@/service/api.js'
+import { index, newsAbout } from '@/service/api.js'
 
 export default {
 
@@ -179,7 +179,7 @@ export default {
 			this.showGhxz = false
 		},
 		async getYydtInfoList(){
-			await index.getInfoList({
+			await newsAbout.getInfoList({
 				type: 2,
 				pageNo: 1,
 				pageSize: 5,
@@ -191,7 +191,7 @@ export default {
 			})
 		},
 		async getYyxxInfoList(){
-			await index.getInfoList({
+			await newsAbout.getInfoList({
 				type: 1,
 				pageNo: 1,
 				pageSize: 5,
@@ -228,9 +228,10 @@ export default {
 				path: '/jcjg'
 			})
 		},
-		toDetailPage(){
+		toDetailPage(obj){
+			console.log('obj', obj)
 			this.$router.push({
-				path: '/wzxq'
+				path: `/wzxq?id=${obj.id}`
 			})
 		},
 		toPage(idx){

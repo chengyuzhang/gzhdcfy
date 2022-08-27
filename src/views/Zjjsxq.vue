@@ -2,34 +2,75 @@
 .ysjs-container
 	.con
 		.top
-			img(src="@/assets/imgs/people.png")
+			img(:src="headPic")
 			.r
-				h5 张晓红
-				h6 <i>主任医师</i>儿内科
-				p 东城区妇幼保健院
+				h5 {{name}}
+				h6 <i>{{academic}}</i>{{officeName}}
+				p {{areaName}}
 		.bottom
 			h5 擅长疾病
-			p 新生儿疾病、小儿呼吸系统疾病、中西医结合
-			h5(style="margin-top: .48rem") 专家介绍
-			p 科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。科室组建于1968年，新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗。
+			p {{skill}}
+			h5(style="margin-top: .48rem") 医生介绍
+			p {{intro}}
 			h5 出诊科室
 			ul
-				li <span>儿内科</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage" alt="">
-				li <span>儿内科</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage" alt="">
-				li <span>儿内科</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage" alt="">
+				li(v-for="(item, index) in ksList") <span>{{item.officeName}}</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage(item)" alt="">
 </template>
 
 <script>
+import { doctotAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Ysjs',
 
 	data () {
 		return {
-
+			id: 0,
+			academic: '',
+			name: '',
+			areaName: '',
+			skill: '',
+			intro: '',
+			officeName: '',
+			headPic: '',
+			ksList: []
 		}
 	},
+	created(){
+		this.id = this.$route.query.id
+		this.getDoctorDetail()
+		this.getDoctorDuty()
+	},
 	methods: {
+		async getDoctorDuty(){
+			await doctotAbout.getDoctorDuty({
+				id: this.id
+			}).then(res => {
+				console.log('getDoctorDuty-res', res)
+
+				this.ksList = res.data
+			}).catch(err => {
+				console.log('getDoctorDuty-err', err)
+			})
+		},
+		async getDoctorDetail(){
+			await doctotAbout.getDoctorDetail({
+				id: this.id
+			}).then(res => {
+				console.log('getDoctorDetail-res', res)
+				this.academic = res.data.academic
+				this.name = res.data.name
+				this.areaName = res.data.areaName
+				this.skill = res.data.skill
+				this.intro = res.data.intro
+				this.officeName = res.data.officeName
+				this.headPic = res.data.headPic
+
+			}).catch(err => {
+				console.log('getDoctorDetail-err', err)
+			})
+		},
 		toPage(){
 			this.$router.push({
 				path: '/xzhy'

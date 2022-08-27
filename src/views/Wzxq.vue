@@ -17,14 +17,30 @@
 </template>
 
 <script>
+import { newsAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Wzxq',
 
 	data () {
 		return {
-
+			id: 0,
 		}
+	},
+	created(){
+		this.id = this.$route.query.id
+	},
+	methods: {
+		getInfoDetail(){
+			newsAbout.getInfoDetail({
+				id: this.id
+			}).then(res => {
+				console.log('getInfoDetail-res', res)
+			}).catch(err => {
+				console.log('getInfoDetail-err'. err)
+			})
+		},
 	}
 }
 </script>
