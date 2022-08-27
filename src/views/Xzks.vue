@@ -28,7 +28,7 @@
 
 <script>
 const util= require('../util/util.js')
-import { index, officeAbout } from '@/service/api.js'
+import { index, officeAbout, areaAbout } from '@/service/api.js'
 
 export default {
 
@@ -103,7 +103,7 @@ export default {
 	},
 	methods: {
 		getAreaList(){
-			index.getAreaList({
+			areaAbout.getAreaList({
 
 			}).then(res => {
 				console.log('getAreaList-res', res)

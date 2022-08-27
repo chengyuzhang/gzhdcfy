@@ -60,7 +60,7 @@ export default {
 	height 100%
 	overflow hidden
 	overflow-y auto
-	.items
+	.van-list
 		display flex
 		flex-direction column
 		align-items center

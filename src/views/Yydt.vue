@@ -65,7 +65,7 @@ export default {
 	height 100%
 	overflow hidden
 	overflow-y auto
-	.items
+	.van-list
 		padding 0 .3rem
 		>>>.item-container
 			padding .3rem 0

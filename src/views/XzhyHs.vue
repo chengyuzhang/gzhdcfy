@@ -35,7 +35,7 @@
 					.r
 						p ￥{{item.prePrice}}
 						button.full(v-if="item.remainCount == 0") 约满
-						button(v-else) 剩余{{item.remainCount}}
+						button(v-else @click="orderFn(item)") 剩余{{item.remainCount}}
 		.afternoon
 			h5 下午号源
 			ul
@@ -46,7 +46,7 @@
 					.r
 						p ￥{{item.prePrice}}
 						button.full(v-if="item.remainCount == 0") 约满
-						button(v-else) 剩余{{item.remainCount}}
+						button(v-else @click="orderFn(item)") 剩余{{item.remainCount}}
 	.tab-con.none(v-if="tabStatus == 1")
 		p 当天无号源
 	.tab-con.full(v-if="tabStatus == 3")
@@ -83,7 +83,7 @@
 					li(v-for="(item, index) in timeList" @click="getTimeZone(index)" :class="{'active': timeIndex == index}")
 						img(v-if="timeIndex != index" src="@/assets/imgs/space.png")
 						img(v-if="timeIndex == index" src="@/assets/imgs/dot.png")
-						p {{item.time}}
+						p {{item.startTime}}-{{item.endTime}}
 				button(@click="timeShow = false") 取消
 	transition(name="fade")
 		.calendar(v-if="showCalendar" @click.self="showCalendar = false")
@@ -352,6 +352,21 @@ export default {
 		this.createCalendar(orderDate[0].date, orderDate[orderDate.length-1].date)
 	},
 	methods: {
+		orderFn(obj){
+			this.dutyId = obj.id
+			this.getOfficeDutyTimes()
+			this.timeShow = true
+		},
+		async getOfficeDutyTimes(){
+			await officeAbout.getOfficeDutyTimes({
+				dutyId: this.dutyId
+			}).then(res => {
+				console.log('getOfficeDutyTimes-res', res)
+				this.timeList = res.data
+			}).catch(err => {
+				console.log('getOfficeDutyTimes-err', err)
+			})
+		},
 		async getDutyDateHs(){
 			await officeAbout.getDutyDateHs({
 				areaId: this.id

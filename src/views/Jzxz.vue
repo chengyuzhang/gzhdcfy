@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { index } from '@/service/api.js'
+import { noticeAbout } from '@/service/api.js'
 
 export default {
 
@@ -23,7 +23,7 @@ export default {
 	},
 	methods: {
 		getJzxzList(){
-			index.getJzxzList({
+			noticeAbout.getJzxzList({
 			}).then(res => {
 				console.log('getJzxzList-res', res)
 				this.jzxzList = res.data

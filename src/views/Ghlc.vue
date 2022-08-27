@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { index } from '@/service/api.js'
+import { noticeAbout } from '@/service/api.js'
 
 export default {
 
@@ -53,7 +53,7 @@ export default {
 	},
 	methods: {
 		getJzxzDetails(){
-			index.getJzxzDetails({
+			noticeAbout.getJzxzDetails({
 				id: this.id
 			}).then(res => {
 				console.log('getJzxzDetails-res', res)

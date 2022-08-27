@@ -10,7 +10,19 @@ let baseURL1 = 'https://xiaoxapi.aoji.cn'
 export const index = {
 	async getAds (data, headers) {
 		return await get(baseURL + `/advert/spaceAdvertList`, data, headers)
+	}
+}
+
+export const areaAbout = {
+	async getAreaList (data, headers) {
+		return await get(baseURL + `/area/allList`, data, headers)
 	},
+	async getAreaDetail (data, headers) {
+		return await get(baseURL + `/area/detail`, data, headers)
+	}
+}
+
+export const noticeAbout = {
 	async getJzxzList (data, headers) {
 		return await get(baseURL + `/notice/allList`, data, headers)
 	},
@@ -19,9 +31,6 @@ export const index = {
 	},
 	async getGhxzDetails (data, headers) {
 		return await get(baseURL + `/notice/detailGuahao`, data, headers)
-	},
-	async getAreaList (data, headers) {
-		return await get(baseURL + `/area/allList`, data, headers)
 	}
 }
 
