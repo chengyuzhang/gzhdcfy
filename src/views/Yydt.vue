@@ -49,9 +49,10 @@ export default {
 				console.log('getYydtInfoList-err'. err)
 			})
 		},
-		toDetailPage(){
+		toDetailPage(obj){
+			console.log('obj', obj)
 			this.$router.push({
-				path: '/wzxq'
+				path: `/wzxq?id=${obj.id}`
 			})
 		},
 	}

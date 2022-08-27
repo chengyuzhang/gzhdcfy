@@ -1,19 +1,14 @@
 <template lang="pug">
 .wzxx-container
-	h5 抗疫前线的最强战斗堡垒！
+	h5 {{title}}
 	.top
 		.l
-			img(src="@/assets/imgs/people.png")
+			img(:src="doctorPicture")
 			.ll
-				h5 张晓红
-				p <i>知名专家</i>儿内科
-		p.r 2022-05-07 15:37
-	.con
-		p 目的:探讨小儿早期甲型流感的有效治疗方法。方法:将240例早期甲型流感患儿按就诊日期的单双数分为对照组和观察组各120例，对照组采用磷酸奥司他韦颗粒治疗，2.0～2.5mg/kg，温开水冲服。
-		p 每天2次，观察组在对照组基础上联合蓝芩口服液2～5岁每次5mL,>5岁每次10mL，每天3次治疗，两组均治疗5d为1个疗程，观察两组患儿的症状恢复情况、药物不良反应及总体疗效。
-		img(src="@/assets/imgs/example.png")
-		p 目的:探讨小儿早期甲型流感的有效治疗方法。方法:将240例早期甲型流感患儿按就诊日期的单双数分为对照组和观察组各120例，对照组采用磷酸奥司他韦颗粒治疗，2.0～2.5mg/kg，温开水冲服。
-		p 每天2次，观察组在对照组基础上联合蓝芩口服液2～5岁每次5mL,>5岁每次10mL，每天3次治疗，两组均治疗5d为1个疗程，观察两组患儿的症状恢复情况、药物不良反应及总体疗效。
+				h5 {{doctorName}}
+				p <i>{{doctorAcademic}}</i>{{doctorOffice}}
+		p.r {{updateTime}}
+	.con(v-html="content")
 </template>
 
 <script>
@@ -26,10 +21,18 @@ export default {
 	data () {
 		return {
 			id: 0,
+			doctorAcademic: '',
+			doctorName: '',
+			doctorOffice: '',
+			doctorPicture: '',
+			updateTime: '',
+			content: '',
+			title: ''
 		}
 	},
 	created(){
 		this.id = this.$route.query.id
+		this.getInfoDetail()
 	},
 	methods: {
 		getInfoDetail(){
@@ -37,6 +40,13 @@ export default {
 				id: this.id
 			}).then(res => {
 				console.log('getInfoDetail-res', res)
+				this.doctorAcademic = res.data.doctorAcademic
+				this.doctorName = res.data.doctorName
+				this.doctorOffice = res.data.doctorOffice
+				this.doctorPicture = res.data.doctorPicture
+				this.content = res.data.content
+				this.updateTime = res.data.updateTime
+				this.title = res.data.title
 			}).catch(err => {
 				console.log('getInfoDetail-err'. err)
 			})
