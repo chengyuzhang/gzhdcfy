@@ -35,7 +35,7 @@
 					.r
 						p ￥{{item.prePrice}}
 						button.full(v-if="item.remainCount == 0") 约满
-						button(v-else) 剩余{{item.remainCount}}
+						button(v-else @click="orderFn(item)") 剩余{{item.remainCount}}
 		.afternoon
 			h5 下午号源
 			ul
@@ -46,7 +46,7 @@
 					.r
 						p ￥{{item.prePrice}}
 						button.full(v-if="item.remainCount == 0") 约满
-						button(v-else) 剩余{{item.remainCount}}
+						button(v-else @click="orderFn(item)") 剩余{{item.remainCount}}
 	.tab-con.none(v-if="tabStatus == 1")
 		p 当天无号源
 	.tab-con.full(v-if="tabStatus == 3")
@@ -59,8 +59,7 @@
 						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
 					.r
 						p ￥50
-						button.full(v-if="false") 约满
-						button(v-if="true") 剩余20
+						button.full 约满
 		.afternoon
 			h5 下午午号源
 			ul
@@ -70,8 +69,7 @@
 						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
 					.r
 						p ￥50
-						button.full(v-if="false") 约满
-						button(v-if="true") 剩余20
+						button.full 约满
 	.tab-con.ready(v-if="tabStatus == 4")
 		p 距离{{targetDay}}放号还有
 		span <van-count-down :time="remainTime" format="DD 天 HH 时 mm 分 ss 秒" />
@@ -83,7 +81,7 @@
 					li(v-for="(item, index) in timeList" @click="getTimeZone(index)" :class="{'active': timeIndex == index}")
 						img(v-if="timeIndex != index" src="@/assets/imgs/space.png")
 						img(v-if="timeIndex == index" src="@/assets/imgs/dot.png")
-						p {{item.time}}
+						p {{item.startTime}}-{{item.endTime}}
 				button(@click="timeShow = false") 取消
 	transition(name="fade")
 		.calendar(v-if="showCalendar" @click.self="showCalendar = false")
@@ -130,58 +128,6 @@ export default {
 			targetDay: '',
 			// activeIndex: 3,
 			orderDate: [
-				{
-					date: '2022-8-5',
-					status: 0
-				},
-				{
-					date: '2022-8-6',
-					status: 2
-				},
-				{
-					date: '2022-8-7',
-					status: 0
-				},
-				{
-					date: '2022-8-8',
-					status: 1
-				},
-				{
-					date: '2022-8-9',
-					status: 3
-				},
-				{
-					date: '2022-8-10',
-					status: 0
-				},
-				{
-					date: '2022-8-11',
-					status: 0
-				},
-				{
-					date: '2022-8-12',
-					status: 0
-				},
-				{
-					date: '2022-8-13',
-					status: 0
-				},
-				{
-					date: '2022-8-14',
-					status: 0
-				},
-				{
-					date: '2022-9-1',
-					status: 1
-				},
-				{
-					date: '2022-9-2',
-					status: 3
-				},
-				{
-					date: '2022-10-1',
-					status: 3
-				},
 			],
 			year: '',
 			month: '',
@@ -196,109 +142,8 @@ export default {
 			tabIndex: 0,
 			tabStatus: 1,
 			dateList: [
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
 			],
 			timeList: [
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
 			]
 		}
 	},
@@ -351,6 +196,21 @@ export default {
 		this.createCalendar(orderDate[0].date, orderDate[orderDate.length-1].date)
 	},
 	methods: {
+		orderFn(obj){
+			this.dutyId = obj.id
+			this.getOfficeDutyTimes()
+			this.timeShow = true
+		},
+		async getOfficeDutyTimes(){
+			await officeAbout.getOfficeDutyTimes({
+				dutyId: this.dutyId
+			}).then(res => {
+				console.log('getOfficeDutyTimes-res', res)
+				this.timeList = res.data
+			}).catch(err => {
+				console.log('getOfficeDutyTimes-err', err)
+			})
+		},
 		async getDutyDate(){
 			await officeAbout.getDutyDate({
 				officeId: this.officeId

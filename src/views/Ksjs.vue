@@ -16,8 +16,8 @@
 				span 科室医生（6个）
 				p(@click="toDoctorList") 全部医生 <img src="@/assets/imgs/r.png" alt="">
 			ul
-				li(v-for="(item, index) in doctorList" @click="toDoctorDetail")
-					img(src="@/assets/imgs/people.png")
+				li(v-for="(item, index) in doctorList" @click="toDoctorDetail(item)")
+					img(:src="item.headPic")
 					h6 {{item.name}}
 					p {{item.academic}}
 </template>
@@ -80,9 +80,9 @@ export default {
 				path: '/ksys'
 			})
 		},
-		toDoctorDetail(){
+		toDoctorDetail(obj){
 			this.$router.push({
-				path: '/ysjs'
+				path: `/ysjsxq?id=${obj.id}`
 			})
 		}
 	}

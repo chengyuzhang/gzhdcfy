@@ -44,11 +44,17 @@ export const officeAbout = {
 	async getOfficeDetail (data, headers) {
 		return await get(baseURL + `/office/detail`, data, headers)
 	},
+	async getOfficeDutyTimes (data, headers) {
+		return await get(baseURL + `/office/officeDutyTimes`, data, headers)
+	},
 }
 
 export const doctotAbout = {
 	async getDoctorList (data, headers) {
 		return await get(baseURL + `/doctor/pageList`, data, headers)
+	},
+	async getDoctorDetail (data, headers) {
+		return await get(baseURL + `/doctor/detail`, data, headers)
 	},
 }
 

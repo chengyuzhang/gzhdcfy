@@ -1,10 +1,10 @@
 <template lang="pug">
 .xzks-container
-	img(src="@/assets/imgs/example.png")
+	img(:src="picture")
 	.introduce
 		.l
-			h5 东城妇幼保健院(南区)
-			p 北京市东城区法华南里25号楼
+			h5 {{name}}
+			p {{address}}
 			//- div <span>7:30</span><i>放第15天号</i>
 		.r
 			img(src="@/assets/imgs/select-bg.png" @click="showSelectZone = true")
@@ -92,7 +92,8 @@ export default {
 			childrenList: [],
 			areaList: [],
 			name: '',
-			address: ''
+			address: '',
+			picture: ''
 		}
 	},
 	created(){
@@ -107,16 +108,19 @@ export default {
 			}).then(res => {
 				console.log('getAreaList-res', res)
 				this.areaList = res.data
-
-				let area = this.areaList.filter((item, index) => {
-					return item.id == this.id
-				})
-
-				this.name = area.name
-				this.address = area.address
+				this.getAreaInfo()
 			}).catch(err => {
 				console.log('getAreaList-err', err)
 			})
+		},
+		getAreaInfo(){
+			let area = this.areaList.filter((item, index) => {
+				return item.id == this.id
+			})
+			console.log('area', area)
+			this.name = area[0].name
+			this.address = area[0].address
+			this.picture = area[0].picture
 		},
 		getOfficeTree(){
 			officeAbout.getOfficeTree({
@@ -163,6 +167,7 @@ export default {
 		$route(to, from){
 			this.id = to.query.id
 			this.getOfficeTree()
+			this.getAreaInfo()
 		}
 	}
 }
