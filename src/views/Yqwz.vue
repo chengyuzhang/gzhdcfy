@@ -20,21 +20,32 @@
 </template>
 
 <script>
+import { areaAbout } from '@/service/api.js'
 export default {
 
 	name: 'Yqwz',
 
 	data () {
 		return {
-
+			areaList: []
 		}
 	},
-	mounted(){
-		setTimeout(() => {
-			let BMapGL = window.BMapGL
-			var map = new BMapGL.Map("container");
+	created(){
+		this.getAreaList()
+	},
+	methods: {
+		getAreaList(){
+			areaAbout.getAreaList({
 
-		}, 2000)
+			}).then(res => {
+				console.log('getAreaList-res', res)
+				this.areaList = res.data
+			}).catch(err => {
+				console.log('getAreaList-err', err)
+			})
+		},
+	},
+	mounted(){
 	}
 }
 </script>
