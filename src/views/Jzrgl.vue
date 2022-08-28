@@ -1,12 +1,12 @@
 <template lang="pug">
 .jzrgl-container
 	ul(v-if="isHas")
-		li(v-for="item in 5")
-			p.one <span>星星</span><i class="zf">自费</i><i class="ybbx">医保报销</i>
+		li(v-for="(item, index) in jzrList")
+			p.one <span>{{item.name}}</span><i v-if="item.feeType == 1" class="zf">自费</i><i v-if="item.feeType == 2" class="ybbx">医保报销</i>
 			p.two <span>门诊号码</span><i>0012376515</i>
-			p.three <span>星星</span><i>2101**********0081</i>
+			p.three <span>身份证号</span><i>{{item.idNo}}</i>
 			img(src="@/assets/imgs/code.png" @click="toCodePage")
-			button(@click.self.stop="deleteFn") 删除
+			button(@click.self.stop="deleteFn(item)") 删除
 	.none(v-if="!isHas")
 		img(src="@/assets/imgs/none.png")
 		p 暂无预约记录
@@ -16,6 +16,7 @@
 
 <script>
 import { Dialog, Toast } from 'vant'
+import { patientAbout } from '@/service/api.js'
 
 export default {
 
@@ -23,11 +24,34 @@ export default {
 
 	data () {
 		return {
-			isHas: true
+			isHas: true,
+			jzrList: []
 		}
 	},
+	created(){
+		this.getPatientList()
+	},
 	methods: {
-		deleteFn(){
+		getPatientList(){
+			patientAbout.getPatientList({
+			}).then(res => {
+				console.log('getPatientList-res', res)
+				this.jzrList = res.data
+			}).catch(err => {
+				console.log('getPatientList-err', err)
+			})
+		},
+		deletePatient(id){
+			patientAbout.deletePatient({
+				id
+			}).then(res => {
+				console.log('deletePatient-res', res)
+				this.getPatientList()
+			}).catch(err => {
+				console.log('deletePatient-err', err)
+			})
+		},
+		deleteFn(obj){
 			this.showDialog = true
 			Dialog.confirm({
 				title: '是否删除就诊人？',
@@ -37,9 +61,12 @@ export default {
 				confirmButtonColor: '#576B95'
 			})
 			.then(() => {
+				console.log(111)
+				this.deletePatient(obj.id)
 			// on confirm
 			})
 			.catch(() => {
+				console.log(222)
 			// on cancel
 			});
 		},

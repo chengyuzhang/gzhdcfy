@@ -41,7 +41,7 @@ export const api = {
 				} else {
 					reject(res)
 					Toast.loading({
-						message: res.status,
+						message: res.data.message,
 						duration: 1200
 					})
 				}
@@ -95,7 +95,7 @@ export const api = {
 				data,
 				headers
 			})
-			res = res.data
+			// res = res.data
 			return new Promise((resolve, reject) => {
 				console.log('try-res', res)
 
@@ -107,7 +107,7 @@ export const api = {
 				} else {
 					reject(res)
 					Toast.loading({
-						message: res.status,
+						message: res.data.message,
 						duration: 1200
 					})
 				}

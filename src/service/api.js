@@ -22,6 +22,22 @@ export const areaAbout = {
 	}
 }
 
+//就诊人相关
+export const patientAbout = {
+	async addPatient (data, headers) {
+		return await post(baseURL + `/patient/addPatient`, data, headers)
+	},
+	async getPatientList (data, headers) {
+		return await get(baseURL + `/patient/allList`, data, headers)
+	},
+	async deletePatient (data, headers) {
+		return await get(baseURL + `/patient/delete`, data, headers)
+	},
+	async getPatientDetail (data, headers) {
+		return await get(baseURL + `/patient/detail`, data, headers)
+	}
+}
+
 export const noticeAbout = {
 	async getJzxzList (data, headers) {
 		return await get(baseURL + `/notice/allList`, data, headers)

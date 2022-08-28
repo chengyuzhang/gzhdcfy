@@ -22,12 +22,12 @@
 		li
 			span 性别
 			ol.r
-				li(@click="changeSex(0)")
-					img(v-if="sexIndex == 0" src="@/assets/imgs/dot.png")
-					img(v-else src="@/assets/imgs/space.png")
-					span 男
 				li(@click="changeSex(1)")
 					img(v-if="sexIndex == 1" src="@/assets/imgs/dot.png")
+					img(v-else src="@/assets/imgs/space.png")
+					span 男
+				li(@click="changeSex(2)")
+					img(v-if="sexIndex == 2" src="@/assets/imgs/dot.png")
 					img(v-else src="@/assets/imgs/space.png")
 					span 女
 		li(@click="showNationFn")
@@ -43,12 +43,12 @@
 		li
 			span 费别
 			ol.r
-				li(@click="changeType(0)")
-					img(v-if="typeIndex == 0" src="@/assets/imgs/dot.png")
-					img(v-else src="@/assets/imgs/space.png")
-					span 自费
 				li(@click="changeType(1)")
 					img(v-if="typeIndex == 1" src="@/assets/imgs/dot.png")
+					img(v-else src="@/assets/imgs/space.png")
+					span 自费
+				li(@click="changeType(2)")
+					img(v-if="typeIndex == 2" src="@/assets/imgs/dot.png")
 					img(v-else src="@/assets/imgs/space.png")
 					span 医保
 		li
@@ -67,7 +67,7 @@
 				i(v-if="!iBtn") {{numStr}}s
 				button(v-if="iBtn" @click="getCode") 获取验证码
 	.btn
-		button 提交就诊人信息
+		button(@click="addPatient") 提交就诊人信息
 	<van-popup v-model="showDate" position="bottom">
 		van-datetime-picker(
 			v-model="currentDate"
@@ -92,6 +92,7 @@
 	<van-popup v-model="showRelation" position="bottom">
 		van-picker(
 			title="选择关系"
+			value-key="name"
 			show-toolbar
 			:columns="relationList"
 			@confirm="getRelationFn"
@@ -101,6 +102,7 @@
 	<van-popup v-model="showCardType" position="bottom">
 		van-picker(
 			title="选择证件类型"
+			value-key="name"
 			show-toolbar
 			:columns="cardTypeList"
 			@confirm="getCardTypeFn"
@@ -110,6 +112,8 @@
 </template>
 
 <script>
+import { patientAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Tjjzr',
@@ -117,8 +121,36 @@ export default {
 	data () {
 		return {
 			showCardType: false,
-			cardTypeList: ['身份证'],
-			relationList: ['本人','配偶','子女','父亲','母亲','其他亲属',],
+			cardTypeList: [{
+				name: '身份证',
+				id: 1
+			}],
+			relationList: [
+				{
+					name: '本人',
+					id: 1
+				},
+				{
+					name: '配偶',
+					id: 2
+				},
+				{
+					name: '子女',
+					id: 3
+				},
+				{
+					name: '父亲',
+					id: 4
+				},
+				{
+					name: '母亲',
+					id: 5
+				},
+				{
+					name: '其他亲属',
+					id: 6
+				},
+			],
 			showRelation: false,
 			nationList: [
 				"汉族",
@@ -199,18 +231,39 @@ export default {
 		}
 	},
 	methods: {
+		addPatient(){
+			patientAbout.addPatient({
+				birthday: this.srVal,
+				feeNo: this.ybkhVal,
+				feeType: this.typeIndex,
+				idNo: this.zjhmVal,
+				idType: this.zjlxId,
+				name: this.xmVal,
+				nationality: this.mzVal,
+				phone: this.sjhVal,
+				relation: this.gxId,
+				sex: this.sexIndex,
+				validCode: this.yzmVal,
+			}).then(res => {
+				console.log('addPatient-res', res)
+				this.ghxzDeatil = res.data.content
+			}).catch(err => {
+				console.log('addPatient-err', err)
+			})
+		},
 		getCardTypeFn(val){
 			this.showCardType = false
-			this.zjlxVal = val
+			this.zjlxVal = val.name
+			this.zjlxId = val.id
 		},
 		getRelationFn(val){
 			this.showRelation = false
-			this.gxVal = val
+			this.gxVal = val.name
+			this.gxId = val.id
 		},
 		getNationFn(val){
 			this.showNation = false
 			this.mzVal = val
-			console.log(val)
 		},
 		getDateOkFn(value){
 			let dateVal = new Date(value)

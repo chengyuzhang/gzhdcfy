@@ -7,18 +7,19 @@
 		.top
 			.l
 				p 就诊人
-				i (1/5)
+				i ({{peopleList.length <= 5 ? peopleList.length : 5}}/5)
 			.r(@click="toJzrglPage")
 				p 就诊管理人
 				img(src="@/assets/imgs/r.png")
 		.con
 			ul
-				li(v-for="(item, index) in peopleList" :class="{'active': item.name}")
+				li(v-for="(item, index) in peopleList" v-if="index < 5" :class="{'active': item.name}")
 					div(v-if="item.name")
 						img.img1(src="@/assets/imgs/people.png")
-						img.img2(src="@/assets/imgs/self.png")
+						//- img.img2(src="@/assets/imgs/self.png")
+						p {{item.relationName}}
 					img(v-else src="@/assets/imgs/add.png" @click="toAddPage")
-					p(v-if="item.name") 星星
+					p(v-if="item.name") {{item.name}}
 	.three
 		h6 就诊管理
 		ul
@@ -40,6 +41,7 @@
 
 <script>
 import TabBar from '@/components/TabBar'
+import { patientAbout } from '@/service/api.js'
 
 export default {
 
@@ -71,7 +73,41 @@ export default {
 			]
 		}
 	},
+	created(){
+		this.getPatientList()
+	},
 	methods: {
+		getPatientList(){
+			patientAbout.getPatientList({
+			}).then(res => {
+				console.log('getPatientList-res', res)
+				this.peopleList = res.data.map((item, index) => {
+					switch(item.relation){
+						case 1:
+							item.relationName = '本人'
+						break;
+						case 2:
+							item.relationName = '配偶'
+						break;
+						case 3:
+							item.relationName = '子女'
+						break;
+						case 4:
+							item.relationName = '父亲'
+						break;
+						case 5:
+							item.relationName = '母亲'
+						break;
+						case 6:
+							item.relationName = '其他'
+						break;
+					}
+					return item
+				})
+			}).catch(err => {
+				console.log('getPatientList-err', err)
+			})
+		},
 		toJzrglPage(){
 			this.$router.push({
 				path: '/jzrgl'
@@ -186,7 +222,20 @@ export default {
 							transform translateX(-50%)
 							width .54rem
 							height .26rem
-					p
+						>p
+							position absolute
+							left 50%
+							bottom 0
+							z-index 2
+							transform translateX(-50%)
+							width .6rem
+							padding .02rem 0
+							font-size .2rem
+							text-align center
+							background #DBD3FA
+							color #B47DE2
+							border-radius .14rem
+					>p
 						margin-top .06rem
 						text-align center
 						font-size .22rem
