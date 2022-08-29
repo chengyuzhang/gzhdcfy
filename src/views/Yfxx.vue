@@ -1,7 +1,7 @@
 <template lang="pug">
 .yfxx-container
 	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" >
-		Item(v-for="(item, index) in yfxxList" :item="item" :Event="toDetailPage")
+		Item(v-for="(item, index) in yfxxList" :key="item.id" :item="item" :Event="toDetailPage")
 	</van-list>
 </template>
 

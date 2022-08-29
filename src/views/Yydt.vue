@@ -1,7 +1,7 @@
 <template lang="pug">
 .yfdt-container
 	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" >
-		Item(v-for="(item, index) in yydtList" :item="item" :Event="toDetailPage")
+		Item(v-for="(item, index) in yydtList" :key="item.id" :item="item" :Event="toDetailPage")
 	</van-list>
 	//- .items
 	//- 	Item(v-for="item in 20" :Event="toDetailPage")

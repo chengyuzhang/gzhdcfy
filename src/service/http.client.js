@@ -31,6 +31,12 @@ export const api = {
 		requestCount ++
 		try {
 			let res = await axios.get(url, {params: data, headers})
+
+			requestCount --
+			if(requestCount == 0){
+				Toast.clear()
+			}
+
 			return new Promise((resolve, reject) => {
 
 				if (res.data.code === 200) {
@@ -44,10 +50,6 @@ export const api = {
 						message: res.data.message,
 						duration: 1200
 					})
-				}
-				requestCount --
-				if(requestCount == 0){
-					Toast.clear()
 				}
 			})
 		} catch (err) {
@@ -95,7 +97,12 @@ export const api = {
 				data,
 				headers
 			})
-			// res = res.data
+			
+			requestCount --
+			if(requestCount == 0){
+				Toast.clear()
+			}
+			
 			return new Promise((resolve, reject) => {
 				console.log('try-res', res)
 
@@ -110,10 +117,6 @@ export const api = {
 						message: res.data.message,
 						duration: 1200
 					})
-				}
-				requestCount --
-				if(requestCount == 0){
-					Toast.clear()
 				}
 			})
 		} catch (err) {

@@ -13,7 +13,7 @@
 				p 查询结果问医生
 	.line
 	ul.items
-		li(v-for="(item, index) in items" @click="toPage(index)")
+		li(v-for="(item, index) in items" :key="item.id" @click="toPage(index)")
 			.img
 				<img v-if="index == 0" src="@/assets/imgs/hsjc.png" alt="">
 				<img v-if="index == 1" src="@/assets/imgs/zjjs.png" alt="">
@@ -26,7 +26,7 @@
 			p {{item.title}}
 	.banner
 		<van-swipe class="my-swipe" :autoplay="3000" autoplay="false" indicator-color="white">
-			<van-swipe-item v-for="(item,index) in ads">
+			<van-swipe-item v-for="(item,index) in ads" :key="item.id">
 				img(:src="item.picture")
 				a(:href="item.linkUrl") 
 			</van-swipe-item>
@@ -42,9 +42,9 @@
 					span
 			.more(@click="toMore") 更多
 		.items(v-if="tabIndex == 0")
-			Item(v-for="(item, index) in yydtList" :item="item" :Event="toDetailPage")
+			Item(v-for="(item, index) in yydtList" :key="item.id" :item="item" :Event="toDetailPage")
 		.items(v-if="tabIndex == 1")
-			Item(v-for="(item, index) in yyxxList" :item="item" :Event="toDetailPage")
+			Item(v-for="(item, index) in yyxxList" :key="item.id" :item="item" :Event="toDetailPage")
 	transition(name="fade")
 		TabBar(v-if="showTabBar" idx="0")
 	transition(name="fade")
@@ -52,7 +52,7 @@
 			.con
 				h5 选择院区
 				ul
-					li(@click="selectZone(item)" v-for="(item, index) in areaList")
+					li(@click="selectZone(item)" v-for="(item, index) in areaList" :key="item.id")
 						.l
 							h6 {{item.name}}
 							p {{item.address}}
