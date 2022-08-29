@@ -5,22 +5,22 @@
 		ul
 			li
 				span 挂号信息
-				p 2022-10-10 周一
+				p {{clinicDate}}
 			li
-				span 挂号信息
-				p 2022-10-10 周一
+				span 就诊时间
+				p {{startTime}}-{{endTime}}
 			li
-				span 挂号信息
-				p 2022-10-10 周一
+				span 就诊医院
+				p {{areaName}}
 			li
-				span 挂号信息
-				p 2022-10-10 周一
+				span 就诊科室
+				p {{officeName}}
 			li
-				span 挂号信息
-				p 2022-10-10 周一
+				span 医生名称
+				p {{clinicName}}
 			li
-				span 挂号信息
-				p 哮喘慢咳、反复感冒、急性慢性支气管炎哮喘慢咳、反复感冒、急性慢性支气管炎哮喘慢咳、反复感冒、急性慢性支气管炎
+				span 医生专长
+				p {{skill}}
 		h6(style="margin-top:.48rem") 就诊人信息
 		.add
 			div.img(v-if="false" @click="toAddPage")
@@ -39,16 +39,44 @@
 </template>
 
 <script>
+import { appointAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Ghqr',
 
 	data () {
 		return {
-
+			clinicDate: '',
+			startTime: '',
+			endTime: '',
+			areaName: '',
+			officeName: '',
+			skill: '',
 		}
 	},
+	created(){
+		this.id = this.$route.query.id
+		this.appointPreview()
+	},
 	methods: {
+		appointPreview(){
+			appointAbout.appointPreview({
+				dutyTimeId: this.id
+			}).then(res => {
+				console.log('appointPreview-res', res)
+				this.clinicDate = res.data.clinicDate
+				this.startTime = res.data.startTime
+				this.endTime = res.data.endTime
+				this.areaName = res.data.areaName
+				this.officeName = res.data.officeName
+				this.clinicName = res.data.clinicName
+				this.skill = res.data.skill
+
+			}).catch(err => {
+				console.log('appointPreview-err', err)
+			})
+		},
 		toPage(){
 			this.$router.push({
 				path: '/ghxz'

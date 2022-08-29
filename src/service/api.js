@@ -22,6 +22,16 @@ export const areaAbout = {
 	}
 }
 
+//预约相关
+export const appointAbout = {
+	async appointPreview (data, headers) {
+		return await get(baseURL + `/appoint/appointPreview`, data, headers)
+	},
+	async getAppointDetail (data, headers) {
+		return await get(baseURL + `/appoint/detail`, data, headers)
+	},
+}
+
 //就诊人相关
 export const patientAbout = {
 	async addPatient (data, headers) {
