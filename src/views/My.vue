@@ -16,10 +16,10 @@
 				li(v-for="(item, index) in peopleList" v-if="index < 5" :class="{'active': item.name}")
 					div(v-if="item.name")
 						img.img1(src="@/assets/imgs/people.png")
-						//- img.img2(src="@/assets/imgs/self.png")
 						p {{item.relationName}}
-					img(v-else src="@/assets/imgs/add.png" @click="toAddPage")
 					p(v-if="item.name") {{item.name}}
+				li(v-if="peopleList.length < 5" v-for="item in (5 - peopleList.length)")
+					img(src="@/assets/imgs/add.png" @click="toAddPage")
 	.three
 		h6 就诊管理
 		ul
@@ -55,21 +55,6 @@ export default {
 		return {
 			showTabBar: true,
 			peopleList: [
-				{
-					name: '星星'
-				},
-				{
-					name: ''
-				},
-				{
-					name: ''
-				},
-				{
-					name: ''
-				},
-				{
-					name: ''
-				},
 			]
 		}
 	},
@@ -81,7 +66,7 @@ export default {
 			patientAbout.getPatientList({
 			}).then(res => {
 				console.log('getPatientList-res', res)
-				this.peopleList = res.data.map((item, index) => {
+				let peopleList = res.data.map((item, index) => {
 					switch(item.relation){
 						case 1:
 							item.relationName = '本人'
@@ -104,6 +89,12 @@ export default {
 					}
 					return item
 				})
+
+				if(peopleList.length > 5){
+					this.peopleList = peopleList.slice(0, 5)
+				}else{
+					this.peopleList = peopleList
+				}
 			}).catch(err => {
 				console.log('getPatientList-err', err)
 			})

@@ -28,7 +28,7 @@ export default {
 			jzrList: []
 		}
 	},
-	created(){
+	async created(){
 		this.getPatientList()
 	},
 	methods: {
@@ -47,6 +47,14 @@ export default {
 			}).then(res => {
 				console.log('deletePatient-res', res)
 				this.getPatientList()
+
+				setTimeout(() => {
+					this.$toast({
+						message: '删除就诊人成功',
+						duration: 1200
+					})
+				}, 500)
+
 			}).catch(err => {
 				console.log('deletePatient-err', err)
 			})
@@ -61,7 +69,7 @@ export default {
 				confirmButtonColor: '#576B95'
 			})
 			.then(() => {
-				console.log(111)
+				
 				this.deletePatient(obj.id)
 			// on confirm
 			})
@@ -82,10 +90,6 @@ export default {
 		}
 	},
 	mounted(){
-		Toast({
-			message: '我是展示内容',
-			duration: 2000
-		})
 	}
 }
 </script>

@@ -246,7 +246,10 @@ export default {
 				validCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)
-				this.ghxzDeatil = res.data.content
+				this.$toast({
+					message: '添加就诊人成功',
+					duration: 1200
+				})
 			}).catch(err => {
 				console.log('addPatient-err', err)
 			})
