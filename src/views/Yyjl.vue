@@ -1,7 +1,7 @@
 <template lang="pug">
 .yyjl-container
 	.top
-		p(@click="showList = true" v-if="jzrList.length") <i>就诊人</i><span>{{jzrList[activeIndex].name}}</span><img src="@/assets/imgs/arrow-down.png" alt="">
+		p(@click="showList = true" v-if="jzrInfo") <i>就诊人</i><span>{{jzrInfo.name}}</span><img src="@/assets/imgs/arrow-down.png" alt="">
 		transition(name="fade")
 			ul(v-if="showList")
 				li(v-for="(item, index) in jzrList" @click="getItem(index)")
@@ -13,7 +13,7 @@
 					img(v-if="activeIndex == index" src="@/assets/imgs/ok.png")
 					img(v-else src="@/assets/imgs/ok-space.png")
 	.ul
-		<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" >
+		<van-list v-model="loading" :finished="finished" :immediate-check="false" finished-text="没有更多了" @load="onLoad" >
 			.li(v-for="(item, index) in appointList" @click="toPage")
 				.top
 					.l
@@ -50,28 +50,47 @@ export default {
 			appointList: [],
 			pageNo: 1,
 			pageSize: 5,
+			jzrInfo: null
 		}
 	},
-	created(){
+	async created(){
+		await this.getLastAppointPatient()
 		this.getPatientList()
-		// this.getAppointList()
+		this.getAppointList()
 	},
 	methods: {
 		onLoad() {
 			this.getAppointList()
+		},
+		async getLastAppointPatient(){
+			await patientAbout.getLastAppointPatient({
+			}).then(res => {
+				console.log('getLastAppointPatient-res', res)
+				if(res.data){
+					this.jzrInfo = res.data
+				}
+			}).catch(err => {
+				console.log('getLastAppointPatient-err', err)
+			})
 		},
 		getPatientList(){
 			patientAbout.getPatientList({
 			}).then(res => {
 				console.log('getPatientList-res', res)
 				this.jzrList = res.data
+
+				this.jzrList.forEach((item, index) => {
+					if(item.name == this.jzrInfo.name){
+						this.activeIndex = index
+					}
+				})
 			}).catch(err => {
 				console.log('getPatientList-err', err)
 			})
 		},
 		getAppointList(){
 			appointAbout.getAppointList({
-				patientId: this.patientId,
+				patientId: this.jzrInfo.id,
 				pageNo: this.pageNo,
 				pageSize: this.pageSize,
 			}).then(res => {
@@ -101,6 +120,13 @@ export default {
 		getItem(idx){
 			this.activeIndex = idx
 			this.showList = false
+			this.jzrInfo = this.jzrList[idx]
+
+			this.appointList = []
+			this.finished = false
+			this.loading = false
+			this.pageNo = 1
+			// this.getAppointList()
 		},
 		toPage(){
 			this.$router.push({
@@ -191,6 +217,7 @@ export default {
 							font-size .28rem
 							line-height .4rem
 							color #333
+							text-align center
 						p
 							margin-top .02rem
 							i
