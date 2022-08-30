@@ -244,6 +244,7 @@ export default {
 			li:last-of-type
 				border none
 	>.ul
+		background #f8f8f8
 		.li
 			display flex
 			flex-direction column
