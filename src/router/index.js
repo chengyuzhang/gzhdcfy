@@ -254,6 +254,14 @@ const routes = [
 			},
 			{
 				meta: {
+					title: '就诊人列表'
+				},
+				path: '/jzr-list',
+				name: 'JzrList',
+				component: () => import(/* webpackChunkName: "about" */ '../views/JzrList.vue')
+			},
+			{
+				meta: {
 					title: '就诊码'
 				},
 				path: '/jzm',

@@ -113,6 +113,7 @@
 
 <script>
 import { patientAbout } from '@/service/api.js'
+const util= require('../util/util.js')
 
 export default {
 
@@ -275,7 +276,8 @@ export default {
 			let month = dateVal.getMonth()
 			let day = dateVal.getDate()
 			this.srVal = `${year}年${month + 1}月${day}日`
-			this.srFormat = `${year}-${month + 1}-${day}`
+			this.srFormat = `${year}-${util.formatNumber(month + 1)}-${util.formatNumber(day)}`
+
 			this.showDate = false
 		},
 		formatter(type, val) {

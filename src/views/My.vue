@@ -13,7 +13,7 @@
 				img(src="@/assets/imgs/r.png")
 		.con
 			ul
-				li(v-for="(item, index) in peopleList" v-if="index < 5" :class="{'active': item.name}")
+				li(v-for="(item, index) in peopleList" v-if="index < 5" :class="{'active': item.name}" @click="toCodePage(item)")
 					div(v-if="item.name")
 						img.img1(src="@/assets/imgs/people.png")
 						p {{item.relationName}}
@@ -62,6 +62,11 @@ export default {
 		this.getPatientList()
 	},
 	methods: {
+		toCodePage(obj){
+			this.$router.push({
+				path: `/jzm?id=${obj.id}`
+			})
+		},
 		getPatientList(){
 			patientAbout.getPatientList({
 			}).then(res => {

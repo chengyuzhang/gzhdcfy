@@ -25,11 +25,11 @@
 		.add
 			div.img(v-if="false" @click="toAddPage")
 				img(src="@/assets/imgs/add-bg.png")
-			div.con(v-if="true" @click="toAddPage")
-				.l 星星
+			div.con(v-if="true" @click="toChange")
+				.l {{jzrInfo.name}}
 				.m
-					p 1578 944 9888
-					p <i>北京社保卡</i><span>医保报销</span>
+					p {{jzrInfo.feeNo}}
+					p <i>北京社保卡</i><span v-if="jzrInfo.feeType == 1" class="zf">自费</span><span v-if="jzrInfo.feeType == 2" class="ybbx">医保报销</span>
 				.b
 					i 更换
 					img(src="@/assets/imgs/r.png")
@@ -59,6 +59,10 @@ export default {
 	created(){
 		this.id = this.$route.query.id
 		this.appointPreview()
+
+		let jzrInfo = JSON.parse(localStorage.getItem('jzrInfo')) || null
+		console.log(jzrInfo)
+		this.jzrInfo = jzrInfo
 	},
 	methods: {
 		appointPreview(){
@@ -76,6 +80,11 @@ export default {
 
 			}).catch(err => {
 				console.log('appointPreview-err', err)
+			})
+		},
+		toChange(){
+			this.$router.push({
+				path: `/jzr-list?id=${this.id}`
 			})
 		},
 		toPage(){
@@ -159,13 +168,14 @@ export default {
 					color #333
 					line-height .4rem
 				.m
-					margin-right 1.36rem
+					width 3rem
 					p
 						font-size .28rem
 						color #888
 						line-height .36rem
 					p:first-of-type
 					p:last-of-type
+						display flex
 						i
 							margin-right .2rem
 							font-size .26rem
@@ -175,6 +185,11 @@ export default {
 							font-size .24rem
 							color #FF8336
 							line-height .34rem
+						span.zf
+							color #64338E
+							background #F5E8FF
+						span.ybbx
+							color #FF8336
 							background #FFF4E8
 				.b
 					display flex

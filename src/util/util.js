@@ -118,5 +118,6 @@ module.exports = {
 	checkPhone: checkPhone,
 	changeFontRule: changeFontRule,
 	getElRec: getElRec,
-	formatDay
+	formatDay,
+	formatNumber
 }
