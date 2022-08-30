@@ -73,7 +73,9 @@ export default {
 			await patientAbout.getLastAppointPatient({
 			}).then(res => {
 				console.log('getLastAppointPatient-res', res)
-				this.jzrInfo = res.data
+				if(res.data){
+					this.jzrInfo = res.data
+				}
 			}).catch(err => {
 				console.log('getLastAppointPatient-err', err)
 			})

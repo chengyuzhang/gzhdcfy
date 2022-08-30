@@ -3,26 +3,20 @@
 	.con
 		.top
 			img(src="@/assets/imgs/logo.png")
-			h5 东城妇幼保健院(南区)
+			h5 {{areaName}}
 		ul
 			li
-				span 挂号信息
-				p 2022-10-10 周一
+				span 就诊顺序号
+				p {{queueNo}}号
 			li
-				span 挂号信息
-				p 2022-10-10 周一
+				span 订单状态
+				p {{tradeStatus == 1 ? '预约成功' : '已取消'}}
 			li
-				span 挂号信息
-				p 2022-10-10 周一
+				span 订单号
+				p {{tradeNo}}
 			li
-				span 挂号信息
-				p 2022-10-10 周一
-			li
-				span 挂号信息
-				p 2022-10-10 周一
-			li
-				span 挂号信息
-				p 哮喘慢咳、反复感冒、急性慢性支气管炎哮喘慢咳、反复感冒、急性慢性支气管炎哮喘慢咳、反复感冒、急性慢性支气管炎
+				span 挂号费
+				p {{prePrice}}元
 		.btns
 			button(@click="toPage(0)") 回到首页
 			button(@click="toPage(1)") 查看预约记录
@@ -37,7 +31,15 @@ export default {
 
 	data () {
 		return {
-			id: ''
+			id: '',
+			tradeNo: '',
+			id: '',
+			id: '',
+			id: '',
+			areaName: '',
+			prePrice: '',
+			queueNo: '',
+			tradeStatus: ''
 		}
 	},
 	created(){
@@ -50,14 +52,19 @@ export default {
 				id: this.id
 			}).then(res => {
 				console.log('getAppointDetail-res', res)
-				this.jzrInfo = res.data
+				this.areaName = res.data.areaName
+				this.tradeNo = res.data.tradeNo
+				this.prePrice = res.data.prePrice
+				this.queueNo = res.data.queueNo
+				this.tradeStatus = res.data.tradeStatus
+
 			}).catch(err => {
 				console.log('getAppointDetail-err', err)
 			})
 		},
 		toPage(idx){
 			if(idx == 0){
-				this.$router.push({
+				this.$router.replace({
 					path: '/'
 				})
 			}else{
