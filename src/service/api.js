@@ -34,7 +34,7 @@ export const appointAbout = {
 		return await post(baseURL + `/appoint/saveAppoint`, data, headers)
 	},
 	async getAppointList (data, headers) {
-		return await post(baseURL + `/appoint/pageList`, data, headers)
+		return await get(baseURL + `/appoint/pageList`, data, headers)
 	},
 
 }

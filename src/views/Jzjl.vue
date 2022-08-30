@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { appointAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Jzjl',
@@ -40,6 +42,8 @@ export default {
 				{},
 			]
 		}
+	},
+	created(){
 	},
 	methods: {
 		getItem(idx){

@@ -1,31 +1,38 @@
 <template lang="pug">
 .yyjl-container
 	.top
-		p(@click="showList = true") <i>就诊人</i><span>星星</span><img src="@/assets/imgs/arrow-down.png" alt="">
+		p(@click="showList = true" v-if="jzrList.length") <i>就诊人</i><span>{{jzrList[activeIndex].name}}</span><img src="@/assets/imgs/arrow-down.png" alt="">
 		transition(name="fade")
 			ul(v-if="showList")
-				li(v-for="(item, index) in 4" @click="getItem(index)")
+				li(v-for="(item, index) in jzrList" @click="getItem(index)")
 					.l
-						span 星星
+						span {{item.name}}
 						div
-							h6 1578 944 9888
-							p <i>北京社保卡</i><span class="ybbx">医保报销</span><span class="zf">自费</span>
+							h6 {{item.feeNo}}
+							p <span v-if="item.feeType == 1" class="zf">自费</span><span v-if="item.feeType == 2" class="ybbx">医保报销</span>
 					img(v-if="activeIndex == index" src="@/assets/imgs/ok.png")
 					img(v-else src="@/assets/imgs/ok-space.png")
-	ul
-		li(v-for="item in 5" @click="toPage")
-			.top
-				.l
-					h6 儿内科主任医师
-					p 儿内科 东城妇幼保健院(南区)
-				p 预约成功
-			ol
-				li(v-for="item in 4") <span>就诊人</span><i>星星</i>
-			button(@click.self.stop="cancelOrder") 取消预约
+	.ul
+		<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" >
+			.li(v-for="(item, index) in appointList" @click="toPage")
+				.top
+					.l
+						h6 {{item.clinicName}}
+						p {{item.officeName}} {{item.areaName}}
+					p {{item.statusStr}}
+				ol
+					li <span>就诊人</span><i>{{item.patientName}}</i>
+					li <span>就诊时间</span><i>{{item.clinicDate}}<em>{{item.startTime}}-{{item.endTime}}</em></i>
+					li <span>就诊序号</span><i>{{item.queueNo}}</i>
+					li <span>挂号费</span><i>{{item.prePrice}}</i>
+				button(@click.self.stop="cancelOrder") 取消预约
+		</van-list>
+
 </template>
 
 <script>
 import { Dialog, Toast } from 'vant'
+import { appointAbout, patientAbout } from '@/service/api.js'
 
 export default {
 
@@ -33,12 +40,64 @@ export default {
 
 	data () {
 		return {
+			loading: false,
+			finished: false,
 			activeIndex: 0,
 			showList: false,
-			showDialog: false
+			showDialog: false,
+			patientId: '',
+			jzrList: [],
+			appointList: [],
+			pageNo: 1,
+			pageSize: 5,
 		}
 	},
+	created(){
+		this.getPatientList()
+		// this.getAppointList()
+	},
 	methods: {
+		onLoad() {
+			this.getAppointList()
+		},
+		getPatientList(){
+			patientAbout.getPatientList({
+			}).then(res => {
+				console.log('getPatientList-res', res)
+				this.jzrList = res.data
+			}).catch(err => {
+				console.log('getPatientList-err', err)
+			})
+		},
+		getAppointList(){
+			appointAbout.getAppointList({
+				patientId: this.patientId,
+				pageNo: this.pageNo,
+				pageSize: this.pageSize,
+			}).then(res => {
+				console.log('getAppointList-res', res)
+
+				let list = res.data.map((item, index) => {
+					let status = item.tradeStatus
+
+					if(status == 1){
+						item.statusStr = '预约成功'
+					}
+					if(status == 2){
+						item.statusStr = '已取消'
+					}
+					return item
+				})
+
+				if(list.length < this.pageSize) this.finished = true
+				this.appointList = this.appointList.concat(list)
+				this.pageNo ++
+				this.loading = false
+
+			}).catch(err => {
+				console.log('getAppointList-err', err)
+			})
+		},
 		getItem(idx){
 			this.activeIndex = idx
 			this.showList = false
@@ -157,8 +216,8 @@ export default {
 				img
 			li:last-of-type
 				border none
-	>ul
-		>li
+	>.ul
+		.li
 			display flex
 			flex-direction column
 			align-items flex-end
@@ -204,7 +263,9 @@ export default {
 					i
 						font-size .28rem
 						line-height .4rem
-						color #888
+					em
+						margin-left .2rem
+						color #222
 			button
 				width 1.4rem
 				height .5rem

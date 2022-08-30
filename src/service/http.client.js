@@ -46,7 +46,7 @@ export const api = {
 					return
 				} else {
 					reject(res)
-					Toast.loading({
+					Toast({
 						message: res.data.message,
 						duration: 1200
 					})
@@ -113,7 +113,7 @@ export const api = {
 					return
 				} else {
 					reject(res)
-					Toast.loading({
+					Toast({
 						message: res.data.message,
 						duration: 1200
 					})
