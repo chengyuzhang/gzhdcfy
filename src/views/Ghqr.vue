@@ -23,23 +23,23 @@
 				p {{skill}}
 		h6(style="margin-top:.48rem") 就诊人信息
 		.add
-			div.img(v-if="false" @click="toAddPage")
+			div.img(v-if="!jzrInfo" @click="toAddPage")
 				img(src="@/assets/imgs/add-bg.png")
-			div.con(v-if="true" @click="toChange")
+			div.con(v-if="jzrInfo" @click="toChange")
 				.l {{jzrInfo.name}}
 				.m
 					p {{jzrInfo.feeNo}}
-					p <i>北京社保卡</i><span v-if="jzrInfo.feeType == 1" class="zf">自费</span><span v-if="jzrInfo.feeType == 2" class="ybbx">医保报销</span>
+					p <span v-if="jzrInfo.feeType == 1" class="zf">自费</span><span v-if="jzrInfo.feeType == 2" class="ybbx">医保报销</span>
 				.b
 					i 更换
 					img(src="@/assets/imgs/r.png")
 			p 请仔细阅读<span @click="toPage">《挂号须知》</span>
 	.btn
-		button(@click="toSuccessPage") 确认
+		button(@click="saveAppoint") 确认
 </template>
 
 <script>
-import { appointAbout } from '@/service/api.js'
+import { appointAbout, patientAbout } from '@/service/api.js'
 
 export default {
 
@@ -54,17 +54,43 @@ export default {
 			officeName: '',
 			clinicName: '',
 			skill: '',
+			jzrInfo: null
 		}
 	},
-	created(){
-		this.id = this.$route.query.id
+	async created(){
+		this.id = Number(this.$route.query.id)
 		this.appointPreview()
 
 		let jzrInfo = JSON.parse(localStorage.getItem('jzrInfo')) || null
-		console.log(jzrInfo)
 		this.jzrInfo = jzrInfo
+
+		if(!this.jzrInfo){
+			this.getLastAppointPatient()
+		}
 	},
 	methods: {
+		async getLastAppointPatient(){
+			await patientAbout.getLastAppointPatient({
+			}).then(res => {
+				console.log('getLastAppointPatient-res', res)
+				this.jzrInfo = res.data
+			}).catch(err => {
+				console.log('getLastAppointPatient-err', err)
+			})
+		},
+		saveAppoint(){
+			appointAbout.saveAppoint({
+				dutyTimeId: this.id,
+				patientId: this.jzrInfo.id
+			}).then(res => {
+				console.log('saveAppoint-res', res)
+				this.$router.push({
+					path: `/ghcg?id=${res.data.id}`
+				})
+			}).catch(err => {
+				console.log('saveAppoint-err', err)
+			})
+		},
 		appointPreview(){
 			appointAbout.appointPreview({
 				dutyTimeId: this.id
@@ -94,12 +120,7 @@ export default {
 		},
 		toAddPage(){
 			this.$router.push({
-				path: '/tjjzr'
-			})
-		},
-		toSuccessPage(){
-			this.$router.push({
-				path: '/ghcg'
+				path: `/tjjzr-from-ghqr?id=${this.id}`
 			})
 		}
 	}

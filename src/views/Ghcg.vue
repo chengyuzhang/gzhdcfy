@@ -29,16 +29,32 @@
 </template>
 
 <script>
+import { appointAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Ghcg',
 
 	data () {
 		return {
-
+			id: ''
 		}
 	},
+	created(){
+		this.id = this.$route.query.id
+		this.getAppointDetail()
+	},
 	methods: {
+		getAppointDetail(){
+			appointAbout.getAppointDetail({
+				id: this.id
+			}).then(res => {
+				console.log('getAppointDetail-res', res)
+				this.jzrInfo = res.data
+			}).catch(err => {
+				console.log('getAppointDetail-err', err)
+			})
+		},
 		toPage(idx){
 			if(idx == 0){
 				this.$router.push({

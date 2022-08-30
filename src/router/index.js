@@ -278,6 +278,14 @@ const routes = [
 			},
 			{
 				meta: {
+					title: '添加就诊人'
+				},
+				path: '/tjjzr-from-ghqr',
+				name: 'TjjzrFromGhqr',
+				component: () => import(/* webpackChunkName: "about" */ '../views/TjjzrFromGhqr.vue')
+			},
+			{
+				meta: {
 					title: '微信授权'
 				},
 				path: '/wxsq',

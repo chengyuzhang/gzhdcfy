@@ -30,6 +30,13 @@ export const appointAbout = {
 	async getAppointDetail (data, headers) {
 		return await get(baseURL + `/appoint/detail`, data, headers)
 	},
+	async saveAppoint (data, headers) {
+		return await post(baseURL + `/appoint/saveAppoint`, data, headers)
+	},
+	async getAppointList (data, headers) {
+		return await post(baseURL + `/appoint/pageList`, data, headers)
+	},
+
 }
 
 //就诊人相关
@@ -45,6 +52,9 @@ export const patientAbout = {
 	},
 	async getPatientDetail (data, headers) {
 		return await get(baseURL + `/patient/detail`, data, headers)
+	},
+	async getLastAppointPatient (data, headers) {
+		return await get(baseURL + `/patient/lastAppointPatient`, data, headers)
 	}
 }
 
