@@ -226,6 +226,7 @@ export default {
 			ybkhVal: '',
 			sjhVal: '',
 			yzmVal: '',
+			srFormat: '',
 			numStr: 10,
 			iBtn: true,
 		}
@@ -233,7 +234,7 @@ export default {
 	methods: {
 		addPatient(){
 			patientAbout.addPatient({
-				birthday: this.srVal,
+				birthday: this.srFormat,
 				feeNo: this.ybkhVal,
 				feeType: this.typeIndex,
 				idNo: this.zjhmVal,
@@ -274,6 +275,7 @@ export default {
 			let month = dateVal.getMonth()
 			let day = dateVal.getDate()
 			this.srVal = `${year}年${month + 1}月${day}日`
+			this.srFormat = `${year}-${month + 1}-${day}`
 			this.showDate = false
 		},
 		formatter(type, val) {

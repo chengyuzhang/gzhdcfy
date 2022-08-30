@@ -5,7 +5,7 @@
 			p.one <span>{{item.name}}</span><i v-if="item.feeType == 1" class="zf">自费</i><i v-if="item.feeType == 2" class="ybbx">医保报销</i>
 			p.two <span>门诊号码</span><i>0012376515</i>
 			p.three <span>身份证号</span><i>{{item.idNo}}</i>
-			img(src="@/assets/imgs/code.png" @click="toCodePage")
+			img(src="@/assets/imgs/code.png" @click="toCodePage(item)")
 			button(@click.self.stop="deleteFn(item)") 删除
 	.none(v-if="!isHas")
 		img(src="@/assets/imgs/none.png")
@@ -78,9 +78,9 @@ export default {
 			// on cancel
 			});
 		},
-		toCodePage(){
+		toCodePage(obj){
 			this.$router.push({
-				path: '/jzm'
+				path: `/jzm?id=${obj.id}`
 			})
 		},
 		toAddPage(){

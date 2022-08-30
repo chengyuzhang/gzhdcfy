@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { index } from '@/service/api.js'
+import { noticeAbout } from '@/service/api.js'
 
 export default {
 
@@ -50,7 +50,7 @@ export default {
 	},
 	methods: {
 		getGhxzDetails(){
-			index.getGhxzDetails({
+			noticeAbout.getGhxzDetails({
 			}).then(res => {
 				console.log('getGhxzDetails-res', res)
 				this.data = res.data

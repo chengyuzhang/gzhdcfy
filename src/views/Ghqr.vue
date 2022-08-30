@@ -52,6 +52,7 @@ export default {
 			endTime: '',
 			areaName: '',
 			officeName: '',
+			clinicName: '',
 			skill: '',
 		}
 	},
