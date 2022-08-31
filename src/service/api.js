@@ -36,7 +36,9 @@ export const appointAbout = {
 	async getAppointList (data, headers) {
 		return await get(baseURL + `/appoint/pageList`, data, headers)
 	},
-
+	async cancelAppoint (data, headers) {
+		return await get(baseURL + `/appoint/cancelAppoint`, data, headers)
+	},
 }
 
 //就诊人相关

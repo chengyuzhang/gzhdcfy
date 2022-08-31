@@ -1,45 +1,117 @@
 <template lang="pug">
 .yyjlxq-container
-	.wrap(v-if="isHas")
-		h5 已就诊
+	.wrap
+		h5 {{statusStr}}
 		ul.one
-			li(v-for="item in 8")
+			li
 				span 就诊人
-				i 星星
+				i {{patientName}}
+			li
+				span 专业/专家
+				i {{clinicName}}
+			li
+				span 就诊医院
+				i {{areaName}}
+			li
+				span 就诊科室
+				i {{officeName}}
+			li
+				span 就诊时间
+				i {{clinicDate}}<em>{{startTime}}-{{endTime}}</em>
+			li
+				span 就诊序号
+				i {{queueNo}}号
 			li
 				span 可退号时间
-				i 2022年10月10日 00:00-2022年10月10日 00:00
+				i {{canCancelTime}}
+			li
+				span 挂号费
+				i {{prePrice}}元
 		.xz
 			h5 预约须知
 			p 上午号请于11:30之前取号，下午号请于16:30之前取号，过时无法取号。次日24点之前可在微信服务号自助机挂号。
 		ul.two
 			li
 				span 订单号
-				i 2298938494303458459845
+				i {{tradeNo}}
 			li
 				span 下单时间
-				i 2022-10-10 10:43:47
-		button 取消预约
-	.none(v-if="!isHas")
-		img(src="@/assets/imgs/none.png")
-		p 暂无预约记录
-		button(@click="toXzhyPage") 去挂号
+				i {{createTime}}
+		button(v-if="statusStr == '预约成功'" @click="cancelAppoint") 取消预约
 </template>
 
 <script>
+import { appointAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Yyjlxq',
 
 	data () {
 		return {
-			isHas: true
+			id: '',
+			patientName: '',
+			clinicName: '',
+			areaName: '',
+			officeName: '',
+			startTime: '',
+			endTime: '',
+			clinicDate: '',
+			prePrice: '',
+			tradeNo: '',
+			canCancelTime: '',
+			createTime: '',
+			statusStr: '',
+			queueNo: ''
 		}
 	},
+	created(){
+		this.id = this.$route.query.id
+		this.getAppointDetail()
+	},
 	methods: {
-		toXzhyPage(){
-			this.$router.push({
-				path: '/xzhy'
+		getAppointDetail(){
+			appointAbout.getAppointDetail({
+				id: this.id
+			}).then(res => {
+				console.log('getAppointDetail-res', res)
+
+				let status = res.data.tradeStatus
+
+				if(status == 1){
+					this.statusStr = '预约成功'
+				}
+				if(status == 2){
+					this.statusStr = '已取消'
+				}
+
+				this.areaName = res.data.areaName
+				this.startTime = res.data.startTime
+				this.endTime = res.data.endTime
+				this.tradeNo = res.data.tradeNo
+				this.officeName = res.data.officeName
+				this.patientName = res.data.patientName
+				this.clinicName = res.data.clinicName
+				this.prePrice = res.data.prePrice
+				this.clinicDate = res.data.clinicDate
+				this.tradeStatus = res.data.tradeStatus
+				this.canCancelTime = res.data.canCancelTime
+				this.createTime = res.data.createTime
+				this.queueNo = res.data.queueNo
+			}).catch(err => {
+				console.log('getAppointDetail-err', err)
+			})
+		},
+		cancelAppoint(){
+			appointAbout.cancelAppoint({
+				id: this.id
+			}).then(res => {
+				console.log('cancelAppoint-res', res)
+				this.$router.replace({
+					path: '/yyjl'
+				})
+			}).catch(err => {
+				console.log('cancelAppoint-err', err)
 			})
 		}
 	}
@@ -84,6 +156,8 @@ export default {
 					font-size .28rem
 					line-height .48rem
 					color #333
+					em
+						margin-left .1rem
 			li:last-of-type
 				border none
 		.xz
@@ -129,27 +203,4 @@ export default {
 			color #4F4F4F
 			border 1px solid #aaa
 			border-radius .06rem
-	.none
-		display flex
-		flex-direction column
-		align-items center
-		height 100%
-		>img
-			margin-top 2.48rem
-			width 3.44rem
-			height auto
-			object-fit contain
-		>p
-			font-size .28rem
-			line-height .4rem
-			color #999
-		button
-			margin-top .68rem
-			width 5.5rem
-			height .84rem
-			line-height .84rem
-			font-size .28rem
-			color #fff
-			background #7C509D
-			border-radius .4rem
 </style>

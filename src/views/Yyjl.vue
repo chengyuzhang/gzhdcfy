@@ -12,9 +12,9 @@
 							p <span v-if="item.feeType == 1" class="zf">自费</span><span v-if="item.feeType == 2" class="ybbx">医保报销</span>
 					img(v-if="activeIndex == index" src="@/assets/imgs/ok.png")
 					img(v-else src="@/assets/imgs/ok-space.png")
-	.ul
+	.ul(v-if="appointList.length")
 		<van-list v-model="loading" :finished="finished" :immediate-check="false" finished-text="没有更多了" @load="onLoad" >
-			.li(v-for="(item, index) in appointList" @click="toPage")
+			.li(v-for="(item, index) in appointList" @click="toPage(item)")
 				.top
 					.l
 						h6 {{item.clinicName}}
@@ -25,9 +25,12 @@
 					li <span>就诊时间</span><i>{{item.clinicDate}}<em>{{item.startTime}}-{{item.endTime}}</em></i>
 					li <span>就诊序号</span><i>{{item.queueNo}}</i>
 					li <span>挂号费</span><i>{{item.prePrice}}</i>
-				button(@click.self.stop="cancelOrder") 取消预约
+				button(v-if="item.statusStr == '预约成功'" @click.self.stop="cancelOrder(item)") 取消预约
 		</van-list>
-
+	.none(v-else)
+		img(src="@/assets/imgs/none.png")
+		p 暂无预约记录
+		button(@click="toXzhyPage") 去挂号
 </template>
 
 <script>
@@ -117,6 +120,16 @@ export default {
 				console.log('getAppointList-err', err)
 			})
 		},
+		cancelAppoint(obj){
+			appointAbout.cancelAppoint({
+				id: obj.id
+			}).then(res => {
+				console.log('cancelAppoint-res', res)
+				this.getAppointList()
+			}).catch(err => {
+				console.log('cancelAppoint-err', err)
+			})
+		},
 		getItem(idx){
 			this.activeIndex = idx
 			this.showList = false
@@ -128,12 +141,12 @@ export default {
 			this.pageNo = 1
 			// this.getAppointList()
 		},
-		toPage(){
+		toPage(obj){
 			this.$router.push({
-				path: '/yyjlxq'
+				path: `/yyjlxq?id=${obj.id}`
 			})
 		},
-		cancelOrder(){
+		cancelOrder(obj){
 			this.showDialog = true
 			Dialog.confirm({
 				title: '确认要取消预约？',
@@ -143,18 +156,19 @@ export default {
 				confirmButtonColor: '#576B95'
 			})
 			.then(() => {
-			// on confirm
+				this.cancelAppoint(obj)
 			})
 			.catch(() => {
 			// on cancel
-			});
+			})
+		},
+		toXzhyPage(){
+			this.$router.push({
+				path: '/xzhy'
+			})
 		}
 	},
 	mounted(){
-		Toast({
-			message: '我是展示内容',
-			duration: 2000
-		})
 	}
 }
 </script>
@@ -303,4 +317,27 @@ export default {
 				color #888
 				border-radius .06rem
 				border 1px solid #979797
+	.none
+		display flex
+		flex-direction column
+		align-items center
+		height 100%
+		>img
+			margin-top 2.48rem
+			width 3.44rem
+			height auto
+			object-fit contain
+		>p
+			font-size .28rem
+			line-height .4rem
+			color #999
+		button
+			margin-top .68rem
+			width 5.5rem
+			height .84rem
+			line-height .84rem
+			font-size .28rem
+			color #fff
+			background #7C509D
+			border-radius .4rem
 </style>
