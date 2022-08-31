@@ -115,6 +115,11 @@ export const doctotAbout = {
 
 }
 
+export const tool = {
+	async smsCode (data, headers) {
+		return await get(baseURL + `/tool/smsCode`, data, headers)
+	},
+}
 export const login = {
 	async getCode (data, headers) {
 		return await get(baseURL + `/wxlogin/login`, data, headers)
