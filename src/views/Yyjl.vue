@@ -125,6 +125,11 @@ export default {
 				id: obj.id
 			}).then(res => {
 				console.log('cancelAppoint-res', res)
+				
+				this.appointList = []
+				this.finished = false
+				this.loading = false
+				this.pageNo = 1
 				this.getAppointList()
 			}).catch(err => {
 				console.log('cancelAppoint-err', err)
@@ -139,7 +144,7 @@ export default {
 			this.finished = false
 			this.loading = false
 			this.pageNo = 1
-			// this.getAppointList()
+			this.getAppointList()
 		},
 		toPage(obj){
 			this.$router.push({
