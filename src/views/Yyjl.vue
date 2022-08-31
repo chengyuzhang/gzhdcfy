@@ -164,12 +164,11 @@ export default {
 				this.cancelAppoint(obj)
 			})
 			.catch(() => {
-			// on cancel
 			})
 		},
 		toXzhyPage(){
-			this.$router.push({
-				path: '/xzhy'
+			this.$router.replace({
+				path: '/'
 			})
 		}
 	},

@@ -33,11 +33,11 @@ export default {
 	},
 	methods: {
 		toPage(item){
+			localStorage.setItem('jzrInfo', JSON.stringify(item))
+
 			this.$router.push({
 				path: `/ghqr?id=${this.id}`
 			})
-
-			localStorage.setItem('jzrInfo', JSON.stringify(item))
 		},
 		getPatientList(){
 			patientAbout.getPatientList({

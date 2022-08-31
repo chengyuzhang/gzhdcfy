@@ -124,4 +124,7 @@ export const login = {
 	async getCode (data, headers) {
 		return await get(baseURL + `/wxlogin/login`, data, headers)
 	},
+	async getUserInfos (data, headers) {
+		return await get(baseURL + `/user/detail`, data, headers)
+	},
 }

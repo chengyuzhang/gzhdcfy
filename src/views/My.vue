@@ -1,8 +1,8 @@
 <template lang="pug">
 .my-container
 	.one
-		img(src="@/assets/imgs/people.png")
-		p 登录/注册
+		img(:src="headImgurl")
+		p {{nickName}}
 	.two
 		.top
 			.l
@@ -41,7 +41,7 @@
 
 <script>
 import TabBar from '@/components/TabBar'
-import { patientAbout } from '@/service/api.js'
+import { patientAbout, login } from '@/service/api.js'
 
 export default {
 
@@ -54,17 +54,30 @@ export default {
 	data () {
 		return {
 			showTabBar: true,
+			nickName: '',
+			headImgurl: '',
 			peopleList: [
 			]
 		}
 	},
 	created(){
 		this.getPatientList()
+		this.getUserInfos()
 	},
 	methods: {
 		toCodePage(obj){
 			this.$router.push({
 				path: `/jzm?id=${obj.id}`
+			})
+		},
+		getUserInfos(){
+			login.getUserInfos({
+			}).then(res => {
+				console.log('getUserInfos-res', res)
+				this.nickName = res.data.nickName
+				this.headImgurl = res.data.headImgurl
+			}).catch(err => {
+				console.log('getUserInfos-err', err)
 			})
 		},
 		getPatientList(){
