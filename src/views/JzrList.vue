@@ -35,7 +35,7 @@ export default {
 		toPage(item){
 			localStorage.setItem('jzrInfo', JSON.stringify(item))
 
-			this.$router.push({
+			this.$router.replace({
 				path: `/ghqr?id=${this.id}`
 			})
 		},

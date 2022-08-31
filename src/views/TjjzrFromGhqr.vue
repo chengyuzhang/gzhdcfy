@@ -252,7 +252,7 @@ export default {
 				validCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)
-				this.$router.push({
+				this.$router.replace({
 					path: `/ghqr?id=${this.id}`
 				})
 			}).catch(err => {

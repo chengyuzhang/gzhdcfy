@@ -86,7 +86,7 @@ export default {
 				patientId: this.jzrInfo.id
 			}).then(res => {
 				console.log('saveAppoint-res', res)
-				this.$router.push({
+				this.$router.replace({
 					path: `/ghcg?id=${res.data.id}`
 				})
 			}).catch(err => {
@@ -111,7 +111,7 @@ export default {
 			})
 		},
 		toChange(){
-			this.$router.push({
+			this.$router.replace({
 				path: `/jzr-list?id=${this.id}`
 			})
 		},
@@ -121,7 +121,7 @@ export default {
 			})
 		},
 		toAddPage(){
-			this.$router.push({
+			this.$router.replace({
 				path: `/tjjzr-from-ghqr?id=${this.id}`
 			})
 		}
