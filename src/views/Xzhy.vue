@@ -78,7 +78,7 @@
 			.con
 				h6 选择就诊时间
 				ul
-					li(v-for="(item, index) in timeList" @click="getTimeZone(index)" :class="{'active': timeIndex == index}")
+					li(v-for="(item, index) in timeList" @click="getTimeZone(index, item)" :class="{'active': timeIndex == index}")
 						img(v-if="timeIndex != index" src="@/assets/imgs/space.png")
 						img(v-if="timeIndex == index" src="@/assets/imgs/dot.png")
 						p {{item.startTime}}-{{item.endTime}}
@@ -284,10 +284,11 @@ export default {
 				path: `/ksjs?id=${this.officeId}`
 			})
 		},
-		getTimeZone(idx){
+		getTimeZone(idx, obj){
 			this.timeIndex = idx
+
 			this.$router.push({
-				path: '/ghqr'
+				path: `/ghqr?id=${obj.id}`
 			})
 		},
 		formatDate(date) {
