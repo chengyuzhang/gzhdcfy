@@ -13,7 +13,7 @@
 			p {{intro}}
 		.bottom(v-if="doctorList.length")
 			.bar
-				span 科室医生（6个）
+				span 科室医生（{{total}}个）
 				p(@click="toDoctorList") 全部医生 <img src="@/assets/imgs/r.png" alt="">
 			ul
 				li(v-for="(item, index) in doctorList" @click="toDoctorDetail(item)")
@@ -35,8 +35,8 @@ export default {
 			name: '',
 			skill: '',
 			intro: '',
-			doctorList: []
-
+			doctorList: [],
+			total: ''
 		}
 	},
 	created(){
@@ -66,6 +66,8 @@ export default {
 			}).then(res => {
 				console.log('getDoctorList-res', res)
 				this.doctorList = res.data.records
+				this.total = res.data.total
+				
 			}).catch(err => {
 				console.log('getDoctorList-err', err)
 			})

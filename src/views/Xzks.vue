@@ -129,6 +129,10 @@ export default {
 				console.log('getOfficeTree-res', res)
 				this.sideTabs = res.data
 				this.childrenList = this.sideTabs[0].children
+
+				setTimeout(() => {
+					this.setElHeight()
+				}, 500)
 			}).catch(err => {
 				console.log('getOfficeTree-err', err)
 			})
@@ -144,7 +148,6 @@ export default {
 			let ol = document.querySelector('.side-tab ol')
 			let ul = document.querySelector('.side-tab ul')
 			let top = util.getElRec(el).top
-
 			ol.style.height = pageH - top + 'px'
 			ul.style.height = pageH - top + 'px'
 		},
@@ -161,7 +164,6 @@ export default {
 		}
 	},
 	mounted(){
-		this.setElHeight()
 	},
 	watch: {
 		$route(to, from){
@@ -179,7 +181,7 @@ export default {
 	height 100%
 	background #f8f8f8
 	overflow hidden
-	overflow-y auto
+	// overflow-y auto
 	>img
 		width 100%
 		height 2.66rem

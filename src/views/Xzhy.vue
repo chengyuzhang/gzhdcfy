@@ -123,7 +123,6 @@ export default {
 			areaName: '',
 			officeName: '',
 			officeId: 1,
-			showCalendar: false,
 			remainTime: 0,
 			targetDay: '',
 			// activeIndex: 3,
@@ -150,52 +149,55 @@ export default {
 	async created(){
 		this.officeId = this.$route.query.id
 		await this.getDutyDate()
-		console.log('this.dateList', this.dateList)
-		let orderDate = this.dateList.map((item, index) => {
-			let splitDate = item.date.split('-')
-			item.year = splitDate[0]
-			item.month = splitDate[1]
-			item.day = splitDate[2]
 
-			switch(item.status){
-				case 2:
-					item.statusStr = '有号'
-				break;
-				case 1:
-					item.statusStr = '无号'
-				break;
-				case 3:
-					item.statusStr = '约满'
-				break;
-				case 4:
-					item.statusStr = '即将放号'
-				break;
-			}
-
-			let currentDate = new Date()
-			let year = currentDate.getFullYear()
-			let month = currentDate.getMonth() + 1
-			let day = currentDate.getDate()
-
-			if(year == splitDate[0] && month == splitDate[1] && day == splitDate[2]) {
-				item.dayStr = '今天'
-			}
-
-			if((month + 1) == splitDate[1] && 1 == splitDate[2]) {
-				item.dayStr = `${splitDate[1]}月`
-			}
-
-			if((month + 2) == splitDate[1] && 1 == splitDate[2]) {
-				item.dayStr = `${splitDate[1]}月`
-			}
-
-			return item
-		})
-
-		this.orderDate = orderDate
-		this.createCalendar(orderDate[0].date, orderDate[orderDate.length-1].date)
+		this.formatOrderDate()
 	},
 	methods: {
+		formatOrderDate(){
+			let orderDate = this.dateList.map((item, index) => {
+				let splitDate = item.date.split('-')
+				item.year = splitDate[0]
+				item.month = splitDate[1]
+				item.day = splitDate[2]
+
+				switch(item.status){
+					case 2:
+						item.statusStr = '有号'
+					break;
+					case 1:
+						item.statusStr = '无号'
+					break;
+					case 3:
+						item.statusStr = '约满'
+					break;
+					case 4:
+						item.statusStr = '即将放号'
+					break;
+				}
+
+				let currentDate = new Date()
+				let year = currentDate.getFullYear()
+				let month = currentDate.getMonth() + 1
+				let day = currentDate.getDate()
+
+				if(year == splitDate[0] && month == splitDate[1] && day == splitDate[2]) {
+					item.dayStr = '今天'
+				}
+
+				if((month + 1) == splitDate[1] && 1 == splitDate[2]) {
+					item.dayStr = `${splitDate[1]}月`
+				}
+
+				if((month + 2) == splitDate[1] && 1 == splitDate[2]) {
+					item.dayStr = `${splitDate[1]}月`
+				}
+
+				return item
+			})
+
+			this.orderDate = orderDate
+			this.createCalendar(orderDate[0].date, orderDate[orderDate.length-1].date)
+		},
 		orderFn(obj){
 			this.dutyId = obj.id
 			this.getOfficeDutyTimes()
@@ -322,10 +324,6 @@ export default {
 			}
 
 			this.officeDutyDay()
-
-			// if(this.tabStatus == 2){
-			// 	this.officeDutyDay()
-			// }
 		},
 		calcRemainTime(targetDay){
 			let tDate = new Date(targetDay).getTime()
@@ -432,11 +430,11 @@ export default {
 					border-top 1px solid #F8F8F8
 					.l
 						h6
-							margin-bottom .18rem
 							font-size .28rem
 							color #333
 							line-height .4rem
 						p
+							margin-top .18rem
 							width 4rem
 							font-size .24rem
 							color #888
