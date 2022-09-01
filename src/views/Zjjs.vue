@@ -27,11 +27,9 @@ name: 'ksysList',
 	methods: {
 		getDoctorList(){
 			doctotAbout.getDoctorList({
-				pageNo: 1,
-				pageSize: 10
 			}).then(res => {
 				console.log('getDoctorList-res', res)
-				this.doctorList = res.data.records
+				this.doctorList = res.data
 			}).catch(err => {
 				console.log('getDoctorList-err', err)
 			})

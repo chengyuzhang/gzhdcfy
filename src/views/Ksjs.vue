@@ -16,7 +16,7 @@
 				span 科室医生（{{total}}个）
 				p(@click="toDoctorList") 全部医生 <img src="@/assets/imgs/r.png" alt="">
 			ul
-				li(v-for="(item, index) in doctorList" @click="toDoctorDetail(item)")
+				li(v-for="(item, index) in doctorList" v-if="index < 8" @click="toDoctorDetail(item)")
 					img(:src="item.headPic")
 					h6 {{item.name}}
 					p {{item.academic}}
@@ -60,26 +60,24 @@ export default {
 		},
 		getDoctorList(){
 			doctotAbout.getDoctorList({
-				officeId: this.officeId,
-				pageNo: 1,
-				pageSize: 8
+				officeId: this.officeId
 			}).then(res => {
 				console.log('getDoctorList-res', res)
-				this.doctorList = res.data.records
-				this.total = res.data.total
-				
+				this.doctorList = res.data
+				this.total = res.data.length
+
 			}).catch(err => {
 				console.log('getDoctorList-err', err)
 			})
 		},
 		toPage(){
-			this.$router.push({
-				path: '/xzhy'
+			this.$router.replace({
+				path: '/'
 			})
 		},
 		toDoctorList(){
 			this.$router.push({
-				path: '/ksys'
+				path: `ksys?id=${this.officeId}`
 			})
 		},
 		toDoctorDetail(obj){

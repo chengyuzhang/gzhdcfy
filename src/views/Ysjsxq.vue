@@ -26,7 +26,7 @@ export default {
 
 	data () {
 		return {
-			id: 0,
+			id: '',
 			academic: '',
 			name: '',
 			areaName: '',
@@ -59,8 +59,8 @@ export default {
 			})
 		},
 		toPage(){
-			this.$router.push({
-				path: '/xzhy'
+			this.$router.replace({
+				path: '/'
 			})
 		}
 	}

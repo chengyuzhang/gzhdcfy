@@ -1,28 +1,43 @@
 <template lang="pug">
 .ksys-container
 	ul
-		li(v-for="item in 10" @click="toPage()")
+		li(v-for="(item, index) in doctorList" @click="toPage(item)")
 			img(src="@/assets/imgs/people.png")
 			.r
-				h5 张晓红<i>主任医师</i>
-				h6 东城区妇幼保健院 儿内科
-				p 擅长：新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗新生儿疾病、小儿呼吸系统疾病、中西医结合、神经系统疾病、脑发育等疾病的诊疗
+				h5 {{item.name}}<i>{{item.academic}}</i>
+				h6 {{item.areaName}} {{item.officeName}}
+				p {{item.skill}}
 </template>
 
 <script>
+import { doctotAbout } from '@/service/api.js'
+
 export default {
 
 name: 'ksysList',
 
 	data () {
 		return {
-
+			doctorList: []
 		}
 	},
+	created(){
+		this.getDoctorList()
+	},
 	methods: {
-		toPage(){
+		getDoctorList(){
+			doctotAbout.getDoctorList({
+				officeId: this.officeId
+			}).then(res => {
+				console.log('getDoctorList-res', res)
+				this.doctorList = res.data
+			}).catch(err => {
+				console.log('getDoctorList-err', err)
+			})
+		},
+		toPage(obj){
 			this.$router.push({
-				path: '/ysjsxq'
+				path: `/ysjsxq?id=${obj.id}`
 			})
 		}
 	}
