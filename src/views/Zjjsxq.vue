@@ -26,7 +26,7 @@ export default {
 
 	data () {
 		return {
-			id: 0,
+			id: '',
 			academic: '',
 			name: '',
 			areaName: '',
@@ -71,9 +71,9 @@ export default {
 				console.log('getDoctorDetail-err', err)
 			})
 		},
-		toPage(){
+		toPage(obj){
 			this.$router.push({
-				path: '/xzhy'
+				path: `/xzhy?id=${obj.id}`
 			})
 		}
 	}

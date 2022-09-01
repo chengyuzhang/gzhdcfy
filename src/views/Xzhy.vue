@@ -136,8 +136,6 @@ export default {
 			timeIndex: 0,
 			date: '',
 			showCalendar: false,
-			minDate: new Date(2022, 9, 1),
-			maxDate: new Date(2022, 10, 31),
 			tabIndex: 0,
 			tabStatus: 1,
 			dateList: [
@@ -250,7 +248,7 @@ export default {
 		},
 		getDate(idx, item){
 			// if(item.status != 2) return
-			this.activeIndex = idx
+			// this.activeIndex = idx
 			console.log(item)
 			this.showCalendar = false
 			this.tabIndex = idx

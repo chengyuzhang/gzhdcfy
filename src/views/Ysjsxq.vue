@@ -33,7 +33,8 @@ export default {
 			skill: '',
 			intro: '',
 			officeName: '',
-			headPic: ''
+			headPic: '',
+			officeId: ''
 		}
 	},
 	created(){
@@ -53,6 +54,7 @@ export default {
 				this.intro = res.data.intro
 				this.officeName = res.data.officeName
 				this.headPic = res.data.headPic
+				this.officeId = res.data.officeId
 
 			}).catch(err => {
 				console.log('getDoctorDetail-err', err)
@@ -60,7 +62,7 @@ export default {
 		},
 		toPage(){
 			this.$router.replace({
-				path: '/'
+				path: `/xzhy?id=${this.officeId}`
 			})
 		}
 	}
