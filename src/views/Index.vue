@@ -303,7 +303,6 @@ export default {
 					path: `/xzks?id=${obj.id}`
 				})
 			}
-
 		}
 	}
 }

@@ -131,65 +131,13 @@ export default {
 			targetDay: '',
 			// activeIndex: 3,
 			orderDate: [
-				{
-					date: '2022-8-5',
-					status: 0
-				},
-				{
-					date: '2022-8-6',
-					status: 2
-				},
-				{
-					date: '2022-8-7',
-					status: 0
-				},
-				{
-					date: '2022-8-8',
-					status: 1
-				},
-				{
-					date: '2022-8-9',
-					status: 3
-				},
-				{
-					date: '2022-8-10',
-					status: 0
-				},
-				{
-					date: '2022-8-11',
-					status: 0
-				},
-				{
-					date: '2022-8-12',
-					status: 0
-				},
-				{
-					date: '2022-8-13',
-					status: 0
-				},
-				{
-					date: '2022-8-14',
-					status: 0
-				},
-				{
-					date: '2022-9-1',
-					status: 1
-				},
-				{
-					date: '2022-9-2',
-					status: 3
-				},
-				{
-					date: '2022-10-1',
-					status: 3
-				},
 			],
 			year: '',
 			month: '',
 			daysNum: 0,
 			weekDay: 0,
 			timeShow: false,
-			timeIndex: 0,
+			timeIndex: '999',
 			date: '',
 			showCalendar: false,
 			minDate: new Date(2022, 9, 1),
@@ -197,109 +145,8 @@ export default {
 			tabIndex: 0,
 			tabStatus: 1,
 			dateList: [
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '1'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '2'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '3'
-				},
-				{
-					title: '周五',
-					str: '07-05',
-					status: '4'
-				},
 			],
 			timeList: [
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
-				{
-					time: '8:30-9:00'
-				},
 			]
 		}
 	},
