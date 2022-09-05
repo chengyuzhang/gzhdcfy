@@ -225,12 +225,6 @@ export default {
 						img.img1
 							width .84rem
 							height .84rem
-						img.img2
-							left 50%
-							bottom 0
-							transform translateX(-50%)
-							width .54rem
-							height .26rem
 						>p
 							position absolute
 							left 50%
