@@ -36,19 +36,20 @@ export default {
 		},
 		initMap(){
 			let _this = this
-			AMapLoader.load({
-				key:"9881f54fcf6190e4adf3b4bd864b940c",             // 申请好的Web端开发者Key，首次调用 load 时必填
-				version:"2.0",      // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-				plugins:[''],       // 需要使用的的插件列表，如比例尺'AMap.Scale'等
-			}).then((AMap)=>{
-				_this.map = new AMap.Map("container",{  //设置地图容器id
-					// viewMode:"3D",    //是否为3D地图模式
-					// zoom:10,           //初始化地图级别
-					resizeEnable: true
-				})
 
-				//获取定位信息
-				AMap.plugin('AMap.Geolocation', function() {
+			return new Promise((resolve, reject) => {
+				AMapLoader.load({
+					key:"9881f54fcf6190e4adf3b4bd864b940c",             // 申请好的Web端开发者Key，首次调用 load 时必填
+					version:"2.0",      // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+					plugins:['AMap.Geolocation'],       // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+				}).then((AMap)=>{
+					_this.map = new AMap.Map("container",{  //设置地图容器id
+						viewMode:"3D",    //是否为3D地图模式
+						zoom:10,           //初始化地图级别
+						resizeEnable: true
+					})
+
+					//获取定位信息
 					var geolocation = new AMap.Geolocation({
 						// 是否使用高精度定位，默认：true
 						enableHighAccuracy: true,
@@ -65,10 +66,12 @@ export default {
 					geolocation.getCurrentPosition(function(status,result){
 						if(status=='complete'){
 							onComplete(result)
+							resolve()
 						}else{
+							reject()
 							onError(result)
 						}
-					});
+					})
 
 					function onComplete (data) {
 						console.log('data', data)
@@ -79,19 +82,23 @@ export default {
 						console.log('err', err)
 						// 定位出错
 					}
+
+
+					// location.href = `https://uri.amap.com/navigation?from=116.478346,39.997361,startpoint&to=116.3246,39.966577,endpoint&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=1`
+
+
+				}).catch(e=>{
+					console.log(e);
 				})
-
-
-				// location.href = `https://uri.amap.com/navigation?from=116.478346,39.997361,startpoint&to=116.3246,39.966577,endpoint&via=116.402796,39.936915,midwaypoint&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0`
-
-			}).catch(e=>{
-				console.log(e);
 			})
+
 		},
 	},
-	mounted(){
+	async mounted(){
 		//DOM初始化完成进行地图初始化
-		this.initMap()
+		console.log(111)
+		await this.initMap()
+		console.log(222)
 	}
 }
 </script>
