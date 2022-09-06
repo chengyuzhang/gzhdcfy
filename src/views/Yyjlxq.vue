@@ -37,11 +37,12 @@
 			li
 				span 下单时间
 				i {{createTime}}
-		button(v-if="statusStr == '预约成功'" @click="cancelAppoint") 取消预约
+		button(v-if="statusStr == '预约成功'" @click="cancelOrder") 取消预约
 </template>
 
 <script>
 import { appointAbout } from '@/service/api.js'
+import { Dialog, Toast } from 'vant'
 
 export default {
 
@@ -102,7 +103,21 @@ export default {
 				console.log('getAppointDetail-err', err)
 			})
 		},
-		cancelAppoint(){
+		cancelOrder(){
+			Dialog.confirm({
+				title: '确认要取消预约？',
+				message: `您正在取消“${this.officeName}${this.clinicName}”的预约`,
+				confirmButtonText: '取消预约',
+				cancelButtonText: '不取消',
+				confirmButtonColor: '#576B95'
+			})
+			.then(() => {
+				this.cancelAppoint()
+			})
+			.catch(() => {
+			})
+		},
+		cancelAppoint(obj){
 			appointAbout.cancelAppoint({
 				id: this.id
 			}).then(res => {

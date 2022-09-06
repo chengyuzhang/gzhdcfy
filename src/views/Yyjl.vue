@@ -47,7 +47,7 @@ export default {
 			finished: false,
 			activeIndex: 0,
 			showList: false,
-			showDialog: false,
+			// showDialog: false,
 			patientId: '',
 			jzrList: [],
 			appointList: [],
@@ -152,10 +152,10 @@ export default {
 			})
 		},
 		cancelOrder(obj){
-			this.showDialog = true
+			// this.showDialog = true
 			Dialog.confirm({
 				title: '确认要取消预约？',
-				message: '您正在取消“儿内科主任医师”的预约 ',
+				message: `您正在取消“${obj.officeName}${obj.clinicName}”的预约`,
 				confirmButtonText: '取消预约',
 				cancelButtonText: '不取消',
 				confirmButtonColor: '#576B95'
