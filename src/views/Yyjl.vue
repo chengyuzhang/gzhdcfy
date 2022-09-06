@@ -47,7 +47,6 @@ export default {
 			finished: false,
 			activeIndex: 0,
 			showList: false,
-			// showDialog: false,
 			patientId: '',
 			jzrList: [],
 			appointList: [],
@@ -152,7 +151,6 @@ export default {
 			})
 		},
 		cancelOrder(obj){
-			// this.showDialog = true
 			Dialog.confirm({
 				title: '确认要取消预约？',
 				message: `您正在取消“${obj.officeName}${obj.clinicName}”的预约`,
