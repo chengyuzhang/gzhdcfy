@@ -104,7 +104,7 @@ export default {
 			console.log('obj', obj)
 			// location.href = `https://uri.amap.com/navigation?from=[${this.curLocation[0]}, ${this.curLocation[1]}],startpoint&to=${obj.latitude},${obj.longitude},endpoint&mode=car&policy=0&src=mypage&coordinate=gaode&callnative=1`
 
-			location.href = `https://uri.amap.com/navigation?from=116.365942,39.908516,startpoint&to=${obj.latitude},${obj.longitude},endpoint&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=1`
+			location.href = `https://uri.amap.com/navigation?from=116.365942,39.908516,我的位置&to=${obj.longitude},${obj.latitude},${obj.name}&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=1`
 		}
 	},
 	mounted(){
