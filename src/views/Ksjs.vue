@@ -71,9 +71,10 @@ export default {
 			})
 		},
 		toPage(){
-			this.$router.replace({
-				path: '/'
-			})
+			// this.$router.replace({
+			// 	path: '/'
+			// })
+			this.$router.go(-1)
 		},
 		toDoctorList(){
 			this.$router.push({
