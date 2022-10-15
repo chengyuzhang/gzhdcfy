@@ -1,30 +1,60 @@
 <template lang="pug">
 .jcjgxq-container
-	h5 东城妇幼保健院(南区)
+	//- h5 东城妇幼保健院(南区)
 	.top
 		ul
-			li(v-for="item in 3")
+			li
 				span 姓名
-				i 小星星
+				i {{brxm}}
+			li
+				span 检测名称
+				i {{jymc}}
+			li
+				span 时间
+				i {{jyrq}}
 	ul
 		li.bar <span>项目</span><i>结果</i><em>单位</em><b>参考范围</b>
-		li <span>快速C-反应蛋白</span><i><8.0</i><em>mg/L</em><b><8</b>
-		li <span>血清淀粉样蛋白A</span><i><5.0</i><em>mg/L</em><b><10</b>
-		li <span>白细胞</span><i>9.16</i><em>10^9/L</em><b>4.9-12.7</b>
-		li <span>红细胞</span><i>9.16</i><em>10^12/L</em><b>4.9-12.7</b>
+		li(v-for="(item, index) in mxList") <span>{{item.xmmc}}</span><i>{{item.xmjg}}</i><em>{{item.xmdw}}</em><b v-if="item.ckdz && item.ckgz">{{item.ckdz}}-{{item.ckgz}}</b><b v-else-if="item.ckdz && !item.ckgz">{{item.ckdz}}</b><b v-else="!item.ckdz && item.ckgz">{{item.ckgz}}</b>
 	.btn
 		button 下载PDF
 </template>
 
 <script>
+import { patientAbout, bgAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Jcjgxq',
 
 	data () {
 		return {
-
+			sampleno: '',
+			brxm: '',
+			jymc: '',
+			jyrq: '',
+			mxList: []
 		}
+	},
+	created(){
+		this.sampleno = this.$route.query.sampleno
+		this.getJybgDetail()
+	},
+	methods: {
+		getJybgDetail(){
+			bgAbout.getJybgDetail({
+				sampleno: this.sampleno
+				// patientId: 33
+			}).then(res => {
+				console.log('getJybgDetail-res', res)
+				let data = res.data
+				this.brxm = data.brxm
+				this.jymc = data.jymc
+				this.jyrq = data.jyrq
+				this.mxList = data.mxList
+			}).catch(err => {
+				console.log('getJybgDetail-err'. err)
+			})
+		},
 	}
 }
 </script>
@@ -63,6 +93,8 @@ export default {
 		background #fff
 		overflow hidden
 		li
+			display flex
+			align-items center
 			margin-bottom .38rem
 			padding 0 .32rem
 			span,i,em,b
@@ -80,6 +112,7 @@ export default {
 				width .6rem
 			b
 				width 1.2rem
+				text-align end
 		li.bar
 			span,i,em,b
 				font-size .3rem

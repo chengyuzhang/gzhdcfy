@@ -9,7 +9,7 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 Vue.use(Vant)
 import VConsole from 'vconsole'
-const vConsole = new VConsole()
+// const vConsole = new VConsole()
 Vue.config.productionTip = false
 let vue = new Vue({
 	router,

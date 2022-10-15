@@ -115,6 +115,29 @@ export const doctotAbout = {
 
 }
 
+//就诊记录相关
+export const jzjlAbout = {
+	async getJzjlList (data, headers) {
+		return await get(baseURL + `/mz/mzxxList`, data, headers)
+	},
+	async getJzjlDetail (data, headers) {
+		return await get(baseURL + `/mz/mzmxList`, data, headers)
+	},
+
+}
+
+//检查/检验报告
+export const bgAbout = {
+	async getjybgList (data, headers) {
+		return await get(baseURL + `/jy/jybgList`, data, headers)
+	},
+	async getJybgDetail (data, headers) {
+		return await get(baseURL + `/jy/jymxList`, data, headers)
+	},
+
+}
+
+
 export const tool = {
 	async smsCode (data, headers) {
 		return await get(baseURL + `/tool/smsCode`, data, headers)

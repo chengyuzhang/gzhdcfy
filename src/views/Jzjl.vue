@@ -1,23 +1,23 @@
 <template lang="pug">
 .jzjl-container
 	.top
-		p(@click="showList = true") <i>就诊人</i><span>星星</span><img src="@/assets/imgs/arrow-down.png" alt="">
+		p(@click="showList = true" v-if="jzrInfo") <i>就诊人</i><span>{{jzrInfo.name}}</span><img src="@/assets/imgs/arrow-down.png" alt="">
 		transition(name="fade")
 			ul(v-if="showList")
-				li(v-for="(item, index) in 4" @click="getItem(index)")
+				li(v-for="(item, index) in jzrList" @click="getItem(index)")
 					.l
-						span 星星
+						span {{item.name}}
 						div
-							h6 1578 944 9888
-							p <i>北京社保卡</i><span class="ybbx">医保报销</span><span class="zf">自费</span>
+							h6 {{item.feeNo}}
+							p <span v-if="item.feeType == 1" class="zf">自费</span><span v-if="item.feeType == 2" class="ybbx">医保报销</span>
 					img(v-if="activeIndex == index" src="@/assets/imgs/ok.png")
 					img(v-else src="@/assets/imgs/ok-space.png")
 	ul(v-if="items.length")
-		li(v-for="(item, index) in items" @click="toPage(index)")
+		li(v-for="(item, index) in items" @click="toPage(item)")
 			.l
-				h6 张英超
-				p <i>门诊</i><span>2022-05-07</span>
-			p 咳嗽、呼吸道感染
+				h6 {{item.ysmc}}
+				p <i>{{item.ksmc}}</i><span>{{item.jzrq}}</span>
+			p {{item.jbmc}}
 	.con(v-if="!items.length")
 		img(src="@/assets/imgs/none.png")
 		p 暂无就诊记录
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { appointAbout } from '@/service/api.js'
+import { patientAbout, jzjlAbout } from '@/service/api.js'
 
 export default {
 
@@ -40,19 +40,64 @@ export default {
 				{},
 				{},
 				{},
-			]
+			],
+			jzrList: [],
+			jzrInfo: null
 		}
 	},
-	created(){
+	async created(){
+		await this.getLastAppointPatient()
+		this.getPatientList()
+		this.getJzjlList()
 	},
 	methods: {
+		async getLastAppointPatient(){
+			await patientAbout.getLastAppointPatient({
+			}).then(res => {
+				console.log('getLastAppointPatient-res', res)
+				if(res.data){
+					this.jzrInfo = res.data
+				}
+			}).catch(err => {
+				console.log('getLastAppointPatient-err', err)
+			})
+		},
+		getPatientList(){
+			patientAbout.getPatientList({
+			}).then(res => {
+				console.log('getPatientList-res', res)
+				this.jzrList = res.data
+
+				this.jzrList.forEach((item, index) => {
+					if(item.name == this.jzrInfo.name){
+						this.activeIndex = index
+					}
+				})
+			}).catch(err => {
+				console.log('getPatientList-err', err)
+			})
+		},
 		getItem(idx){
 			this.activeIndex = idx
 			this.showList = false
+			this.jzrInfo = this.jzrList[idx]
+			this.items = []
+			this.getJzjlList()
 		},
-		toPage(idx){
+		getJzjlList(){
+			jzjlAbout.getJzjlList({
+				patientId: this.jzrInfo.id
+				// patientId: 33
+			}).then(res => {
+				console.log('getJzjlList-res', res)
+				this.items = res.data
+			}).catch(err => {
+				console.log('getJzjlList-err'. err)
+			})
+		},
+		toPage(obj){
 			this.$router.push({
-				path: '/jzjlxq'
+				path: `/jzjlxq?jzxh=${obj.jzxh}`
 			})
 		},
 		toXzhyPage(){

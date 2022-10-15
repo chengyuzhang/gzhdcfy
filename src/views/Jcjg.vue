@@ -1,15 +1,15 @@
 <template lang="pug">
 .jcjg-container
 	.top
-		p(@click="showList = true") <i>就诊人</i><span>星星</span><img src="@/assets/imgs/arrow-down.png" alt="">
+		p(@click="showList = true" v-if="jzrInfo") <i>就诊人</i><span>{{jzrInfo.name}}</span><img src="@/assets/imgs/arrow-down.png" alt="">
 		transition(name="fade")
 			ul(v-if="showList")
-				li(v-for="(item, index) in 4" @click="getItem(index)")
+				li(v-for="(item, index) in jzrList" @click="getItem(index)")
 					.l
-						span 星星
+						span {{item.name}}
 						div
-							h6 1578 944 9888
-							p <i>北京社保卡</i><span class="ybbx">医保报销</span><span class="zf">自费</span>
+							h6 {{item.feeNo}}
+							p <span v-if="item.feeType == 1" class="zf">自费</span><span v-if="item.feeType == 2" class="ybbx">医保报销</span>
 					img(v-if="activeIndex == index" src="@/assets/imgs/ok.png")
 					img(v-else src="@/assets/imgs/ok-space.png")
 	.tab
@@ -17,23 +17,25 @@
 			li(:class="{'active': tabIndex == 0}" @click="changeTab(0)") <i>检验报告</i><span></span>
 			li(:class="{'active': tabIndex == 1}" @click="changeTab(1)") <i>检查报告</i><span></span>
 		ul(v-if="tabIndex == 0")
-			li(v-for="item in list1" @click="toPage")
+			li(v-for="item in jybgList" @click="toPage(item)")
 				.l
-					h5 末梢五分类+CRP+SAA
-					p 2022-05-07 13:23
+					h5 {{item.jymc}}
+					p {{item.jyrq}}
 				img(src="@/assets/imgs/r.png")
 		ul(v-if="tabIndex == 1")
-			li(v-for="item in list2")
+			li(v-for="item in jcbgList")
 				.l
 					h5 末梢五分类+CRP+SAA
 					p 2022-05-07 13:24
 				img(src="@/assets/imgs/r.png")
-		.none(v-if="tabIndex == 0 && !list1.length || tabIndex == 1 && !list2.length")
+		.none(v-if="tabIndex == 0 && !jybgList.length || tabIndex == 1 && !jcbgList.length")
 			img(src="@/assets/imgs/none.png")
 			p 暂无检查结果
 </template>
 
 <script>
+import { patientAbout, bgAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Jcjg',
@@ -43,27 +45,74 @@ export default {
 			tabIndex: 0,
 			activeIndex: 0,
 			showList: false,
-			list1: [
+			jybgList: [
 				{},
 				{},
 			],
-			list2: [
+			jcbgList: [
 				{},
 				{},
 			],
+			jzrList: [],
+			jzrInfo: null
 		}
 	},
+	async created(){
+		await this.getLastAppointPatient()
+		this.getPatientList()
+		this.getjybgList()
+	},
 	methods: {
+		async getLastAppointPatient(){
+			await patientAbout.getLastAppointPatient({
+			}).then(res => {
+				console.log('getLastAppointPatient-res', res)
+				if(res.data){
+					this.jzrInfo = res.data
+				}
+			}).catch(err => {
+				console.log('getLastAppointPatient-err', err)
+			})
+		},
+		getPatientList(){
+			patientAbout.getPatientList({
+			}).then(res => {
+				console.log('getPatientList-res', res)
+				this.jzrList = res.data
+
+				this.jzrList.forEach((item, index) => {
+					if(item.name == this.jzrInfo.name){
+						this.activeIndex = index
+					}
+				})
+			}).catch(err => {
+				console.log('getPatientList-err', err)
+			})
+		},
 		getItem(idx){
 			this.activeIndex = idx
 			this.showList = false
+			this.jzrInfo = this.jzrList[idx]
+			this.jybgList = []
+			this.jcbgList = []
+		},
+		getjybgList(){
+			bgAbout.getjybgList({
+				patientId: this.jzrInfo.id
+				// patientId: 33
+			}).then(res => {
+				console.log('getjybgList-res', res)
+				this.jybgList = res.data
+			}).catch(err => {
+				console.log('getjybgList-err'. err)
+			})
 		},
 		changeTab(idx){
 			this.tabIndex = idx
 		},
-		toPage(){
+		toPage(obj){
 			this.$router.push({
-				path: '/jcjgxq'
+				path: `/jcjgxq?sampleno=${obj.sampleno}`
 			})
 		}
 	}

@@ -1,37 +1,68 @@
 <template lang="pug">
 .jzjlxq-container
 	.wrap(v-if="isHas")
-		h5 东城区妇幼保健院(南区)
+		h5 {{areaName}}
 		.con
 			div
 				.l
-					h6 张英超
-					p <i>门诊</i><span>2022-05-07</span>
-				p 咳嗽、呼吸道感染
+					h6 {{mzxx&&mzxx.ysmc}}
+					p <i>{{mzxx&&mzxx.ksmc}}</i><span>{{mzxx&&mzxx.jzrq}}</span>
+				p {{mzxx&&mzxx.jbmc}}
 		ul
+			li(v-if="jcmc")
+				h6 检查:
+				p {{jcmc}}
 			li
-				h6 症状:
-				p 咳嗽，咽干红，扁桃体大
-			li
-				h6 症状:
-				p 咳嗽，咽干红，扁桃体大
-			li
-				h6 症状:
-				p 咳嗽，咽干红，扁桃体大
+				h6 诊断:
+				p {{mzxx.jbmc}}
+			li(v-if="ypList.length")
+				h6 处理:
+				p.spe(v-for="(item, index) in ypList")
+					i {{item.fymc}}
+					span {{item.jldw}}
+					em {{item.ypyf}}
+					b {{item.sypc}}
 	.none(v-if="!isHas")
 		img(src="@/assets/imgs/none.png")
 		p 网络未连接请检查网络
 </template>
 
 <script>
+import { jzjlAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Jzjlxq',
 
 	data () {
 		return {
-			isHas: true
+			isHas: true,
+			jzxh: '',
+			areaName: '',
+			mzxx: null,
+			jcmc: '',
+			ypList: []
 		}
+	},
+	created(){
+		this.jzxh = this.$route.query.jzxh
+		this.getJzjlDetail()
+	},
+	methods: {
+		getJzjlDetail(){
+			jzjlAbout.getJzjlDetail({
+				jzxh: this.jzxh
+			}).then(res => {
+				console.log('getJzjlDetail-res', res)
+				let data = res.data
+				this.areaName = data.areaName
+				this.mzxx = data.mzxx
+				this.ypList = data.ypList
+				this.jcmc = data.jcmc
+			}).catch(err => {
+				console.log('getJzjlDetail-err'. err)
+			})
+		},
 	}
 }
 </script>
@@ -89,6 +120,13 @@ export default {
 					font-weight 400
 					line-height .48rem
 					color #666
+				p.spe
+					display flex
+					justify-content space-between
+					align-items center
+					i
+						font-weight 500 !important
+						width 3rem
 	.none
 		display flex
 		flex-direction column
