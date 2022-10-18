@@ -1,30 +1,61 @@
 <template lang="pug">
 .tjbgxq-container
-	h5 东城妇幼保健院(南区)
+	//- h5 东城妇幼保健院(南区)
 	.top
 		ul
-			li(v-for="item in 3")
+			li
 				span 姓名
-				i 小星星
+				i {{tjgr && tjgr.brxm}}
+			li
+				span 检测名称
+				i {{tjgr && tjgr.tjmc}}
+			li
+				span 时间
+				i {{tjgr && tjgr.tjrq}}
 	ul
 		li.bar <span>项目</span><i>结果</i><em>单位</em><b>参考范围</b>
-		li <span>快速C-反应蛋白</span><i><8.0</i><em>mg/L</em><b><8</b>
-		li <span>血清淀粉样蛋白A</span><i><5.0</i><em>mg/L</em><b><10</b>
-		li <span>白细胞</span><i>9.16</i><em>10^9/L</em><b>4.9-12.7</b>
-		li <span>红细胞</span><i>9.16</i><em>10^12/L</em><b>4.9-12.7</b>
+		li(v-for="(item, index) in jgList") <span>{{item.xmmc}}</span><i>{{item.xmjg}}</i><em>{{item.xmdw}}</em><b>{{item.ckfw}}</b>
 	.btn
-		button 下载PDF
+		button <a target="_blank" :href="pdfUrl">下载PDF</a> 
 </template>
 
 <script>
+import { bgAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Tjbgxq',
 
 	data () {
 		return {
-
+			tjbm: '',
+			tjgr: null,
+			jgList: []
+			pdfUrl: ''
 		}
+	},
+	created(){
+		this.tjbm = this.$route.query.tjbm
+		this.getTjbgDetail()
+		
+		let pdfUrl = `${apiUrl.baseURL}/jy/jybgPdf?sampleno=${this.sampleno}`
+		this.pdfUrl = pdfUrl
+	},
+	methods: {
+		getTjbgDetail(){
+			bgAbout.getTjbgDetail({
+				tjbm: this.tjbm
+			}).then(res => {
+				console.log('getTjbgDetail-res', res)
+				let data = res.data
+				// this.areaName = data.areaName
+				this.tjgr = data.tjgr
+				this.jgList = data.jgList
+				// this.jcmc = data.jcmc
+			}).catch(err => {
+				console.log('getTjbgDetail-err'. err)
+			})
+		},
 	}
 }
 </script>
@@ -63,6 +94,8 @@ export default {
 		background #fff
 		overflow hidden
 		li
+			display flex
+			align-items center
 			margin-bottom .38rem
 			padding 0 .32rem
 			span,i,em,b
@@ -70,14 +103,14 @@ export default {
 				color #999
 				line-height .36rem
 			span
-				margin-right 1rem
+				margin-right .4rem
 				width 2rem
 			i
 				margin-right .8rem
-				width .6rem
+				width 1.2rem
 			em
-				margin-right .66rem
-				width .6rem
+				margin-right .26rem
+				width 1rem
 			b
 				width 1.2rem
 		li.bar
@@ -86,7 +119,7 @@ export default {
 				color #333
 				line-height .42rem
 	.btn
-		margin-top .88rem
+		margin-top .5rem
 		width 100%
 		height 1.16rem
 		line-height 1.16rem
@@ -101,4 +134,9 @@ export default {
 			color #fff
 			background #7C509D
 			border-radius .4rem
+			a
+				display block
+				width 100%
+				height 100%
+				line-height .84rem
 </style>

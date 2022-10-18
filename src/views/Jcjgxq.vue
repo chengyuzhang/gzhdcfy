@@ -16,11 +16,11 @@
 		li.bar <span>项目</span><i>结果</i><em>单位</em><b>参考范围</b>
 		li(v-for="(item, index) in mxList") <span>{{item.xmmc}}</span><i>{{item.xmjg}}</i><em>{{item.xmdw}}</em><b v-if="item.ckdz && item.ckgz">{{item.ckdz}}-{{item.ckgz}}</b><b v-else-if="item.ckdz && !item.ckgz">{{item.ckdz}}</b><b v-else="!item.ckdz && item.ckgz">{{item.ckgz}}</b>
 	.btn
-		button 下载PDF
+		button <a target="_blank" :href="pdfUrl">下载PDF</a> 
 </template>
 
 <script>
-import { patientAbout, bgAbout } from '@/service/api.js'
+import { patientAbout, bgAbout, apiUrl } from '@/service/api.js'
 
 export default {
 
@@ -32,12 +32,16 @@ export default {
 			brxm: '',
 			jymc: '',
 			jyrq: '',
-			mxList: []
+			mxList: [],
+			pdfUrl: ''
 		}
 	},
 	created(){
 		this.sampleno = this.$route.query.sampleno
 		this.getJybgDetail()
+
+		let pdfUrl = `${apiUrl.baseURL}/jy/jybgPdf?sampleno=${this.sampleno}`
+		this.pdfUrl = pdfUrl
 	},
 	methods: {
 		getJybgDetail(){
@@ -56,6 +60,8 @@ export default {
 			})
 		},
 	}
+
+
 }
 </script>
 
@@ -134,4 +140,9 @@ export default {
 			color #fff
 			background #7C509D
 			border-radius .4rem
+			a
+				display block
+				width 100%
+				height 100%
+				line-height .84rem
 </style>

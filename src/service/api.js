@@ -4,8 +4,11 @@ let {get, post} = api
 import qs from 'qs'
 
 let baseURL = 'http://hzx.ngrok.aojiedu.com'
-let baseURL1 = 'https://xiaoxapi.aoji.cn'
+// let baseURL1 = 'https://xiaoxapi.aoji.cn'
 
+export const apiUrl = {
+	baseURL
+}
 
 export const index = {
 	async getAds (data, headers) {
@@ -134,9 +137,14 @@ export const bgAbout = {
 	async getJybgDetail (data, headers) {
 		return await get(baseURL + `/jy/jymxList`, data, headers)
 	},
+	async getTjbgList (data, headers) {
+		return await get(baseURL + `/tj/tjbgList`, data, headers)
+	},
+	async getTjbgDetail (data, headers) {
+		return await get(baseURL + `/tj/tjjgList`, data, headers)
+	}
 
 }
-
 
 export const tool = {
 	async smsCode (data, headers) {

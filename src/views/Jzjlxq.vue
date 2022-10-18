@@ -22,13 +22,15 @@
 					span {{item.jldw}}
 					em {{item.ypyf}}
 					b {{item.sypc}}
+		.btn
+			button <a target="_blank" :href="pdfUrl">下载就诊记录PDF</a> 
 	.none(v-if="!isHas")
 		img(src="@/assets/imgs/none.png")
 		p 网络未连接请检查网络
 </template>
 
 <script>
-import { jzjlAbout } from '@/service/api.js'
+import { jzjlAbout, apiUrl } from '@/service/api.js'
 
 export default {
 
@@ -41,12 +43,16 @@ export default {
 			areaName: '',
 			mzxx: null,
 			jcmc: '',
-			ypList: []
+			ypList: [],
+			pdfUrl: ''
 		}
 	},
 	created(){
 		this.jzxh = this.$route.query.jzxh
 		this.getJzjlDetail()
+		
+		let pdfUrl = `${apiUrl.baseURL}/mz/mzmxPdf?jzxh=${this.jzxh}`
+		this.pdfUrl = pdfUrl
 	},
 	methods: {
 		getJzjlDetail(){
@@ -127,6 +133,27 @@ export default {
 					i
 						font-weight 500 !important
 						width 3rem
+		.btn
+			margin-top .88rem
+			width 100%
+			height 1.16rem
+			line-height 1.16rem
+			text-align center
+			// border-top 1px solid #eee
+			overflow hidden
+			button
+				width 5.5rem
+				height .84rem
+				line-height .84rem
+				font-size .28rem
+				color #fff
+				background #7C509D
+				border-radius .4rem
+				a
+					display block
+					width 100%
+					height 100%
+					line-height .84rem
 	.none
 		display flex
 		flex-direction column

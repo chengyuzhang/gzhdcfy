@@ -1,27 +1,32 @@
 <template lang="pug">
 .tjbg-container
 	.top
-		p(@click="showList = true") <i>就诊人</i><span>星星</span><img src="@/assets/imgs/arrow-down.png" alt="">
+		p(@click="showList = true" v-if="jzrInfo") <i>就诊人</i><span>{{jzrInfo.name}}</span><img src="@/assets/imgs/arrow-down.png" alt="">
 		transition(name="fade")
 			ul(v-if="showList")
-				li(v-for="(item, index) in 4" @click="getItem(index)")
+				li(v-for="(item, index) in jzrList" @click="getItem(index)")
 					.l
-						span 星星
+						span {{item.name}}
 						div
-							h6 1578 944 9888
-							p <i>北京社保卡</i><span class="ybbx">医保报销</span><span class="zf">自费</span>
+							h6 {{item.feeNo}}
+							p <span v-if="item.feeType == 1" class="zf">自费</span><span v-if="item.feeType == 2" class="ybbx">医保报销</span>
 					img(v-if="activeIndex == index" src="@/assets/imgs/ok.png")
 					img(v-else src="@/assets/imgs/ok-space.png")
 	ul
-		li(v-for="item in 2" @click="toPage")
+		li(v-for="(item, index) in bgList" @click="toPage(item)")
 			.l
-				h5 末梢五分类+CRP+SAA
-				p 2022-05-07 13:23
+				h5 {{item.tjmc}}
+				p {{item.tjrq}}
 			img(src="@/assets/imgs/r.png")
+	.none(v-if="!bgList.length || !bgList.length")
+		img(src="@/assets/imgs/none.png")
+		p 暂无检查结果
 
 </template>
 
 <script>
+import { patientAbout, bgAbout } from '@/service/api.js'
+
 export default {
 
 	name: 'Tjbg',
@@ -29,17 +34,66 @@ export default {
 	data () {
 		return {
 			activeIndex: 0,
-			showList: false
+			showList: false,
+			jzrList: [],
+			bgList: [],
+			jzrInfo: null
 		}
 	},
+	async created(){
+		await this.getLastAppointPatient()
+		this.getPatientList()
+		this.getTjbgList()
+	},
 	methods: {
+		async getLastAppointPatient(){
+			await patientAbout.getLastAppointPatient({
+			}).then(res => {
+				console.log('getLastAppointPatient-res', res)
+				if(res.data){
+					this.jzrInfo = res.data
+				}
+			}).catch(err => {
+				console.log('getLastAppointPatient-err', err)
+			})
+		},
+		getPatientList(){
+			patientAbout.getPatientList({
+			}).then(res => {
+				console.log('getPatientList-res', res)
+				this.jzrList = res.data
+
+				this.jzrList.forEach((item, index) => {
+					if(item.name == this.jzrInfo.name){
+						this.activeIndex = index
+					}
+				})
+			}).catch(err => {
+				console.log('getPatientList-err', err)
+			})
+		},
 		getItem(idx){
 			this.activeIndex = idx
 			this.showList = false
+			this.jzrInfo = this.jzrList[idx]
+			this.jybgList = []
+			this.jcbgList = []
+			this.getTjbgList()
 		},
-		toPage(){
+		getTjbgList(){
+			bgAbout.getTjbgList({
+				patientId: this.jzrInfo.id
+				// patientId: 33
+			}).then(res => {
+				console.log('getTjbgList-res', res)
+				this.bgList = res.data
+			}).catch(err => {
+				console.log('getTjbgList-err'. err)
+			})
+		},
+		toPage(obj){
 			this.$router.push({
-				path: '/tjbgxq'
+				path: `/tjbgxq?tjbm=${obj.tjbm}`
 			})
 		}
 	}
@@ -153,6 +207,29 @@ export default {
 				height .32rem
 		li:last-of-type
 			border none
+	.none
+		display flex
+		flex-direction column
+		align-items center
+		height 100%
+		>img
+			margin-top 2.48rem
+			width 3.44rem
+			height auto
+			object-fit contain
+		>p
+			font-size .28rem
+			line-height .4rem
+			color #999
+		button
+			margin-top .68rem
+			width 5.5rem
+			height .84rem
+			line-height .84rem
+			font-size .28rem
+			color #fff
+			background #7C509D
+			border-radius .4rem
 	.fade-enter-active, .fade-leave-active {
 		transition: opacity .2s;
 	}

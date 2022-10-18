@@ -95,6 +95,7 @@ export default {
 			this.jzrInfo = this.jzrList[idx]
 			this.jybgList = []
 			this.jcbgList = []
+			this.getjybgList()
 		},
 		getjybgList(){
 			bgAbout.getjybgList({
