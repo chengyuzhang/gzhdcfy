@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { bgAbout } from '@/service/api.js'
+import { bgAbout, apiUrl } from '@/service/api.js'
 
 export default {
 
@@ -30,15 +30,15 @@ export default {
 		return {
 			tjbm: '',
 			tjgr: null,
-			jgList: []
+			jgList: [],
 			pdfUrl: ''
 		}
 	},
 	created(){
 		this.tjbm = this.$route.query.tjbm
 		this.getTjbgDetail()
-		
-		let pdfUrl = `${apiUrl.baseURL}/jy/jybgPdf?sampleno=${this.sampleno}`
+
+		let pdfUrl = `${apiUrl.baseURL}/tj/tjbgPdf?tjbm=${this.tjbm}`
 		this.pdfUrl = pdfUrl
 	},
 	methods: {
