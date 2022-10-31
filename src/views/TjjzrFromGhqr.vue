@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { patientAbout } from '@/service/api.js'
+import { patientAbout, tool } from '@/service/api.js'
 const util= require('../util/util.js')
 
 export default {
@@ -237,7 +237,99 @@ export default {
 		this.id = this.$route.query.id
 	},
 	methods: {
+		smsCode(){
+			tool.smsCode({
+				phone: this.sjhVal
+			}).then(res => {
+				console.log('smsCode-res', res)
+				this.$toast({
+					message: '验证码已发送！',
+					duration: 1500
+				})
+			}).catch(err => {
+				console.log('smsCode-err', err)
+			})
+		},
 		addPatient(){
+
+			if(!this.gxId){
+				this.$toast({
+					message: '请选择就诊人与本人关系！',
+					duration: 1500
+				})
+				return
+			}
+			if(!this.xmVal){
+				this.$toast({
+					message: '请输入姓名！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.zjlxId){
+				this.$toast({
+					message: '请选择证件类型！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.zjhmVal){
+				this.$toast({
+					message: '请输入证件号码！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.sexIndex){
+				this.$toast({
+					message: '请选择性别！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.mzVal){
+				this.$toast({
+					message: '请选择民族！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.srFormat){
+				this.$toast({
+					message: '请选择生日！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.typeIndex){
+				this.$toast({
+					message: '请选择费别！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.ybkhVal){
+				this.$toast({
+					message: '请输入医保卡号！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.sjhVal){
+				this.$toast({
+					message: '请输入手机号码！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.yzmVal){
+				this.$toast({
+					message: '请输入验证码！',
+					duration: 1200
+				})
+				return
+			}
+			
 			patientAbout.addPatient({
 				birthday: this.srFormat,
 				feeNo: this.ybkhVal,
@@ -249,7 +341,7 @@ export default {
 				phone: this.sjhVal,
 				relation: this.gxId,
 				sex: this.sexIndex,
-				validCode: this.yzmVal,
+				smsCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)
 				this.$router.replace({
@@ -314,6 +406,13 @@ export default {
 			this.typeIndex = idx
 		},
 		getCode(){
+			if(!util.checkPhone(this.sjhVal)){
+				this.$toast({
+					message: '请输入正确手机号！',
+					duration: 1500
+				})
+				return
+			}
 			if(!this.iBtn) return
 			this.iBtn = false
 			const count = this.numStr
@@ -331,6 +430,8 @@ export default {
 
 				console.log(num)
 			}, 1000)
+
+			this.smsCode()
 		}
 	}
 }

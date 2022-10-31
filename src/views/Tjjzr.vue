@@ -338,7 +338,7 @@ export default {
 				phone: this.sjhVal,
 				relation: this.gxId,
 				sex: this.sexIndex,
-				validCode: this.yzmVal,
+				smsCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)
 				this.$toast({

@@ -502,6 +502,7 @@ export default {
 			position fixed
 			left 0
 			bottom 0
+			width 100%
 			background #fff
 			border-radius .2rem .2rem 0 0
 			h6

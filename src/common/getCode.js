@@ -19,7 +19,7 @@ function getCode(){
 
 	let callBackUrl = `${location.origin}/#/login?${queryStr}`
 
-	location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx664220adca35a423&redirect_uri=${encodeURIComponent(callBackUrl)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+	// location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe73e3581e25dae72&redirect_uri=${encodeURIComponent(callBackUrl)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 }
 
 export default getCode
