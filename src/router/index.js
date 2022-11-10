@@ -46,6 +46,14 @@ const routes = [
 			},
 			{
 				meta: {
+					title: '选择号源'
+				},
+				path: '/xzhy-tj',
+				name: 'XzhyTj',
+				component: () => import(/* webpackChunkName: "about" */ '../views/XzhyTj.vue')
+			},
+			{
+				meta: {
 					title: '挂号确认'
 				},
 				path: '/ghqr',
@@ -283,6 +291,14 @@ const routes = [
 				path: '/tjjzr-from-ghqr',
 				name: 'TjjzrFromGhqr',
 				component: () => import(/* webpackChunkName: "about" */ '../views/TjjzrFromGhqr.vue')
+			},
+			{
+				meta: {
+					title: '添加体检信息'
+				},
+				path: '/tjtjxx',
+				name: 'Tjtjxx',
+				component: () => import(/* webpackChunkName: "about" */ '../views/Tjtjxx.vue')
 			},
 			{
 				meta: {

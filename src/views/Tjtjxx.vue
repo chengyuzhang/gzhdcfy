@@ -67,7 +67,7 @@
 				i(v-if="!iBtn") {{numStr}}s
 				button(v-if="iBtn" @click="getCode") 获取验证码
 	.btn
-		button(@click="addPatient") 提交就诊人信息
+		button(@click="addTjXx") 提交
 	<van-popup v-model="showDate" position="bottom">
 		van-datetime-picker(
 			v-model="currentDate"
@@ -248,7 +248,7 @@ export default {
 				console.log('smsCode-err', err)
 			})
 		},
-		addPatient(){
+		addTjXx(){
 			 console.log('点击了提交1')
 			if(!this.gxId){
 				this.$toast({
@@ -330,30 +330,27 @@ export default {
 
 			console.log('点击了提交2')
 
-			patientAbout.addPatient({
-				birthday: this.srFormat,
-				feeNo: this.ybkhVal,
-				feeType: this.typeIndex,
-				idNo: this.zjhmVal,
-				idType: this.zjlxId,
-				name: this.xmVal,
-				nationality: this.mzVal,
-				phone: this.sjhVal,
-				relation: this.gxId,
-				sex: this.sexIndex,
-				smsCode: this.yzmVal,
-			}).then(res => {
-				console.log('addPatient-res', res)
-				setTimeout(() => {
+			// patientAbout.addTjXx({
+			// 	birthday: this.srFormat,
+			// 	feeNo: this.ybkhVal,
+			// 	feeType: this.typeIndex,
+			// 	idNo: this.zjhmVal,
+			// 	idType: this.zjlxId,
+			// 	name: this.xmVal,
+			// 	nationality: this.mzVal,
+			// 	phone: this.sjhVal,
+			// 	relation: this.gxId,
+			// 	sex: this.sexIndex,
+			// 	smsCode: this.yzmVal,
+			// }).then(res => {
+			// 	console.log('addTjXx-res', res)
 
-					this.$toast({
-						message: '添加就诊人成功',
-						duration: 1200
-					})
-				}, 500)
-			}).catch(err => {
-				console.log('addPatient-err', err)
-			})
+			// 	this.$router.push({
+			// 		path: `/xzhy-tj?id=`
+			// 	})
+			// }).catch(err => {
+			// 	console.log('addTjXx-err', err)
+			// })
 		},
 		getCardTypeFn(val){
 			this.showCardType = false

@@ -259,7 +259,7 @@ export default {
 					path = '/zjjs'
 				break;
 				case 2:
-					path = '/zjjs'
+					path = '/tjtjxx'
 				break;
 				case 3:
 					path = '/jzxz'

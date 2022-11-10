@@ -102,7 +102,7 @@ export default {
 		},
 		toXzhyPage(){
 			this.$router.push({
-				path: '/xzhy'
+				path: '/'
 			})
 		}
 	}
