@@ -120,7 +120,7 @@ export const api = {
 		} catch (err) {
 			console.log('catch-err', err)
 			Toast({
-				message: err.message,
+				message: err,
 				duration: 1500
 			})
 			requestCount --
