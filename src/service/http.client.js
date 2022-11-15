@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { Toast } from 'vant'
+import { Toast, Indicator } from 'mint-ui'
+
 let env = process.env.NODE_ENV
 let requestCount = 0
 import vue from '../main'
@@ -23,24 +24,23 @@ export const api = {
 
 		headers = Object.assign({hospitalId: 1}, headers)
 
-		Toast.loading({
-			duration: 0,
-			message: '',
-			forbidClick: true,
-		})
+		Indicator.open({
+	      spinnerType: 'fading-circle'
+	    })
 		requestCount ++
 		try {
 			let res = await axios.get(url, {params: data, headers})
 
 			requestCount --
 			if(requestCount == 0){
-				Toast.clear()
+				Indicator.close()
 			}
 
 			return new Promise((resolve, reject) => {
 
 				if (res.data.code === 200) {
 					resolve(res.data)
+
 				}else if(res.data.code === 401){ //此时没有登录
 					getCode()
 					return
@@ -55,13 +55,13 @@ export const api = {
 		} catch (err) {
 			console.log('catch-err', err)
 
-			Toast.loading({
+			Toast({
 				message: err,
-				duration: 1200
+				duration: 1500
 			})
 			requestCount --
 			if(requestCount == 0){
-				Toast.clear()
+				Indicator.close()
 			}
 			console.log(err)
 		}
@@ -84,11 +84,9 @@ export const api = {
 
 		headers = Object.assign({hospitalId: 1}, headers)
 
-		Toast.loading({
-			duration: 0,
-			message: '',
-			forbidClick: true,
-		})
+		Indicator.open({
+	      spinnerType: 'fading-circle'
+	    })
 		requestCount ++
 		try {
 			let res = await axios({
@@ -100,7 +98,7 @@ export const api = {
 			
 			requestCount --
 			if(requestCount == 0){
-				Toast.clear()
+				Indicator.close()
 			}
 			
 			return new Promise((resolve, reject) => {
@@ -121,13 +119,13 @@ export const api = {
 			})
 		} catch (err) {
 			console.log('catch-err', err)
-			Toast.loading({
+			Toast({
 				message: err.message,
-				duration: 1200
+				duration: 1500
 			})
 			requestCount --
 			if(requestCount == 0){
-				Toast.clear()
+				Indicator.close()
 			}
 		}
 	},

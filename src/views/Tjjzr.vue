@@ -114,7 +114,6 @@
 <script>
 import { patientAbout, tool } from '@/service/api.js'
 const util= require('../util/util.js')
-
 export default {
 
 	name: 'Tjjzr',
@@ -234,6 +233,8 @@ export default {
 			iBtn: true,
 		}
 	},
+	mounted(){
+	},
 	methods: {
 		smsCode(){
 			tool.smsCode({
@@ -249,7 +250,7 @@ export default {
 			})
 		},
 		addPatient(){
-			 console.log('点击了提交1')
+			console.log('this.$toast', this.$toast)
 			if(!this.gxId){
 				this.$toast({
 					message: '请选择就诊人与本人关系！',
@@ -264,6 +265,7 @@ export default {
 				})
 				return
 			}
+			console.log(3)
 			if(!this.zjlxId){
 				this.$toast({
 					message: '请选择证件类型！',
@@ -306,6 +308,7 @@ export default {
 				})
 				return
 			}
+			console.log('点击了提交1')
 			if(!this.ybkhVal && this.typeIndex == 2){
 				this.$toast({
 					message: '请输入医保卡号！',
@@ -313,6 +316,7 @@ export default {
 				})
 				return
 			}
+			console.log('点击了提交11')
 			if(!this.sjhVal){
 				this.$toast({
 					message: '请输入手机号码！',
@@ -344,13 +348,10 @@ export default {
 				smsCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)
-				setTimeout(() => {
-
-					this.$toast({
-						message: '添加就诊人成功',
-						duration: 1200
-					})
-				}, 500)
+				this.$toast({
+					message: '添加就诊人成功',
+					duration: 1200
+				})
 			}).catch(err => {
 				console.log('addPatient-err', err)
 			})
