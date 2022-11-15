@@ -250,7 +250,6 @@ export default {
 			})
 		},
 		addPatient(){
-			console.log('this.$toast', this.$toast)
 			if(!this.gxId){
 				this.$toast({
 					message: '请选择就诊人与本人关系！',
