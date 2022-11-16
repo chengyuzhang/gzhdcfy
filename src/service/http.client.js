@@ -2,7 +2,6 @@ import axios from 'axios'
 import { Toast, Indicator } from 'mint-ui'
 
 let env = process.env.NODE_ENV
-let requestCount = 0
 import vue from '../main'
 import getCode from '../common/getCode'
 
@@ -24,17 +23,26 @@ export const api = {
 
 		headers = Object.assign({hospitalId: 1}, headers)
 
-		Indicator.open({
-	      spinnerType: 'fading-circle'
+		axios.interceptors.request.use((config) => {
+			console.log('config', config)
+            Indicator.open({
+		    	spinnerType: 'fading-circle'
+		    })
+            return config
+	    }, (err) => {
+	            return Promise.reject(err)
+
 	    })
-		requestCount ++
+	    axios.interceptors.response.use((response) => {
+            Indicator.close()
+            return response;
+	    }, (err) => {
+            Indicator.close()
+	    	return Promise.reject(err)
+	    })
+
 		try {
 			let res = await axios.get(url, {params: data, headers})
-
-			requestCount --
-			if(requestCount == 0){
-				Indicator.close()
-			}
 
 			return new Promise((resolve, reject) => {
 
@@ -59,10 +67,6 @@ export const api = {
 				message: err,
 				duration: 1500
 			})
-			requestCount --
-			if(requestCount == 0){
-				Indicator.close()
-			}
 			console.log(err)
 		}
 	},
@@ -84,10 +88,24 @@ export const api = {
 
 		headers = Object.assign({hospitalId: 1}, headers)
 
-		Indicator.open({
-	      spinnerType: 'fading-circle'
+		axios.interceptors.request.use((config) => {
+			console.log('config', config)
+            Indicator.open({
+		    	spinnerType: 'fading-circle'
+		    })
+            return config
+	    }, (err) => {
+	            return Promise.reject(err)
+
 	    })
-		requestCount ++
+	    axios.interceptors.response.use((response) => {
+	    	console.log('response', response)
+            Indicator.close()
+            return response;
+	    }, (err) => {
+	    	Indicator.close()
+	    	return Promise.reject(err)
+	    })
 		try {
 			let res = await axios({
 				method: 'post',
@@ -96,10 +114,6 @@ export const api = {
 				headers
 			})
 			
-			requestCount --
-			if(requestCount == 0){
-				Indicator.close()
-			}
 			
 			return new Promise((resolve, reject) => {
 				console.log('try-res', res)

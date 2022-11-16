@@ -347,10 +347,13 @@ export default {
 				smsCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)
-				this.$toast({
-					message: '添加就诊人成功',
-					duration: 1200
-				})
+				if(res.code == 200){
+					this.$toast({
+						message: '添加就诊人成功',
+						duration: 1200
+					})
+				}
+				
 			}).catch(err => {
 				console.log('addPatient-err', err)
 			})

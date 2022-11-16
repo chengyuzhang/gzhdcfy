@@ -15,7 +15,11 @@ Vue.use(MintUI)
 Vue.use(Vant)
 
 import VConsole from 'vconsole'
-const vConsole = new VConsole()
+let env = process.env.NODE_ENV
+console.log('env', env)
+if(env !== 'development'){
+	const vConsole = new VConsole()
+}
 Vue.config.productionTip = false
 let vue = new Vue({
 	router,
