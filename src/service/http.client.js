@@ -24,14 +24,12 @@ export const api = {
 		headers = Object.assign({hospitalId: 1}, headers)
 
 		axios.interceptors.request.use((config) => {
-			console.log('config', config)
             Indicator.open({
 		    	spinnerType: 'fading-circle'
 		    })
             return config
 	    }, (err) => {
 	            return Promise.reject(err)
-
 	    })
 	    axios.interceptors.response.use((response) => {
             Indicator.close()
@@ -62,12 +60,10 @@ export const api = {
 			})
 		} catch (err) {
 			console.log('catch-err', err)
-
 			Toast({
 				message: err,
 				duration: 1500
 			})
-			console.log(err)
 		}
 	},
 
@@ -89,7 +85,6 @@ export const api = {
 		headers = Object.assign({hospitalId: 1}, headers)
 
 		axios.interceptors.request.use((config) => {
-			console.log('config', config)
             Indicator.open({
 		    	spinnerType: 'fading-circle'
 		    })
@@ -137,10 +132,6 @@ export const api = {
 				message: err,
 				duration: 1500
 			})
-			requestCount --
-			if(requestCount == 0){
-				Indicator.close()
-			}
 		}
 	},
 }

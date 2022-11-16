@@ -307,7 +307,6 @@ export default {
 				})
 				return
 			}
-			console.log('点击了提交1')
 			if(!this.ybkhVal && this.typeIndex == 2){
 				this.$toast({
 					message: '请输入医保卡号！',
@@ -315,7 +314,6 @@ export default {
 				})
 				return
 			}
-			console.log('点击了提交11')
 			if(!this.sjhVal){
 				this.$toast({
 					message: '请输入手机号码！',
@@ -330,8 +328,6 @@ export default {
 				})
 				return
 			}
-
-			console.log('点击了提交2')
 
 			patientAbout.addPatient({
 				birthday: this.srFormat,

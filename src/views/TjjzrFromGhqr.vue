@@ -308,7 +308,7 @@ export default {
 				})
 				return
 			}
-			if(!this.ybkhVal){
+			if(!this.ybkhVal && this.typeIndex == 2){
 				this.$toast({
 					message: '请输入医保卡号！',
 					duration: 1200

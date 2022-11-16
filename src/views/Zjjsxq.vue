@@ -14,7 +14,7 @@
 			p {{intro}}
 			h5 出诊科室
 			ul
-				li(v-for="(item, index) in ksList") <span>{{item.officeName}}</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage" alt="">
+				li(v-for="(item, index) in ksList") <span>{{item.officeName}}</span><img src="@/assets/imgs/qgh-bg.png" @click="toPage(item)" alt="">
 </template>
 
 <script>
@@ -34,7 +34,8 @@ export default {
 			intro: '',
 			officeName: '',
 			headPic: '',
-			ksList: []
+			ksList: [],
+			officeId: ''
 		}
 	},
 	created(){
@@ -66,14 +67,15 @@ export default {
 				this.intro = res.data.intro
 				this.officeName = res.data.officeName
 				this.headPic = res.data.headPic
+				this.officeId = res.data.officeId
 
 			}).catch(err => {
 				console.log('getDoctorDetail-err', err)
 			})
 		},
-		toPage(){
+		toPage(obj){
 			this.$router.push({
-				path: `/xzhy?id=${this.id}`
+				path: `/xzhy-zj?id=${this.officeId}&clinicDate=${obj.clinicDate}`
 			})
 		}
 	}

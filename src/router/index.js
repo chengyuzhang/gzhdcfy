@@ -40,6 +40,14 @@ const routes = [
 				meta: {
 					title: '选择号源'
 				},
+				path: '/xzhy-zj',
+				name: 'XzhyZj',
+				component: () => import(/* webpackChunkName: "about" */ '../views/XzhyZj.vue')
+			},
+			{
+				meta: {
+					title: '选择号源'
+				},
 				path: '/xzhy-hs',
 				name: 'XzhyHs',
 				component: () => import(/* webpackChunkName: "about" */ '../views/XzhyHs.vue')
