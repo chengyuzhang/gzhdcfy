@@ -101,7 +101,7 @@ export default {
 			})
 		},
 		toXzhyPage(){
-			this.$router.push({
+			this.$router.replace({
 				path: '/'
 			})
 		}

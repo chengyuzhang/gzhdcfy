@@ -67,7 +67,6 @@ export default {
 				this.intro = res.data.intro
 				this.officeName = res.data.officeName
 				this.headPic = res.data.headPic
-				this.officeId = res.data.officeId
 
 			}).catch(err => {
 				console.log('getDoctorDetail-err', err)
@@ -75,7 +74,7 @@ export default {
 		},
 		toPage(obj){
 			this.$router.push({
-				path: `/xzhy-zj?id=${this.officeId}&clinicDate=${obj.clinicDate}`
+				path: `/xzhy-zj?id=${obj.officeId}&clinicDate=${obj.clinicDate}`
 			})
 		}
 	}

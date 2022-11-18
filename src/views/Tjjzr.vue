@@ -264,7 +264,6 @@ export default {
 				})
 				return
 			}
-			console.log(3)
 			if(!this.zjlxId){
 				this.$toast({
 					message: '请选择证件类型！',
@@ -348,6 +347,7 @@ export default {
 						message: '添加就诊人成功',
 						duration: 1200
 					})
+					this.$router.go(-1)
 				}
 				
 			}).catch(err => {

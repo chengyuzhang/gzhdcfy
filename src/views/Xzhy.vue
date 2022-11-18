@@ -53,22 +53,22 @@
 		.morning
 			h5 上午号源
 			ul
-				li(v-for="item in 3")
+				li(v-for="(item, index) in swList")
 					.l
-						h6 儿科专家（正高）
-						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
+						h6 {{item.name}}
+						p {{item.skill}}
 					.r
-						p ￥50
+						p ￥{{item.prePrice}}
 						button.full 约满
 		.afternoon
-			h5 下午午号源
+			h5 下午号源
 			ul
-				li(v-for="item in 3")
+				li(v-for="(item, index) in xwList")
 					.l
-						h6 儿科专家（正高）
-						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
+						h6 {{item.name}}
+						p {{item.skill}}
 					.r
-						p ￥50
+						p ￥{{item.prePrice}}
 						button.full 约满
 	.tab-con.ready(v-if="tabStatus == 4")
 		p 距离{{targetDay}}放号还有
@@ -147,8 +147,11 @@ export default {
 	async created(){
 		this.officeId = this.$route.query.id
 		await this.getDutyDate()
-
 		this.formatOrderDate()
+
+		this.clinicDate = this.dateList[0].date
+		this.tabStatus = this.dateList[0].status
+		this.officeDutyDay()
 	},
 	methods: {
 		formatOrderDate(){
@@ -247,9 +250,6 @@ export default {
 			})
 		},
 		getDate(idx, item){
-			// if(item.status != 2) return
-			// this.activeIndex = idx
-			console.log(item)
 			this.showCalendar = false
 			this.tabIndex = idx
 			this.clinicDate = item.date
@@ -401,7 +401,7 @@ export default {
 				p
 					display flex
 					align-items center
-					width .48rem
+					width .5rem
 					font-size .24rem
 					color #333
 					line-height .34rem

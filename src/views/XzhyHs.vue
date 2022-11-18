@@ -408,7 +408,7 @@ export default {
 				p
 					display flex
 					align-items center
-					width .48rem
+					width .5rem
 					font-size .24rem
 					color #333
 					line-height .34rem

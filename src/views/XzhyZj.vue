@@ -173,9 +173,15 @@ export default {
 					}
 				})
 
-				if(idx > 4){
+				if(idx > 1){
 					elWrap.scrollLeft = (idx -1) * elItemWidth
 				}
+				// if(idx > 3){
+				// 	elWrap.scrollLeft = (idx -1) * elItemWidth - elItemWidth/2
+				// }
+				// if(idx > 5){
+				// 	elWrap.scrollLeft = (idx -1) * elItemWidth + elItemWidth/2
+				// }
 				clearInterval(timer)
 			}
 		}, 50)
@@ -400,13 +406,11 @@ export default {
 			ul
 				display flex
 				flex-wrap nowrap
-				width 1000px
 				padding-top .12rem
 				padding-bottom .14rem
 				li
 					flex-shrink 0
-					margin 0 .1rem
-					width 1.16rem
+					width 1.36rem
 					padding-top .1rem
 					padding-bottom .12rem
 					border-radius .06rem
@@ -450,7 +454,7 @@ export default {
 				p
 					display flex
 					align-items center
-					width .48rem
+					width .5rem
 					font-size .24rem
 					color #333
 					line-height .34rem
