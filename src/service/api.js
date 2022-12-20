@@ -49,6 +49,9 @@ export const patientAbout = {
 	async addPatient (data, headers) {
 		return await post(baseURL + `/patient/addPatient`, data, headers)
 	},
+	async getPatientInfo (data, headers) {
+		return await get(baseURL + `/patient/queryPatient`, data, headers)
+	},
 	async getPatientList (data, headers) {
 		return await get(baseURL + `/patient/allList`, data, headers)
 	},

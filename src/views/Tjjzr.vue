@@ -1,6 +1,6 @@
 <template lang="pug">
 .tjjzr-container
-	ul
+	ul(v-if="showList")
 		li(@click="showRelationFn")
 			span 关系
 			.r
@@ -59,15 +59,22 @@
 		li
 			span 手机号
 			.r
-				input(v-model="sjhVal" placeholder="请输入就诊人手机号码")
+				input(v-model="sjhVal" :disabled="hasPhone" placeholder="请输入就诊人手机号码")
 		li
 			span 验证码
 			.r
 				input(v-model="yzmVal" placeholder="请输入验证码")
 				i(v-if="!iBtn") {{numStr}}s
 				button(v-if="iBtn" @click="getCode") 获取验证码
-	.btn
+	.btn(v-if="showList")
 		button(@click="addPatient") 提交就诊人信息
+	ul(v-if="!showList")
+		li
+			span 身份证号码
+			.r
+				input(v-model="zjhmVal" placeholder="请输入身份证号码")
+	.btn(v-if="!showList")
+		button(@click="getPatientInfo") 查询就诊人信息
 	<van-popup v-model="showDate" position="bottom">
 		van-datetime-picker(
 			v-model="currentDate"
@@ -120,6 +127,7 @@ export default {
 
 	data () {
 		return {
+			showList: false,
 			showCardType: false,
 			cardTypeList: [{
 				name: '身份证',
@@ -231,6 +239,7 @@ export default {
 			srFormat: '',
 			numStr: 60,
 			iBtn: true,
+			hasPhone: false
 		}
 	},
 	mounted(){
@@ -247,6 +256,36 @@ export default {
 				})
 			}).catch(err => {
 				console.log('smsCode-err', err)
+			})
+		},
+		getPatientInfo(){
+			patientAbout.getPatientInfo({
+				idNo: this.zjhmVal
+			}).then(res => {
+				this.showList = true
+				
+				console.log('getPatientInfo-res', res)
+				this.srFormat = res.data.birthday
+				this.srVal = res.data.birthday
+				this.ybkhVal = res.data.feeNo
+				this.typeIndex = res.data.feeType
+				this.zjhmVal = res.data.idNo
+				this.zjlxId = res.data.idType
+				this.xmVal = res.data.name
+				this.mzVal = res.data.nationality
+				this.sjhVal = res.data.phone
+				this.sexIndex = res.data.sex
+				if(this.sjhVal){
+					this.hasPhone = true
+				}
+
+				this.cardTypeList.forEach((item, index) => {
+					if(item.id == this.zjlxId){
+						this.zjlxVal = item.name
+					}
+				})
+			}).catch(err => {
+				console.log('getPatientInfo-err', err)
 			})
 		},
 		addPatient(){
@@ -375,6 +414,8 @@ export default {
 			let day = dateVal.getDate()
 			this.srVal = `${year}年${month + 1}月${day}日`
 			this.srFormat = `${year}-${util.formatNumber(month + 1)}-${util.formatNumber(day)}`
+
+			console.log()
 
 			this.showDate = false
 		},
