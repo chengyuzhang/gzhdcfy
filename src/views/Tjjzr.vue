@@ -9,7 +9,7 @@
 		li
 			span 姓名
 			.r
-				input(v-model="xmVal" placeholder="请输入就诊人真实姓名")
+				input(v-model="xmVal" :disabled="!canChange" placeholder="请输入就诊人真实姓名")
 		li(@click="showCardTypeFn")
 			span 证件类型
 			.r
@@ -18,7 +18,7 @@
 		li
 			span 证件号码
 			.r
-				input(v-model="zjhmVal" placeholder="请输入证件号码")
+				input(v-model="zjhmVal" :disabled="!canChange" placeholder="请输入证件号码")
 		li
 			span 性别
 			ol.r
@@ -239,7 +239,8 @@ export default {
 			srFormat: '',
 			numStr: 60,
 			iBtn: true,
-			hasPhone: false
+			hasPhone: false,
+			canChange: true
 		}
 	},
 	mounted(){
@@ -265,6 +266,11 @@ export default {
 				this.showList = true
 				
 				console.log('getPatientInfo-res', res)
+
+				if(res.data){
+					this.canChange = false
+				}
+
 				this.srFormat = res.data.birthday
 				this.srVal = res.data.birthday
 				this.ybkhVal = res.data.feeNo
@@ -432,21 +438,31 @@ export default {
 			return val
 		},
 		showCardTypeFn(){
+			if(!canChange) return
+
 			this.showCardType = true
 		},
 		showRelationFn() {
 			this.showRelation = true
 		},
 		showDateFn() {
+			if(!canChange) return
+
 			this.showDate = true
 		},
 		showNationFn() {
+			if(!canChange) return
+
 			this.showNation = true
 		},
 		changeSex(idx){
+			if(!canChange) return
+
 			this.sexIndex = idx
 		},
 		changeType(idx){
+			if(!canChange) return
+				
 			this.typeIndex = idx
 		},
 		getCode(){

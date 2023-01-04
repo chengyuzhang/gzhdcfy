@@ -15,7 +15,7 @@
 	.tab
 		ol
 			li(:class="{'active': tabIndex == 0}" @click="changeTab(0)") <i>检验报告</i><span></span>
-			li(:class="{'active': tabIndex == 1}" @click="changeTab(1)") <i>检查报告</i><span></span>
+			//- li(:class="{'active': tabIndex == 1}" @click="changeTab(1)") <i>检查报告</i><span></span>
 		ul(v-if="tabIndex == 0")
 			li(v-for="item in jybgList" @click="toPage(item)")
 				.l
@@ -216,7 +216,7 @@ export default {
 				justify-content center
 				position relative
 				height .8rem
-				width 50%
+				width 100%
 				i
 					font-size .28rem
 					font-weight 400
