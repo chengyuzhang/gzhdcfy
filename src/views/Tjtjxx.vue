@@ -374,25 +374,25 @@ export default {
 			console.log('点击了提交2')
 
 			// patientAbout.addTjXx({
-			// 	birthday: this.srFormat,
-			// 	feeNo: this.ybkhVal,
-			// 	feeType: this.typeIndex,
-			// 	idNo: this.zjhmVal,
-			// 	idType: this.zjlxId,
-			// 	name: this.xmVal,
-			// 	nationality: this.mzVal,
-			// 	phone: this.sjhVal,
-			// 	relation: this.gxId,
-			// 	sex: this.sexIndex,
-			// 	smsCode: this.yzmVal,
+			//  birthday: this.srFormat,
+			//  feeNo: this.ybkhVal,
+			//  feeType: this.typeIndex,
+			//  idNo: this.zjhmVal,
+			//  idType: this.zjlxId,
+			//  name: this.xmVal,
+			//  nationality: this.mzVal,
+			//  phone: this.sjhVal,
+			//  relation: this.gxId,
+			//  sex: this.sexIndex,
+			//  smsCode: this.yzmVal,
 			// }).then(res => {
-			// 	console.log('addTjXx-res', res)
+			//  console.log('addTjXx-res', res)
 
-			// 	this.$router.push({
-			// 		path: `/xzhy-tj?id=`
-			// 	})
+			//  this.$router.push({
+			//      path: `/xzhy-tj?id=`
+			//  })
 			// }).catch(err => {
-			// 	console.log('addTjXx-err', err)
+			//  console.log('addTjXx-err', err)
 			// })
 		},
 		getCardTypeFn(val){
@@ -432,7 +432,7 @@ export default {
 			return val
 		},
 		showCardTypeFn(){
-			if(!canChange) return
+			if(!this.canChange) return
 
 			this.showCardType = true
 		},
@@ -440,22 +440,22 @@ export default {
 			this.showRelation = true
 		},
 		showDateFn() {
-			if(!canChange) return
+			if(!this.canChange) return
 
 			this.showDate = true
 		},
 		showNationFn() {
-			if(!canChange) return
+			if(!this.canChange) return
 
 			this.showNation = true
 		},
 		changeSex(idx){
-			if(!canChange) return
+			if(!this.canChange) return
 
 			this.sexIndex = idx
 		},
 		changeType(idx){
-			if(!canChange) return
+			if(!this.canChange) return
 
 			this.typeIndex = idx
 		},
@@ -519,6 +519,12 @@ export default {
 					font-size .28rem
 					color #8B8B8B
 					line-height .4rem
+				input[disabled]
+					color #999
+					-webkit-opacity 1
+					-webkit-text-fill-color #999
+					opacity 1 !important
+					background-color  #fff
 				img
 					margin-left .06rem
 					width .24rem

@@ -9,7 +9,7 @@
 		li
 			span 姓名
 			.r
-				input(v-model="xmVal" :disabled="!canChange" placeholder="请输入就诊人真实姓名")
+				input(v-model="xmVal" :disabled="hasXm" placeholder="请输入就诊人真实姓名")
 		li(@click="showCardTypeFn")
 			span 证件类型
 			.r
@@ -18,7 +18,7 @@
 		li
 			span 证件号码
 			.r
-				input(v-model="zjhmVal" :disabled="!canChange" placeholder="请输入证件号码")
+				input(v-model="zjhmVal" :disabled="hasZjhm" placeholder="请输入证件号码")
 		li
 			span 性别
 			ol.r
@@ -54,12 +54,12 @@
 		li
 			span 医保卡号
 			.r
-				input(v-model="ybkhVal" placeholder="请输入医保卡号")
+				input(v-model="ybkhVal" :disabled="hasYbkh" placeholder="请输入医保卡号")
 				img(src="@/assets/imgs/scan.png")
 		li
 			span 手机号
 			.r
-				input(v-model="sjhVal" placeholder="请输入就诊人手机号码")
+				input(v-model="sjhVal" :disabled="hasPhone" placeholder="请输入就诊人手机号码")
 		li
 			span 验证码
 			.r
@@ -239,8 +239,15 @@ export default {
 			srFormat: '',
 			numStr: 10,
 			iBtn: true,
+			hasXm: false,
+			hasZjlx: false,
+			hasZjhm: false,
+			hasSex: false,
+			hasMz: false,
+			hasSr: false,
+			hasFb: false,
+			hasYbkh: false,
 			hasPhone: false,
-			canChange: true
 		}
 	},
 	created(){
@@ -271,25 +278,55 @@ export default {
 				}
 
 				console.log('getPatientInfo-res', res)
-				this.srFormat = res.data.birthday
-				this.srVal = res.data.birthday
-				this.ybkhVal = res.data.feeNo
-				this.typeIndex = res.data.feeType
-				this.zjhmVal = res.data.idNo
-				this.zjlxId = res.data.idType
-				this.xmVal = res.data.name
-				this.mzVal = res.data.nationality
-				this.sjhVal = res.data.phone
-				this.sexIndex = res.data.sex
-				if(this.sjhVal){
-					this.hasPhone = true
-				}
-
-				this.cardTypeList.forEach((item, index) => {
-					if(item.id == this.zjlxId){
-						this.zjlxVal = item.name
+				if(res.data){
+					this.canChange = false
+					this.srFormat = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
+					this.srVal = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
+					this.ybkhVal = res.data.feeNo
+					this.typeIndex = res.data.feeType
+					this.zjhmVal = res.data.idNo
+					this.zjlxId = res.data.idType
+					this.xmVal = res.data.name
+					this.mzVal = res.data.nationality
+					this.sjhVal = res.data.phone
+					this.sexIndex = res.data.sex
+					if(this.xmVal){
+						this.hasXm = true
 					}
-				})
+					if(this.zjlxId){
+						this.hasZjlx = true
+					}
+					if(this.zjhmVal){
+						this.hasZjhm = true
+					}
+					if(this.sexIndex){
+						this.hasSex = true
+					}
+					if(this.mzVal){
+						this.hasMz = true
+					}
+					if(this.srVal){
+						this.hasSr = true
+					}
+					if(this.typeIndex){
+						this.hasFb = true
+					}
+					if(this.ybkhVal){
+						this.hasYbkh = true
+					}
+					if(this.sjhVal){
+						this.hasPhone = true
+					}
+
+					this.cardTypeList.forEach((item, index) => {
+						if(item.id == this.zjlxId){
+							this.zjlxVal = item.name
+						}
+					})
+				}else{
+					this.srFormat = util.getBirthdayFromIdCard(this.zjhmVal)
+					this.srVal = util.getBirthdayFromIdCard(this.zjhmVal)
+				}
 			}).catch(err => {
 				console.log('getPatientInfo-err', err)
 			})
@@ -432,7 +469,7 @@ export default {
 			return val
 		},
 		showCardTypeFn(){
-			if(!canChange) return
+			if(this.hasZjlx) return
 
 			this.showCardType = true
 		},
@@ -440,22 +477,22 @@ export default {
 			this.showRelation = true
 		},
 		showDateFn() {
-			if(!canChange) return
+			if(this.hasSr) return
 
 			this.showDate = true
 		},
 		showNationFn() {
-			if(!canChange) return
+			if(this.hasMz) return
 
 			this.showNation = true
 		},
 		changeSex(idx){
-			if(!canChange) return
+			if(this.hasSex) return
 
 			this.sexIndex = idx
 		},
 		changeType(idx){
-			if(!canChange) return
+			if(this.hasFb) return
 
 			this.typeIndex = idx
 		},
@@ -519,6 +556,12 @@ export default {
 					font-size .28rem
 					color #8B8B8B
 					line-height .4rem
+				input[disabled]
+					color #999
+					-webkit-opacity 1
+					-webkit-text-fill-color #999
+					opacity 1 !important
+					background-color  #fff
 				img
 					margin-left .06rem
 					width .24rem

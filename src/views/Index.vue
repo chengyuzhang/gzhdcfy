@@ -15,14 +15,14 @@
 	ul.items
 		li(v-for="(item, index) in items" :key="item.id" @click="toPage(index)")
 			.img
-				<img v-if="index == 0" src="@/assets/imgs/hsjc.png" alt="">
-				<img v-if="index == 1" src="@/assets/imgs/zjjs.png" alt="">
-				<img v-if="index == 2" src="@/assets/imgs/tjyy.png" alt="">
-				<img v-if="index == 3" src="@/assets/imgs/jzxz.png" alt="">
-				<img v-if="index == 4" src="@/assets/imgs/yfxx.png" alt="">
-				<img v-if="index == 5" src="@/assets/imgs/yyjj.png" alt="">
-				<img v-if="index == 6" src="@/assets/imgs/yydt.png" alt="">
-				<img v-if="index == 7" src="@/assets/imgs/yqwz.png" alt="">
+				//- <img v-if="index == 0" src="@/assets/imgs/hsjc.png" alt="">
+				<img v-if="index == 0" src="@/assets/imgs/zjjs.png" alt="">
+				//- <img v-if="index == 2" src="@/assets/imgs/tjyy.png" alt="">
+				<img v-if="index == 1" src="@/assets/imgs/jzxz.png" alt="">
+				<img v-if="index == 2" src="@/assets/imgs/yfxx.png" alt="">
+				<img v-if="index == 3" src="@/assets/imgs/yyjj.png" alt="">
+				<img v-if="index == 4" src="@/assets/imgs/yydt.png" alt="">
+				<img v-if="index == 5" src="@/assets/imgs/yqwz.png" alt="">
 			p {{item.title}}
 	.banner
 		<van-swipe class="my-swipe" :autoplay="3000" autoplay="false" indicator-color="white">
@@ -130,15 +130,15 @@ export default {
 			yydtList: [],
 			yyxxList: [],
 			items: [
-				{
-					title: '核酸检测'
-				},
+				// {
+				// 	title: '核酸检测'
+				// },
 				{
 					title: '专家介绍'
 				},
-				{
-					title: '体检预约'
-				},
+				// {
+				// 	title: '体检预约'
+				// },
 				{
 					title: '就诊须知'
 				},
@@ -540,7 +540,7 @@ export default {
 				font-size .32rem
 				color #576B95
 	.fade-enter-active, .fade-leave-active {
-		transition: opacity .2s;
+		transition: opacity .5s;
 	}
 	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
 		opacity: 0;
