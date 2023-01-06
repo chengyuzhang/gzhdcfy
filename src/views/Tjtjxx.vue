@@ -9,7 +9,7 @@
 		li
 			span 姓名
 			.r
-				input(v-model="xmVal" placeholder="请输入就诊人真实姓名")
+				input(v-model="xmVal" :disabled="hasXm" placeholder="请输入就诊人真实姓名")
 		li(@click="showCardTypeFn")
 			span 证件类型
 			.r
@@ -18,7 +18,7 @@
 		li
 			span 证件号码
 			.r
-				input(v-model="zjhmVal" placeholder="请输入证件号码")
+				input(v-model="zjhmVal" :disabled="hasZjhm" placeholder="请输入证件号码")
 		li
 			span 性别
 			ol.r
@@ -54,12 +54,12 @@
 		li
 			span 医保卡号
 			.r
-				input(v-model="ybkhVal" placeholder="请输入医保卡号")
+				input(v-model="ybkhVal" :disabled="hasYbkh" placeholder="请输入医保卡号")
 				img(src="@/assets/imgs/scan.png")
 		li
 			span 手机号
 			.r
-				input(v-model="sjhVal" placeholder="请输入就诊人手机号码")
+				input(v-model="sjhVal" :disabled="hasPhone" placeholder="请输入就诊人手机号码")
 		li
 			span 验证码
 			.r
@@ -67,14 +67,14 @@
 				i(v-if="!iBtn") {{numStr}}s
 				button(v-if="iBtn" @click="getCode") 获取验证码
 	.btn(v-if="showList")
-		button(@click="addTjXx") 提交
+		button(@click="addPatient") 提交就诊人信息
 	ul(v-if="!showList")
 		li
 			span 身份证号码
 			.r
 				input(v-model="zjhmVal" placeholder="请输入身份证号码")
 	.btn(v-if="!showList")
-		button(@click="getPatientInfo") 提交
+		button(@click="getPatientInfo") 查询就诊人信息
 	<van-popup v-model="showDate" position="bottom">
 		van-datetime-picker(
 			v-model="currentDate"
@@ -121,7 +121,6 @@
 <script>
 import { patientAbout, tool } from '@/service/api.js'
 const util= require('../util/util.js')
-
 export default {
 
 	name: 'Tjjzr',
@@ -240,8 +239,18 @@ export default {
 			srFormat: '',
 			numStr: 60,
 			iBtn: true,
-			canChange: true
+			hasXm: false,
+			hasZjlx: false,
+			hasZjhm: false,
+			hasSex: false,
+			hasMz: false,
+			hasSr: false,
+			hasFb: false,
+			hasYbkh: false,
+			hasPhone: false,
 		}
+	},
+	mounted(){
 	},
 	methods: {
 		smsCode(){
@@ -258,41 +267,76 @@ export default {
 			})
 		},
 		getPatientInfo(){
+
+			if(!this.zjhmVal){
+				this.$toast({
+					message: '请输入证件号码！',
+					duration: 1500
+				})
+				return
+			}
+
 			patientAbout.getPatientInfo({
 				idNo: this.zjhmVal
 			}).then(res => {
 				this.showList = true
+				
+				console.log('getPatientInfo-res', res)
 
 				if(res.data){
-					this.canChange = false
-				}
-
-				console.log('getPatientInfo-res', res)
-				this.srFormat = res.data.birthday
-				this.srVal = res.data.birthday
-				this.ybkhVal = res.data.feeNo
-				this.typeIndex = res.data.feeType
-				this.zjhmVal = res.data.idNo
-				this.zjlxId = res.data.idType
-				this.xmVal = res.data.name
-				this.mzVal = res.data.nationality
-				this.sjhVal = res.data.phone
-				this.sexIndex = res.data.sex
-				if(this.sjhVal){
-					this.hasPhone = true
-				}
-
-				this.cardTypeList.forEach((item, index) => {
-					if(item.id == this.zjlxId){
-						this.zjlxVal = item.name
+					this.srFormat = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
+					this.srVal = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
+					this.ybkhVal = res.data.feeNo
+					this.typeIndex = res.data.feeType
+					this.zjhmVal = res.data.idNo
+					this.zjlxId = res.data.idType
+					this.xmVal = res.data.name
+					this.mzVal = res.data.nationality
+					this.sjhVal = res.data.phone
+					this.sexIndex = res.data.sex
+					if(this.xmVal){
+						this.hasXm = true
 					}
-				})
+					if(this.zjlxId){
+						this.hasZjlx = true
+					}
+					if(this.zjhmVal){
+						this.hasZjhm = true
+					}
+					if(this.sexIndex){
+						this.hasSex = true
+					}
+					if(this.mzVal){
+						this.hasMz = true
+					}
+					if(this.srVal){
+						this.hasSr = true
+					}
+					if(this.typeIndex){
+						this.hasFb = true
+					}
+					if(this.ybkhVal){
+						this.hasYbkh = true
+					}
+					if(this.sjhVal){
+						this.hasPhone = true
+					}
+
+					this.cardTypeList.forEach((item, index) => {
+						if(item.id == this.zjlxId){
+							this.zjlxVal = item.name
+						}
+					})
+				}else{
+					this.srFormat = util.getBirthdayFromIdCard(this.zjhmVal)
+					this.srVal = util.getBirthdayFromIdCard(this.zjhmVal)
+				}
+
 			}).catch(err => {
 				console.log('getPatientInfo-err', err)
 			})
 		},
-		addTjXx(){
-			 console.log('点击了提交1')
+		addPatient(){
 			if(!this.gxId){
 				this.$toast({
 					message: '请选择就诊人与本人关系！',
@@ -371,29 +415,31 @@ export default {
 				return
 			}
 
-			console.log('点击了提交2')
-
-			// patientAbout.addTjXx({
-			//  birthday: this.srFormat,
-			//  feeNo: this.ybkhVal,
-			//  feeType: this.typeIndex,
-			//  idNo: this.zjhmVal,
-			//  idType: this.zjlxId,
-			//  name: this.xmVal,
-			//  nationality: this.mzVal,
-			//  phone: this.sjhVal,
-			//  relation: this.gxId,
-			//  sex: this.sexIndex,
-			//  smsCode: this.yzmVal,
-			// }).then(res => {
-			//  console.log('addTjXx-res', res)
-
-			//  this.$router.push({
-			//      path: `/xzhy-tj?id=`
-			//  })
-			// }).catch(err => {
-			//  console.log('addTjXx-err', err)
-			// })
+			patientAbout.addPatient({
+				birthday: this.srFormat,
+				feeNo: this.ybkhVal,
+				feeType: this.typeIndex,
+				idNo: this.zjhmVal,
+				idType: this.zjlxId,
+				name: this.xmVal,
+				nationality: this.mzVal,
+				phone: this.sjhVal,
+				relation: this.gxId,
+				sex: this.sexIndex,
+				smsCode: this.yzmVal,
+			}).then(res => {
+				console.log('addPatient-res', res)
+				if(res.code == 200){
+					this.$toast({
+						message: '添加就诊人成功',
+						duration: 1200
+					})
+					this.$router.go(-1)
+				}
+				
+			}).catch(err => {
+				console.log('addPatient-err', err)
+			})
 		},
 		getCardTypeFn(val){
 			this.showCardType = false
@@ -417,6 +463,8 @@ export default {
 			this.srVal = `${year}年${month + 1}月${day}日`
 			this.srFormat = `${year}-${util.formatNumber(month + 1)}-${util.formatNumber(day)}`
 
+			console.log()
+
 			this.showDate = false
 		},
 		formatter(type, val) {
@@ -432,7 +480,7 @@ export default {
 			return val
 		},
 		showCardTypeFn(){
-			if(!this.canChange) return
+			if(this.hasZjlx) return
 
 			this.showCardType = true
 		},
@@ -440,23 +488,23 @@ export default {
 			this.showRelation = true
 		},
 		showDateFn() {
-			if(!this.canChange) return
+			if(this.hasSr) return
 
 			this.showDate = true
 		},
 		showNationFn() {
-			if(!this.canChange) return
+			if(this.hasMz) return
 
 			this.showNation = true
 		},
 		changeSex(idx){
-			if(!this.canChange) return
+			if(this.hasSex) return
 
 			this.sexIndex = idx
 		},
 		changeType(idx){
-			if(!this.canChange) return
-
+			if(this.hasFb) return
+				
 			this.typeIndex = idx
 		},
 		getCode(){
@@ -524,7 +572,7 @@ export default {
 					-webkit-opacity 1
 					-webkit-text-fill-color #999
 					opacity 1 !important
-					background-color  #fff
+					background-color #fff
 				img
 					margin-left .06rem
 					width .24rem

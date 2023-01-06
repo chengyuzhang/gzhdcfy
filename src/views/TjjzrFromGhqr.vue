@@ -237,8 +237,16 @@ export default {
 			sjhVal: '',
 			yzmVal: '',
 			srFormat: '',
-			numStr: 10,
+			numStr: 60,
 			iBtn: true,
+			hasXm: false,
+			hasZjlx: false,
+			hasZjhm: false,
+			hasSex: false,
+			hasMz: false,
+			hasSr: false,
+			hasFb: false,
+			hasYbkh: false,
 			hasXm: false,
 			hasZjlx: false,
 			hasZjhm: false,
@@ -268,6 +276,15 @@ export default {
 			})
 		},
 		getPatientInfo(){
+
+			if(!this.zjhmVal){
+				this.$toast({
+					message: '请输入证件号码！',
+					duration: 1500
+				})
+				return
+			}
+
 			patientAbout.getPatientInfo({
 				idNo: this.zjhmVal
 			}).then(res => {
