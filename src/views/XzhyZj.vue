@@ -83,7 +83,9 @@
 						img(v-if="timeIndex != index" src="@/assets/imgs/space.png")
 						img(v-if="timeIndex == index" src="@/assets/imgs/dot.png")
 						p {{item.startTime}}-{{item.endTime}}
-				button(@click="timeShow = false") 取消
+				.btn
+					button(@click="timeShow = false") 取消
+					button(@click="beOk") 确定
 	transition(name="fade")
 		.calendar(v-if="showCalendar" @click.self="showCalendar = false")
 			.con
@@ -135,6 +137,7 @@ export default {
 			weekDay: 0,
 			timeShow: false,
 			timeIndex: 0,
+			timeId: '',
 			date: '',
 			showCalendar: false,
 			tabIndex: 0,
@@ -339,12 +342,15 @@ export default {
 				path: `/ksjs?id=${this.officeId}`
 			})
 		},
+
+		beOk(){
+			this.$router.push({
+				path: `/ghqr?id=${this.timeId}`
+			})
+		},
 		getTimeZone(idx, obj){
 			this.timeIndex = idx
-
-			this.$router.push({
-				path: `/ghqr?id=${obj.id}`
-			})
+			this.timeId = obj.id
 		},
 		formatDate(date) {
 			return `${date.getMonth() + 1}/${date.getDate()}`
@@ -584,13 +590,18 @@ export default {
 						font-size .28rem
 						color #333
 						line-height .4rem
-			button
-				width 100%
-				height 1.1rem
-				line-height 1.1rem
-				text-align center
-				font-size .32rem
-				color #999
+			.btn
+				display flex
+				button
+					width 50%
+					height 1.1rem
+					line-height 1.1rem
+					text-align center
+					font-size .32rem
+					color #999
+				button:last-of-type
+					color #333
+					border-left 1px solid #E5E5E5
 
 	.top
 		padding 0 .3rem

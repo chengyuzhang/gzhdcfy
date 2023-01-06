@@ -250,31 +250,31 @@ export default {
 		toPage(idx){
 			let path = ''
 			switch(idx){
+				// case 0:
+				// 	this.showGhxz = true
+				// 	this.showSelectZone = true
+				// 	this.isHs = true
+				// break;
 				case 0:
-					this.showGhxz = true
-					this.showSelectZone = true
-					this.isHs = true
-				break;
-				case 1:
 					path = '/zjjs'
 				break;
-				case 2:
-					// path = '/tjtjxx'
-					path = '/'
-				break;
-				case 3:
+				// case 2:
+				// 	// path = '/tjtjxx'
+				// 	path = '/'
+				// break;
+				case 1:
 					path = '/jzxz'
 				break;
-				case 4:
+				case 2:
 					path = '/yfxx'
 				break;
-				case 5:
+				case 3:
 					path = '/yyjj'
 				break;
-				case 6:
+				case 4:
 					path = '/yydt'
 				break;
-				case 7:
+				case 5:
 					path = '/yqwz'
 				break;
 			}
