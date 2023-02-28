@@ -28,7 +28,7 @@
 		<van-swipe class="my-swipe" :autoplay="3000" autoplay="false" indicator-color="white">
 			<van-swipe-item v-for="(item,index) in ads" :key="item.id">
 				img(:src="item.picture")
-				a(:href="item.linkUrl") 
+				a(:href="item.linkUrl")
 			</van-swipe-item>
 		</van-swipe>
 	.infos
@@ -46,7 +46,7 @@
 		.items(v-if="tabIndex == 1")
 			Item(v-for="(item, index) in yyxxList" :key="item.id" :item="item" :Event="toDetailPage")
 	p.ba(style="position:absolute;ledt:0;bottom:1rem;") 京ICP备<a href="https://beian.miit.gov.cn/">2022025725号-1</a>
-	
+
 	transition(name="fade")
 		TabBar(v-if="showTabBar" idx="0")
 	transition(name="fade")
@@ -488,7 +488,7 @@ export default {
 				font-weight 500
 				text-align center
 				color #999
-	.ghxz-container 
+	.ghxz-container
 		position fixed
 		left 0
 		top 0

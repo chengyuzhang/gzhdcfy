@@ -59,7 +59,8 @@
 		li
 			span 手机号
 			.r
-				input(v-model="sjhVal" :disabled="hasPhone" placeholder="请输入就诊人手机号码")
+				input(v-model="phoneHide" v-if="phoneHide" :disabled="hasPhone" placeholder="请输入就诊人手机号码")
+				input(v-model="sjhVal" v-else :disabled="hasPhone" placeholder="请输入就诊人手机号码")
 		li
 			span 验证码
 			.r
@@ -256,6 +257,7 @@ export default {
 			hasFb: false,
 			hasYbkh: false,
 			hasPhone: false,
+			phoneHide: ''
 		}
 	},
 	created(){
@@ -307,6 +309,7 @@ export default {
 					this.mzVal = res.data.nationality
 					this.sjhVal = res.data.phone
 					this.sexIndex = res.data.sex
+					this.phoneHide = res.data.phoneHide
 					if(this.xmVal){
 						this.hasXm = true
 					}
@@ -427,7 +430,7 @@ export default {
 				})
 				return
 			}
-			
+
 			patientAbout.addPatient({
 				birthday: this.srFormat,
 				feeNo: this.ybkhVal,
@@ -459,7 +462,7 @@ export default {
 			this.gxVal = val.name
 			this.gxId = val.id
 		},
-		getNationFn(val){				
+		getNationFn(val){
 			this.showNation = false
 			this.mzVal = val
 		},

@@ -265,6 +265,8 @@ export default {
 			}).then(res => {
 				console.log('getOfficeDutyTimes-res', res)
 				this.timeList = res.data
+				this.timeId = this.timeList[0].id
+
 			}).catch(err => {
 				console.log('getOfficeDutyTimes-err', err)
 			})

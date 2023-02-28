@@ -29,7 +29,8 @@ export const api = {
 		    })
             return config
 	    }, (err) => {
-	            return Promise.reject(err)
+            Indicator.close()
+	        return Promise.reject(err)
 	    })
 	    axios.interceptors.response.use((response) => {
             Indicator.close()

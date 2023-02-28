@@ -59,7 +59,8 @@
 		li
 			span 手机号
 			.r
-				input(v-model="sjhVal" :disabled="hasPhone" placeholder="请输入就诊人手机号码")
+				input(v-model="phoneHide" v-if="phoneHide" :disabled="hasPhone" placeholder="请输入就诊人手机号码")
+				input(v-model="sjhVal" v-else :disabled="hasPhone" placeholder="请输入就诊人手机号码")
 		li
 			span 验证码
 			.r
@@ -248,6 +249,7 @@ export default {
 			hasFb: false,
 			hasYbkh: false,
 			hasPhone: false,
+			phoneHide: ''
 		}
 	},
 	mounted(){
@@ -267,7 +269,6 @@ export default {
 			})
 		},
 		getPatientInfo(){
-
 			if(!this.zjhmVal){
 				this.$toast({
 					message: '请输入证件号码！',
@@ -280,7 +281,7 @@ export default {
 				idNo: this.zjhmVal
 			}).then(res => {
 				this.showList = true
-				
+
 				console.log('getPatientInfo-res', res)
 
 				if(res.data){
@@ -294,6 +295,7 @@ export default {
 					this.mzVal = res.data.nationality
 					this.sjhVal = res.data.phone
 					this.sexIndex = res.data.sex
+					this.phoneHide = res.data.phoneHide
 					if(this.xmVal){
 						this.hasXm = true
 					}
@@ -436,7 +438,7 @@ export default {
 					})
 					this.$router.go(-1)
 				}
-				
+
 			}).catch(err => {
 				console.log('addPatient-err', err)
 			})
@@ -504,7 +506,7 @@ export default {
 		},
 		changeType(idx){
 			if(this.hasFb) return
-				
+
 			this.typeIndex = idx
 		},
 		getCode(){
