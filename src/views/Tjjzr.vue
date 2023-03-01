@@ -40,6 +40,16 @@
 			.r
 				input(v-model="srVal" disabled placeholder="请选择就诊人生日")
 				img(src="@/assets/imgs/r.png")
+
+		li(@click="showZoneFn")
+			span 地区
+			.r
+				input(v-model="zoneVal" disabled placeholder="请选择所在地区")
+				img(src="@/assets/imgs/r.png")
+		li(v-if="zoneVal")
+			span 详细地址
+			.r
+				input(v-model="addressVal" :disabled="hasAddress" placeholder="请输入详细地址")
 		li
 			span 费别
 			ol.r
@@ -117,18 +127,27 @@
 			@cancel="showCardType = false"
 		)
 	</van-popup>
+	<van-popup v-model="showZone" position="bottom">
+		<van-area title="地区" :area-list="areaList" @confirm="getZoneVal" @cancel="cancelZoneFn" />
+	</van-popup>
 </template>
 
 <script>
 import { patientAbout, tool } from '@/service/api.js'
 const util= require('../util/util.js')
+import { areaList } from '@vant/area-data'
 export default {
 
 	name: 'Tjjzr',
 
 	data () {
 		return {
-			showList: false,
+			areaList,
+			showZone: false,
+			zoneVal: '',
+			hasAddress: false,
+			addressVal: '',
+			showList: true,
 			showCardType: false,
 			cardTypeList: [{
 				name: '身份证',
@@ -255,6 +274,21 @@ export default {
 	mounted(){
 	},
 	methods: {
+		showZoneFn(){
+			this.showZone = true
+		},
+		getZoneVal(val){
+			console.log('zone-val', val)
+			let zoneVal = ''
+			val.forEach((item, index) => {
+				zoneVal = zoneVal + item.name
+			})
+			this.zoneVal = zoneVal
+			this.showZone = false
+		},
+		cancelZoneFn(val){
+			this.showZone = false
+		},
 		smsCode(){
 			tool.smsCode({
 				phone: this.sjhVal
@@ -296,6 +330,10 @@ export default {
 					this.sjhVal = res.data.phone
 					this.sexIndex = res.data.sex
 					this.phoneHide = res.data.phoneHide
+
+					if(this.data.addressVal){
+			        	this.hasAddress = true
+			        }
 					if(this.xmVal){
 						this.hasXm = true
 					}
