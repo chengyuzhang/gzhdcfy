@@ -40,6 +40,15 @@
 			.r
 				input(v-model="srVal" disabled placeholder="请选择就诊人生日")
 				img(src="@/assets/imgs/r.png")
+		li(@click="showZoneFn")
+			span 地区
+			.r
+				input(v-model="zoneVal" disabled placeholder="请选择所在地区")
+				img(src="@/assets/imgs/r.png")
+		li
+			span 详细地址
+			.r
+				input(v-model="addressVal" :disabled="hasAddress" placeholder="请输入详细地址")
 		li
 			span 费别
 			ol.r
@@ -122,6 +131,7 @@
 <script>
 import { patientAbout, tool } from '@/service/api.js'
 const util= require('../util/util.js')
+import { areaList } from '@vant/area-data'
 
 export default {
 
@@ -129,6 +139,11 @@ export default {
 
 	data () {
 		return {
+			areaList,
+			showZone: false,
+			zoneVal: '',
+			hasAddress: false,
+			addressVal: '',
 			showList: false,
 			id: '',
 			showCardType: false,
@@ -264,6 +279,21 @@ export default {
 		this.id = this.$route.query.id
 	},
 	methods: {
+		showZoneFn(){
+			this.showZone = true
+		},
+		getZoneVal(val){
+			console.log('zone-val', val)
+			let zoneVal = ''
+			val.forEach((item, index) => {
+				zoneVal = zoneVal + item.name
+			})
+			this.zoneVal = zoneVal
+			this.showZone = false
+		},
+		cancelZoneFn(val){
+			this.showZone = false
+		},
 		smsCode(){
 			tool.smsCode({
 				phone: this.sjhVal
@@ -310,6 +340,9 @@ export default {
 					this.sjhVal = res.data.phone
 					this.sexIndex = res.data.sex
 					this.phoneHide = res.data.phoneHide
+					this.addressVal = res.data.address
+					this.zoneVal = res.data.region
+
 					if(this.xmVal){
 						this.hasXm = true
 					}
@@ -423,6 +456,20 @@ export default {
 				})
 				return
 			}
+			if(!this.zoneVal){
+				this.$toast({
+					message: '请选择地区！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.addressVal){
+				this.$toast({
+					message: '请输入详细地址！',
+					duration: 1200
+				})
+				return
+			}
 			if(!this.yzmVal){
 				this.$toast({
 					message: '请输入验证码！',
@@ -442,6 +489,8 @@ export default {
 				phone: this.sjhVal,
 				relation: this.gxId,
 				sex: this.sexIndex,
+				region: this.zoneVal,
+				address: this.addressVal,
 				smsCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)

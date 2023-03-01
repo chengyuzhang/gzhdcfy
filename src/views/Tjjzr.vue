@@ -46,7 +46,7 @@
 			.r
 				input(v-model="zoneVal" disabled placeholder="请选择所在地区")
 				img(src="@/assets/imgs/r.png")
-		li(v-if="zoneVal")
+		li
 			span 详细地址
 			.r
 				input(v-model="addressVal" :disabled="hasAddress" placeholder="请输入详细地址")
