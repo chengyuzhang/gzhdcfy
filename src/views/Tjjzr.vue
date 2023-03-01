@@ -147,7 +147,7 @@ export default {
 			zoneVal: '',
 			hasAddress: false,
 			addressVal: '',
-			showList: true,
+			showList: false,
 			showCardType: false,
 			cardTypeList: [{
 				name: '身份证',
@@ -330,6 +330,8 @@ export default {
 					this.sjhVal = res.data.phone
 					this.sexIndex = res.data.sex
 					this.phoneHide = res.data.phoneHide
+					this.addressVal = res.data.address
+					this.zoneVal = res.data.region
 
 					if(this.data.addressVal){
 			        	this.hasAddress = true
@@ -447,6 +449,20 @@ export default {
 				})
 				return
 			}
+			if(!this.zoneVal){
+				this.$toast({
+					message: '请选择地区！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.addressVal){
+				this.$toast({
+					message: '请输入详细地址！',
+					duration: 1200
+				})
+				return
+			}
 			if(!this.yzmVal){
 				this.$toast({
 					message: '请输入验证码！',
@@ -466,6 +482,8 @@ export default {
 				phone: this.sjhVal,
 				relation: this.gxId,
 				sex: this.sexIndex,
+				region: this.zoneVal,
+				address: this.addressVal,
 				smsCode: this.yzmVal,
 			}).then(res => {
 				console.log('addPatient-res', res)

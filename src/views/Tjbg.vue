@@ -12,13 +12,13 @@
 							p <span v-if="item.feeType == 1" class="zf">自费</span><span v-if="item.feeType == 2" class="ybbx">医保报销</span>
 					img(v-if="activeIndex == index" src="@/assets/imgs/ok.png")
 					img(v-else src="@/assets/imgs/ok-space.png")
-	ul
+	ul(v-if="bgList.length")
 		li(v-for="(item, index) in bgList" @click="toPage(item)")
 			.l
 				h5 {{item.tjmc}}
 				p {{item.tjrq}}
 			img(src="@/assets/imgs/r.png")
-	.none(v-if="!bgList.length || !bgList.length")
+	.none(v-else)
 		img(src="@/assets/imgs/none.png")
 		p 暂无检查结果
 
