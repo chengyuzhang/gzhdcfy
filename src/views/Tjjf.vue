@@ -3,7 +3,7 @@
 	<p @click="toPage">查询缴费记录<img src="@/assets/imgs/r.png" alt=""></p>
 	<ul>
 		<li v-for="item in 5">
-			<h5><span>龋易感检测</span><img src="@/assets/imgs/pay.png" alt=""></h5>
+			<h5 @click="toPay"><span>龋易感检测</span><img src="@/assets/imgs/pay.png" alt=""></h5>
 			<div>
 				<p class="title"><span>项目</span><i>家庭环境量表、儿童气质、行为问题量表、多动症筛、感觉统合测查、90项</i></p>
 				<p class="num"><span>金额</span><i>￥200</i></p>
@@ -28,7 +28,13 @@ export default {
   		this.$router.push({
   			path: '/jfjl'
   		})
-  	}
+  	},
+  	toPay(){
+  		this.$router.push({
+  			path: '/tjjf-form'
+  		})
+  	},
+
   }
 }
 </script>

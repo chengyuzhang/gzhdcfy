@@ -339,6 +339,14 @@ const routes = [
 				path: '/jfjl',
 				name: 'Jfjl',
 				component: () => import(/* webpackChunkName: "about" */ '../views/Jfjl.vue')
+			},
+			{
+				meta: {
+					title: '体检缴费'
+				},
+				path: '/tjjf-form',
+				name: 'TjjfForm',
+				component: () => import(/* webpackChunkName: "about" */ '../views/TjjfForm.vue')
 			}
 		]
 	}

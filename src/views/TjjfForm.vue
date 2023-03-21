@@ -1,0 +1,288 @@
+<template lang="pug">
+.tjjzr-container
+	ul
+		li
+			span 幼儿园名称
+			.r
+				input(v-model="yeymc" placeholder="请输入幼儿园名称")
+		li
+			span 幼儿姓名
+			.r
+				input(v-model="yexm" placeholder="请输入幼儿姓名")
+		li
+			span 幼儿性别
+			ol.r
+				li(@click="changeSex(1)")
+					img(v-if="sexIndex == 1" src="@/assets/imgs/dot.png")
+					img(v-else src="@/assets/imgs/space.png")
+					span 男
+				li(@click="changeSex(2)")
+					img(v-if="sexIndex == 2" src="@/assets/imgs/dot.png")
+					img(v-else src="@/assets/imgs/space.png")
+					span 女
+		li(@click="showNationFn")
+			span 班级
+			.r
+				input(v-model="bj" disabled placeholder="请选班级")
+				img(src="@/assets/imgs/r.png")
+		li
+			span 家长姓名
+			.r
+				input(v-model="jzxm" placeholder="请输入家长姓名")
+		li
+			span 手机号
+			.r
+				//- input(v-model="phoneHide" v-if="phoneHide" :disabled="hasPhone" placeholder="请输入手机号")
+				input(v-model="sjhVal" placeholder="请输入手机号")
+	.btn
+		button(@click="addPatient") 提交信息去缴费
+	<van-popup v-model="showNation" position="bottom">
+		van-picker(
+			title="选择班级"
+			show-toolbar
+			:columns="nationList"
+			@confirm="getNationFn"
+			@cancel="showNation = false"
+		)
+	</van-popup>
+</template>
+
+<script>
+import { patientAbout, tool } from '@/service/api.js'
+const util= require('../util/util.js')
+
+export default {
+
+	name: 'TjjzrFromGhqr',
+
+	data () {
+		return {
+			id: '',
+			nationList: [
+				"汉族",
+				"蒙古族",
+				"回族",
+				"藏族",
+				"维吾尔族",
+				"苗族",
+				"彝族",
+				"壮族",
+				"布依族",
+				"朝鲜族",
+				"满族",
+				"侗族",
+				"瑶族",
+				"白族",
+				"土家族",
+				"哈尼族",
+				"哈萨克族",
+				"傣族",
+				"黎族",
+				"傈僳族",
+				"佤族",
+				"畲族",
+				"高山族",
+				"拉祜族",
+				"水族",
+				"东乡族",
+				"纳西族",
+				"景颇族",
+				"柯尔克孜族",
+				"土族",
+				"达斡尔族",
+				"仫佬族",
+				"羌族",
+				"布朗族",
+				"撒拉族",
+				"毛南族",
+				"仡佬族",
+				"锡伯族",
+				"阿昌族",
+				"普米族",
+				"塔吉克族",
+				"怒族",
+				"乌孜别克族",
+				"俄罗斯族",
+				"鄂温克族",
+				"德昂族",
+				"保安族",
+				"裕固族",
+				"京族",
+				"塔塔尔族",
+				"独龙族",
+				"鄂伦春族",
+				"赫哲族",
+				"门巴族",
+				"珞巴族",
+				"基诺族"
+			],
+			showNation: false,
+			sexIndex: 0,
+			yeymc: '',
+			yexm: '',
+			bj: '',
+			jzxm: '',
+			sjhVal: '',
+		}
+	},
+	created(){
+		this.id = this.$route.query.id
+	},
+	methods: {
+		addPatient(){
+			if(!this.yeymc){
+				this.$toast({
+					message: '请输入幼儿园名称！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.sexIndex){
+				this.$toast({
+					message: '请选择性别！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.bj){
+				this.$toast({
+					message: '请选择班级！',
+					duration: 1200
+				})
+				return
+			}
+
+			if(!this.jzxm){
+				this.$toast({
+					message: '请输入家长姓名！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.sjhVal){
+				this.$toast({
+					message: '请输入手机号码！',
+					duration: 1200
+				})
+				return
+			}
+
+			if(!util.checkPhone(this.sjhVal)){
+				this.$toast({
+					message: '请输入正确手机号！',
+					duration: 1500
+				})
+				return
+			}
+
+			console.log('yeymc', this.yeymc)
+			console.log('yexm', this.yexm)
+			console.log('sexIndex', this.sexIndex)
+			console.log('bj', this.bj)
+			console.log('jzxm', this.jzxm)
+			console.log('sjhVal', this.sjhVal)
+		},
+		getNationFn(val){
+			this.showNation = false
+			this.bj = val
+		},
+		showNationFn() {
+			this.showNation = true
+		},
+		changeSex(idx){
+			if(this.hasSex) return
+
+			this.sexIndex = idx
+		},
+	}
+}
+</script>
+
+<style lang="stylus" scoped>
+.tjjzr-container
+	width 100%
+	height 100%
+	overflow hidden
+	overflow-y auto
+	background #F8F8F8
+	ul
+		>li
+			display flex
+			justify-content space-between
+			align-items center
+			height 1rem
+			padding 0 .3rem
+			border-bottom 1px solid #F8F8F8
+			background #fff
+			span
+				font-size .32rem
+				color #333
+				line-height .44rem
+			div.r
+				display flex
+				align-items center
+				input
+					text-align right
+					font-size .28rem
+					color #8B8B8B
+					line-height .4rem
+				input[disabled]
+					color #999
+					-webkit-opacity 1
+					-webkit-text-fill-color #999
+					opacity 1 !important
+					background-color  #fff
+				img
+					margin-left .06rem
+					width .24rem
+					height .24rem
+				button
+					margin-left .44rem
+					width 1.44rem
+					height .52rem
+					line-height .52rem
+					text-align center
+					font-size .24rem
+					color #437DD2
+					border 1px solid #437DD2
+					border-radius .08rem
+				i
+					margin-left .3rem
+					padding-left .3rem
+					font-size .28rem
+					color #8B8B8B
+					line-height .4rem
+					border-left 1px solid #EAEAEA
+			ol.r
+				display flex
+				li
+					display flex
+					align-items center
+					margin-left .16rem
+					img
+						margin-right .14rem
+						width .32rem
+						height .32rem
+					span
+						font-size .32rem
+						color #444
+						line-height .44rem
+		>li:first-of-type
+			margin-bottom .16rem
+	.btn
+		margin-top .88rem
+		width 100%
+		height 1.16rem
+		line-height 1.16rem
+		text-align center
+		// border-top 1px solid #eee
+		overflow hidden
+		button
+			width 5.5rem
+			height .84rem
+			line-height .84rem
+			font-size .28rem
+			color #fff
+			background #7C509D
+			border-radius .4rem
+</style>
