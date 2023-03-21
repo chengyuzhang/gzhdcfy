@@ -13,16 +13,16 @@
 				p 查询结果问医生
 	.line
 	ul.items
-		li(v-for="(item, index) in items" :key="item.id" @click="toPage(index)")
+		li(v-for="(item, index) in items" :key="item.id" @click="toPage(item.id)")
 			.img
-				//- <img v-if="index == 0" src="@/assets/imgs/hsjc.png" alt="">
-				<img v-if="index == 0" src="@/assets/imgs/zjjs.png" alt="">
-				//- <img v-if="index == 2" src="@/assets/imgs/tjyy.png" alt="">
-				<img v-if="index == 1" src="@/assets/imgs/jzxz.png" alt="">
-				<img v-if="index == 2" src="@/assets/imgs/yfxx.png" alt="">
-				<img v-if="index == 3" src="@/assets/imgs/yyjj.png" alt="">
-				<img v-if="index == 4" src="@/assets/imgs/yydt.png" alt="">
-				<img v-if="index == 5" src="@/assets/imgs/yqwz.png" alt="">
+				<img v-if="item.id == 6" src="@/assets/imgs/tjjf.png" alt="">
+				<img v-if="item.id == 0" src="@/assets/imgs/zjjs.png" alt="">
+				//- <img v-if="item.id == 2" src="@/assets/imgs/tjyy.png" alt="">
+				<img v-if="item.id == 1" src="@/assets/imgs/jzxz.png" alt="">
+				<img v-if="item.id == 2" src="@/assets/imgs/yfxx.png" alt="">
+				<img v-if="item.id == 3" src="@/assets/imgs/yyjj.png" alt="">
+				<img v-if="item.id == 4" src="@/assets/imgs/yydt.png" alt="">
+				<img v-if="item.id == 5" src="@/assets/imgs/yqwz.png" alt="">
 			p {{item.title}}
 	.banner
 		<van-swipe class="my-swipe" :autoplay="3000" autoplay="false" indicator-color="white">
@@ -134,25 +134,35 @@ export default {
 				// 	title: '核酸检测'
 				// },
 				{
-					title: '专家介绍'
+					title: '体检缴费',
+					id: 6
+				},
+				{
+					title: '专家介绍',
+					id: 0
 				},
 				// {
 				// 	title: '体检预约'
 				// },
 				{
-					title: '就诊须知'
+					title: '就诊须知',
+					id: 1
 				},
 				{
-					title: '孕妇学校'
+					title: '孕妇学校',
+					id: 2
 				},
 				{
-					title: '医院简介'
+					title: '医院简介',
+					id: 3
 				},
 				{
-					title: '医院动态'
+					title: '医院动态',
+					id: 4
 				},
 				{
-					title: '院区位置'
+					title: '院区位置',
+					id: 5
 				},
 			],
 			actions: [],
@@ -276,6 +286,9 @@ export default {
 				break;
 				case 5:
 					path = '/yqwz'
+				break;
+				case 6:
+					path = '/tjjf'
 				break;
 			}
 

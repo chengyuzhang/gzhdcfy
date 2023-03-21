@@ -323,6 +323,22 @@ const routes = [
 				path: '/login',
 				name: 'GetLogin',
 				component: () => import(/* webpackChunkName: "about" */ '../views/GetLogin.vue')
+			},
+			{
+				meta: {
+					title: '体检缴费'
+				},
+				path: '/tjjf',
+				name: 'Tjjf',
+				component: () => import(/* webpackChunkName: "about" */ '../views/Tjjf.vue')
+			},
+			{
+				meta: {
+					title: '缴费记录'
+				},
+				path: '/jfjl',
+				name: 'Jfjl',
+				component: () => import(/* webpackChunkName: "about" */ '../views/Jfjl.vue')
 			}
 		]
 	}

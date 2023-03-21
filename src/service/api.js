@@ -3,7 +3,9 @@ import { api } from './http.client.js'
 let {get, post} = api
 import qs from 'qs'
 
-let baseURL = 'http://hzx.ngrok.aojiedu.com'
+// let baseURL = 'http://hzx.ngrok.aojiedu.com'
+let baseURL = 'http://api.bjdcfybjy.com'
+
 // let baseURL1 = 'https://xiaoxapi.aoji.cn'
 
 export const apiUrl = {
