@@ -50,6 +50,7 @@
 <script>
 import { patientAbout, tool } from '@/service/api.js'
 const util= require('../util/util.js')
+import { wxApi } from '../common/wxApi.js'
 
 export default {
 
@@ -127,6 +128,7 @@ export default {
 	},
 	created(){
 		this.id = this.$route.query.id
+		// wxApi.wxAboutConfig()
 	},
 	methods: {
 		addPatient(){

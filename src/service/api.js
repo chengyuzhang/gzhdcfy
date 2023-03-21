@@ -164,3 +164,17 @@ export const login = {
 		return await get(baseURL + `/user/detail`, data, headers)
 	},
 }
+
+
+
+// 微信jssdk相关
+export const wxAbout = {
+	// 验证wx.config
+	getWxConfig (data, headers) {
+		return get(baseURL + `/mWeb/getWxConfig`, data, headers)
+	},
+	// 获取订单
+	getOrder (data, headers) {
+		return post(baseURL + `/mWeb/testPay`, data, headers)
+	}
+}
