@@ -2,11 +2,11 @@
 <div class="tjjf-container">
 	<p @click="toPage">查询缴费记录<img src="@/assets/imgs/r.png" alt=""></p>
 	<ul>
-		<li v-for="item in 5">
-			<h5 @click="toPay"><span>龋易感检测</span><img src="@/assets/imgs/pay.png" alt=""></h5>
+		<li v-for="(item, index) in list">
+			<h5 @click="toPay(item.id)"><span>{{item.productName}}</span><img src="@/assets/imgs/pay.png" alt=""></h5>
 			<div>
-				<p class="title"><span>项目</span><i>家庭环境量表、儿童气质、行为问题量表、多动症筛、感觉统合测查、90项</i></p>
-				<p class="num"><span>金额</span><i>￥200</i></p>
+				<p class="title"><span>项目</span><i>{{item.productContent}}</i></p>
+				<p class="num"><span>金额</span><i>￥{{item.productFee}}</i></p>
 			</div>
 		</li>
 	</ul>
@@ -14,27 +14,40 @@
 </template>
 
 <script>
+import { orderAbout } from '@/service/api.js'
+
 export default {
 
   name: 'Tjjf',
 
   data () {
     return {
-
+    	list: []
     }
+  },
+  created(){
+  	this.getList()
   },
   methods: {
   	toPage(){
   		this.$router.push({
-  			path: '/jfjl'
+  			path: `/jfjl`
   		})
   	},
-  	toPay(){
+  	toPay(id){
   		this.$router.push({
-  			path: '/tjjf-form'
+  			path: `/tjjf-form?id=${id}`
   		})
   	},
-
+  	async getList(){
+			await orderAbout.prodList({
+			}).then(res => {
+				console.log('orderAbout-res', res)
+				this.list = res.data
+			}).catch(err => {
+				console.log('orderAbout-err', err)
+			})
+		},
   }
 }
 </script>

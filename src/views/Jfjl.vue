@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { orderAbout } from '@/service/api.js'
+
 export default {
 
   name: 'Jfjl',
@@ -26,6 +28,20 @@ export default {
     return {
 
     }
+  },
+  created(){
+  	this.getUserOrderList()
+  },
+  methods: {
+  	async getUserOrderList(){
+			await orderAbout.userOrderList({
+			}).then(res => {
+				console.log('getUserOrderList-res', res)
+				this.list = res.data
+			}).catch(err => {
+				console.log('getUserOrderList-err', err)
+			})
+		},
   }
 }
 </script>

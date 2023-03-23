@@ -20,11 +20,15 @@
 					img(v-if="sexIndex == 2" src="@/assets/imgs/dot.png")
 					img(v-else src="@/assets/imgs/space.png")
 					span 女
-		li(@click="showNationFn")
+		//- li(@click="showNationFn")
+		//- 	span 班级
+		//- 	.r
+		//- 		input(v-model="bj" disabled placeholder="请选班级")
+		//- 		img(src="@/assets/imgs/r.png")
+		li
 			span 班级
 			.r
-				input(v-model="bj" disabled placeholder="请选班级")
-				img(src="@/assets/imgs/r.png")
+				input(v-model="bj" placeholder="请输入班级")
 		li
 			span 家长姓名
 			.r
@@ -35,7 +39,7 @@
 				//- input(v-model="phoneHide" v-if="phoneHide" :disabled="hasPhone" placeholder="请输入手机号")
 				input(v-model="sjhVal" placeholder="请输入手机号")
 	.btn
-		button(@click="addPatient") 提交信息去缴费
+		button(@click="addOrder") 提交信息去缴费
 	<van-popup v-model="showNation" position="bottom">
 		van-picker(
 			title="选择班级"
@@ -48,7 +52,7 @@
 </template>
 
 <script>
-import { patientAbout, tool } from '@/service/api.js'
+import { orderAbout, wxAbout } from '@/service/api.js'
 const util= require('../util/util.js')
 import { wxApi } from '../common/wxApi.js'
 
@@ -131,7 +135,14 @@ export default {
 		// wxApi.wxAboutConfig()
 	},
 	methods: {
-		addPatient(){
+		async addOrder(){
+			if(!this.yeymc){
+				this.$toast({
+					message: '请输入幼儿园名称！',
+					duration: 1200
+				})
+				return
+			}
 			if(!this.yeymc){
 				this.$toast({
 					message: '请输入幼儿园名称！',
@@ -148,7 +159,7 @@ export default {
 			}
 			if(!this.bj){
 				this.$toast({
-					message: '请选择班级！',
+					message: '请填写班级！',
 					duration: 1200
 				})
 				return
@@ -183,6 +194,30 @@ export default {
 			console.log('bj', this.bj)
 			console.log('jzxm', this.jzxm)
 			console.log('sjhVal', this.sjhVal)
+
+			await orderAbout.addOrder({
+				"childGrade": this.bj,
+				"childName": this.yexm,
+				"childSex": this.sexIndex,
+				"parentName": this.jzxm,
+				"parentTel": this.sjhVal,
+				"productId": this.id,
+				"schoolName": this.yeymc,
+			}).then(res => {
+				console.log('orderAbout-res', res)
+				this.getOrder(res.data)
+			}).catch(err => {
+				console.log('orderAbout-err', err)
+			})
+		},
+  		async getOrder(id){
+			await wxAbout.getOrder({
+				orderId: id
+			}).then(res => {
+				console.log('getOrder-res', res)
+			}).catch(err => {
+				console.log('getOrder-err', err)
+			})
 		},
 		getNationFn(val){
 			this.showNation = false
