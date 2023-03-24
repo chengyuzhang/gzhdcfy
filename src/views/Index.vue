@@ -17,12 +17,12 @@
 			.img
 				<img v-if="item.id == 6" src="@/assets/imgs/tjjf.png" alt="">
 				<img v-if="item.id == 0" src="@/assets/imgs/zjjs.png" alt="">
-				//- <img v-if="item.id == 2" src="@/assets/imgs/tjyy.png" alt="">
 				<img v-if="item.id == 1" src="@/assets/imgs/jzxz.png" alt="">
 				<img v-if="item.id == 2" src="@/assets/imgs/yfxx.png" alt="">
 				<img v-if="item.id == 3" src="@/assets/imgs/yyjj.png" alt="">
 				<img v-if="item.id == 4" src="@/assets/imgs/yydt.png" alt="">
 				<img v-if="item.id == 5" src="@/assets/imgs/yqwz.png" alt="">
+				<img v-if="item.id == 7" src="@/assets/imgs/tjyy.png" alt="">
 			p {{item.title}}
 	.banner
 		<van-swipe class="my-swipe" :autoplay="3000" autoplay="false" indicator-color="white">
@@ -45,7 +45,7 @@
 			Item(v-for="(item, index) in yydtList" :key="item.id" :item="item" :Event="toDetailPage")
 		.items(v-if="tabIndex == 1")
 			Item(v-for="(item, index) in yyxxList" :key="item.id" :item="item" :Event="toDetailPage")
-	p.ba(style="position:absolute;ledt:0;bottom:1rem;") 京ICP备<a href="https://beian.miit.gov.cn/">2022025725号-1</a>
+	p.ba(style="position:absolute;left:-10rem;bottom:0rem;opacity:1;") 京ICP备<a href="https://beian.miit.gov.cn/">2022025725号-1</a>
 
 	transition(name="fade")
 		TabBar(v-if="showTabBar" idx="0")
@@ -109,6 +109,7 @@
 import Item from '@/components/Item'
 import TabBar from '@/components/TabBar'
 import { index, newsAbout, noticeAbout, areaAbout } from '@/service/api.js'
+import { wxApi } from '../common/wxApi.js'
 
 export default {
 
@@ -141,9 +142,6 @@ export default {
 					title: '专家介绍',
 					id: 0
 				},
-				// {
-				// 	title: '体检预约'
-				// },
 				{
 					title: '就诊须知',
 					id: 1
@@ -164,6 +162,10 @@ export default {
 					title: '院区位置',
 					id: 5
 				},
+				{
+					title: '体检预约',
+					id: 7
+				},
 			],
 			actions: [],
 			sheetVisible: true,
@@ -176,6 +178,8 @@ export default {
 		this.getYyxxInfoList()
 		this.getAreaList()
 		this.getGhxzDetails()
+		// wxApi.wxAboutConfig()
+
 	},
 	methods: {
 		getGhxzDetails(){
@@ -268,10 +272,10 @@ export default {
 				case 0:
 					path = '/zjjs'
 				break;
-				// case 2:
-				// 	// path = '/tjtjxx'
-				// 	path = '/'
-				// break;
+				case 7:
+					// path = '/tjtjxx'
+					path = '/'
+				break;
 				case 1:
 					path = '/jzxz'
 				break;

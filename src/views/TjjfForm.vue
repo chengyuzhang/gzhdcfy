@@ -1,10 +1,15 @@
 <template lang="pug">
 .tjjzr-container
 	ul
-		li
+		//- li
+		//- 	span 幼儿园名称
+		//- 	.r
+		//- 		input(v-model="yeymc" placeholder="请输入幼儿园名称")
+		li(@click="showNationFn")
 			span 幼儿园名称
 			.r
-				input(v-model="yeymc" placeholder="请输入幼儿园名称")
+				input(v-model="yeymc" disabled placeholder="请选幼儿园名称")
+				img(src="@/assets/imgs/r.png")
 		li
 			span 幼儿姓名
 			.r
@@ -44,7 +49,8 @@
 		van-picker(
 			title="选择班级"
 			show-toolbar
-			:columns="nationList"
+			:columns="list"
+			value-key="schoolName"
 			@confirm="getNationFn"
 			@cancel="showNation = false"
 		)
@@ -128,11 +134,14 @@ export default {
 			bj: '',
 			jzxm: '',
 			sjhVal: '',
+			timer: null,
+			list: []
 		}
 	},
 	created(){
 		this.id = this.$route.query.id
-		// wxApi.wxAboutConfig()
+		wxApi.wxAboutConfig()
+		this.schoolList()
 	},
 	methods: {
 		async addOrder(){
@@ -211,17 +220,76 @@ export default {
 			})
 		},
   		async getOrder(id){
+  			let _this = this
 			await wxAbout.getOrder({
 				orderId: id
 			}).then(res => {
 				console.log('getOrder-res', res)
+				let data = res.data
+				wx.chooseWXPay({
+					timestamp: data.timeStamp,
+					nonceStr: data.nonceStr,
+					package: data.packageValue,
+					signType: data.signType,
+					paySign: data.paySign,
+					success: function (res) {
+						console.log('支付结果-sucess', res)
+
+						_this.timer = setInterval(() => {
+							_this.orderDetail(id)
+						}, 1000)
+				  	}
+				});
 			}).catch(err => {
 				console.log('getOrder-err', err)
 			})
 		},
+  		async schoolList(id){
+  			let _this = this
+			await orderAbout.schoolList().then(res => {
+				console.log('schoolList-res', res)
+				this.list = res.data
+			}).catch(err => {
+				console.log('schoolList-err', err)
+			})
+		},
+
+
+		async orderDetail(id){
+			await orderAbout.orderDetail({
+				orderId: id
+			}).then(res => {
+				console.log('orderAbout-res', res)
+				let data = res.data
+
+				if(data.orderStatus == 3){
+					clearInterval(this.timer)
+					this.$toast({
+						message: '支付失败',
+						duration: 1200
+					})
+				}
+				if(data.orderStatus == 2){
+					clearInterval(this.timer)
+					this.$router.replace({
+						path: `/zfcg?id=${id}`
+					})
+				}
+				if(data.orderStatus == 1){
+					clearInterval(this.timer)
+					this.$toast({
+						message: '未支付',
+						duration: 1200
+					})
+				}
+			}).catch(err => {
+				console.log('orderAbout-err', err)
+			})
+		},
 		getNationFn(val){
+			console.log('valll', val)
 			this.showNation = false
-			this.bj = val
+			this.yeymc = val.schoolName
 		},
 		showNationFn() {
 			this.showNation = true

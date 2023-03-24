@@ -86,6 +86,14 @@ const routes = [
 			},
 			{
 				meta: {
+					title: '支付成功'
+				},
+				path: '/zfcg',
+				name: 'Zfcg',
+				component: () => import(/* webpackChunkName: "about" */ '../views/Zfcg.vue')
+			},
+			{
+				meta: {
 					title: '科室介绍'
 				},
 				path: '/ksjs',

@@ -18,7 +18,7 @@ import VConsole from 'vconsole'
 let env = process.env.NODE_ENV
 console.log('env', env)
 if(env !== 'development'){
-	const vConsole = new VConsole()
+	// const vConsole = new VConsole()
 }
 Vue.config.productionTip = false
 let vue = new Vue({

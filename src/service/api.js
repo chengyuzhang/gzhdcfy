@@ -3,10 +3,10 @@ import { api } from './http.client.js'
 let {get, post} = api
 import qs from 'qs'
 
-let baseURL = 'http://hzx.ngrok.aojiedu.com'
+// let baseURL = 'http://hzx.ngrok.aojiedu.com'
 // let baseURL = 'http://api.bjdcfybjy.com'
 
-// let baseURL1 = 'https://xiaoxapi.aoji.cn'
+let baseURL = 'http://api.duchengxi.com'
 
 export const apiUrl = {
 	baseURL
@@ -171,7 +171,7 @@ export const login = {
 export const wxAbout = {
 	// 验证wx.config
 	getWxConfig (data, headers) {
-		return get(baseURL + `/mWeb/getWxConfig`, data, headers)
+		return get(baseURL + `/pay/jsapiTicket`, data, headers)
 	},
 	// 获取订单
 	getOrder (data, headers) {
@@ -189,4 +189,11 @@ export const orderAbout = {
 	userOrderList (data, headers) {
 		return get(baseURL + `/product/userOrderList`, data, headers)
 	},
+	orderDetail (data, headers) {
+		return get(baseURL + `/product/orderDetail`, data, headers)
+	},
+	schoolList (data, headers) {
+		return get(baseURL + `/product/schoolList`, data, headers)
+	},
+
 }

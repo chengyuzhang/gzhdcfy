@@ -1,17 +1,9 @@
 <template>
 <div class="jfjl-container">
 	<ul>
-		<li>
-			<p><span>龋易感检测</span><i>￥120</i></p>
-			<p><span>张天天</span><i>2022-05-07 13:38</i></p>
-		</li>
-		<li>
-			<p><span>龋易感检测</span><i>￥120</i></p>
-			<p><span>张天天</span><i>2022-05-07 13:38</i></p>
-		</li>
-		<li>
-			<p><span>龋易感检测</span><i>￥120</i></p>
-			<p><span>张天天</span><i>2022-05-07 13:38</i></p>
+		<li v-for="(item, index) in list">
+			<p><span>{{item.productName}}</span><i>￥{{item.productFee}}</i></p>
+			<p><span>{{item.childName}}</span><i>{{item.createTime}}</i></p>
 		</li>
 	</ul>
 </div>
@@ -26,7 +18,7 @@ export default {
 
   data () {
     return {
-
+    	list: []
     }
   },
   created(){
