@@ -26,7 +26,7 @@ export default {
 	data () {
 		return {
 			tabIndex: 0,
-			id: 2,
+			id: 1,
 			intro: '',
 			picture: ''
 		}
@@ -39,9 +39,9 @@ export default {
 			this.tabIndex = idx
 
 			if(idx == 0){
-				this.id = 2
-			}else{
 				this.id = 1
+			}else{
+				this.id = 2
 			}
 
 			this.getAreaDetail()

@@ -21,8 +21,8 @@
 				<img v-if="item.id == 2" src="@/assets/imgs/yfxx.png" alt="">
 				<img v-if="item.id == 3" src="@/assets/imgs/yyjj.png" alt="">
 				<img v-if="item.id == 4" src="@/assets/imgs/yydt.png" alt="">
-				<img v-if="item.id == 5" src="@/assets/imgs/yqwz.png" alt="">
-				<img v-if="item.id == 7" src="@/assets/imgs/tjyy.png" alt="">
+				<img v-if="item.id == 9" src="@/assets/imgs/yqwz.png" alt="">
+				<img v-if="item.id == 8" src="@/assets/imgs/tjyy.png" alt="">
 			p {{item.title}}
 	.banner
 		<van-swipe class="my-swipe" :autoplay="3000" autoplay="false" indicator-color="white">
@@ -44,7 +44,7 @@
 		.items(v-if="tabIndex == 0")
 			Item(v-for="(item, index) in yydtList" :key="item.id" :item="item" :Event="toDetailPage")
 		.items(v-if="tabIndex == 1")
-			Item(v-for="(item, index) in yyxxList" :key="item.id" :item="item" :Event="toDetailPage")
+			Item(v-for="(item, index) in yfxxList" :key="item.id" :item="item" :Event="toDetailPage")
 	p.ba(style="position:absolute;left:-10rem;bottom:0rem;opacity:1;") 京ICP备<a href="https://beian.miit.gov.cn/">2022025725号-1</a>
 
 	transition(name="fade")
@@ -129,7 +129,7 @@ export default {
 			tabIndex: 0,
 			ads: [],
 			yydtList: [],
-			yyxxList: [],
+			yfxxList: [],
 			items: [
 				// {
 				// 	title: '核酸检测'
@@ -158,13 +158,21 @@ export default {
 					title: '医院动态',
 					id: 4
 				},
+				// {
+				// 	title: '院区位置',
+				// 	id: 5
+				// },
+				// {
+				// 	title: '体检预约',
+				// 	id: 7
+				// },
 				{
-					title: '院区位置',
-					id: 5
+					title: '就诊记录',
+					id: 8
 				},
 				{
-					title: '体检预约',
-					id: 7
+					title: '预约记录',
+					id: 9
 				},
 			],
 			actions: [],
@@ -175,7 +183,7 @@ export default {
 	async created(){
 		this.getAds()
 		this.getYydtInfoList()
-		this.getYyxxInfoList()
+		this.getYfxxInfoList()
 		this.getAreaList()
 		this.getGhxzDetails()
 		// wxApi.wxAboutConfig()
@@ -207,7 +215,7 @@ export default {
 		},
 		async getYydtInfoList(){
 			await newsAbout.getInfoList({
-				type: 2,
+				type: 1,
 				pageNo: 1,
 				pageSize: 5,
 			}).then(res => {
@@ -217,16 +225,16 @@ export default {
 				console.log('getYydtInfoList-err'. err)
 			})
 		},
-		async getYyxxInfoList(){
+		async getYfxxInfoList(){
 			await newsAbout.getInfoList({
-				type: 1,
+				type: 2,
 				pageNo: 1,
 				pageSize: 5,
 			}).then(res => {
-				console.log('getYyxxInfoList-res', res)
-				this.yyxxList = res.data
+				console.log('getYfxxInfoList-res', res)
+				this.yfxxList = res.data
 			}).catch(err => {
-				console.log('getYyxxInfoList-err'. err)
+				console.log('getYfxxInfoList-err'. err)
 			})
 		},
 		async getAds(){
@@ -293,6 +301,12 @@ export default {
 				break;
 				case 6:
 					path = '/tjjf'
+				break;
+				case 9:
+					path = '/yyjl'
+				break;
+				case 8:
+					path = '/jzjl'
 				break;
 			}
 

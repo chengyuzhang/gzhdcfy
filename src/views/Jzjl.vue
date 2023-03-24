@@ -35,12 +35,7 @@ export default {
 		return {
 			activeIndex: 0,
 			showList: false,
-			items: [
-				{},
-				{},
-				{},
-				{},
-			],
+			items: [],
 			jzrList: [],
 			jzrInfo: null
 		}
@@ -48,7 +43,10 @@ export default {
 	async created(){
 		await this.getLastAppointPatient()
 		this.getPatientList()
-		this.getJzjlList()
+
+		if(this.jzrInfo && this.jzrInfo.id){
+			this.getJzjlList()
+		}
 	},
 	methods: {
 		async getLastAppointPatient(){

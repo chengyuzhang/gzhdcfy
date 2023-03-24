@@ -26,7 +26,7 @@
 				p 全部日期
 				img(src="@/assets/imgs/arrow-down2.png")
 	.tab-con.has(v-if="tabStatus == 2")
-		.morning
+		.morning(v-if="swList.length")
 			h5 上午号源
 			ul
 				li(v-for="(item, index) in swList")
@@ -37,7 +37,7 @@
 						p ￥{{item.prePrice}}
 						button.full(v-if="item.remainCount == 0") 约满
 						button(v-else @click="orderFn(item)") 剩余{{item.remainCount}}
-		.afternoon
+		.afternoon(v-if="xwList.length")
 			h5 下午号源
 			ul
 				li(v-for="(item, index) in xwList")
@@ -48,28 +48,49 @@
 						p ￥{{item.prePrice}}
 						button.full(v-if="item.remainCount == 0") 约满
 						button(v-else @click="orderFn(item)") 剩余{{item.remainCount}}
+		.night(v-if="wsList.length")
+			h5 晚上号源
+			ul
+				li(v-for="(item, index) in wsList")
+					.l
+						h6 {{item.name}}
+						p {{item.skill}}
+					.r
+						p ￥{{item.prePrice}}
+						button.full(v-if="item.remainCount == 0") 约满
+						button(v-else @click="orderFn(item)") 剩余{{item.remainCount}}
 	.tab-con.none(v-if="tabStatus == 1")
 		p 当天无号源
 	.tab-con.full(v-if="tabStatus == 3")
-		.morning
+		.morning(v-if="swList.length")
 			h5 上午号源
 			ul
-				li(v-for="item in 3")
+				li(v-for="(item, index) in wsList")
 					.l
-						h6 儿科专家（正高）
-						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
+						h6 {{item.name}}
+						p {{item.skill}}
 					.r
-						p ￥50
+						p ￥{{item.prePrice}}
 						button.full 约满
-		.afternoon
+		.afternoon(v-if="xwList.length")
 			h5 下午午号源
 			ul
-				li(v-for="item in 3")
+				li(v-for="(item, index) in wsList")
 					.l
-						h6 儿科专家（正高）
-						p 擅长：暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息暂无信息
+						h6 {{item.name}}
+						p {{item.skill}}
 					.r
-						p ￥50
+						p ￥{{item.prePrice}}
+						button.full 约满
+		.night(v-if="wsList.length")
+			h5 晚上号源
+			ul
+				li(v-for="(item, index) in wsList")
+					.l
+						h6 {{item.name}}
+						p {{item.skill}}
+					.r
+						p ￥{{item.prePrice}}
 						button.full 约满
 	.tab-con.ready(v-if="tabStatus == 4")
 		p 距离{{targetDay}}放号还有
@@ -121,6 +142,7 @@ export default {
 		return {
 			swList: [],
 			xwList: [],
+			wsList: [],
 			clinicDate: '',
 			areaAddress: '',
 			areaName: '',
@@ -302,6 +324,7 @@ export default {
 				console.log('officeDutyDay-res', res)
 				this.swList = res.data.swList
 				this.xwList = res.data.xwList
+				this.wsList = res.data.wsList
 			}).catch(err => {
 				console.log('officeDutyDay-err', err)
 			})

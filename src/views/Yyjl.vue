@@ -58,7 +58,10 @@ export default {
 	async created(){
 		await this.getLastAppointPatient()
 		this.getPatientList()
-		this.getAppointList()
+
+		if(this.jzrInfo && this.jzrInfo.id){
+			this.getAppointList()
+		}
 	},
 	methods: {
 		onLoad() {
