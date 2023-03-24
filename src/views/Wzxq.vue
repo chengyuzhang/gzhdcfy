@@ -1,7 +1,7 @@
 <template lang="pug">
 .wzxx-container
 	h5 {{title}}
-	.top
+	.top(v-if="doctorName")
 		.l
 			img(:src="doctorPicture")
 			.ll

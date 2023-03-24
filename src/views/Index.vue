@@ -150,6 +150,10 @@ export default {
 					title: '孕妇学校',
 					id: 2
 				},
+				// {
+				// 	title: '科室介绍',
+				// 	id: 10
+				// },
 				{
 					title: '医院简介',
 					id: 3
@@ -307,6 +311,9 @@ export default {
 				break;
 				case 8:
 					path = '/jzjl'
+				break;
+				case 10:
+					path = `/ksjs?id=`
 				break;
 			}
 
