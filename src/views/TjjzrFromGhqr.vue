@@ -126,6 +126,9 @@
 			@cancel="showCardType = false"
 		)
 	</van-popup>
+	<van-popup v-model="showZone" position="bottom">
+		<van-area title="地区" :area-list="areaList" @confirm="getZoneVal" @cancel="cancelZoneFn" />
+	</van-popup>
 </template>
 
 <script>

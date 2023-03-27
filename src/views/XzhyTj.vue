@@ -30,7 +30,7 @@
 			ul
 				li(v-for="(item, index) in swList")
 					.l
-						h6 {{item.name}}
+						h6 {{item.name}} <span v-if="item.doctorId > 0">{{item.doctorName}}</span>
 						p {{item.skill}}
 					.r
 						p ￥{{item.prePrice}}
@@ -41,7 +41,7 @@
 			ul
 				li(v-for="(item, index) in xwList")
 					.l
-						h6 {{item.name}}
+						h6 {{item.name}} <span v-if="item.doctorId > 0">{{item.doctorName}}</span>
 						p {{item.skill}}
 					.r
 						p ￥{{item.prePrice}}
@@ -52,7 +52,7 @@
 			ul
 				li(v-for="(item, index) in wsList")
 					.l
-						h6 {{item.name}}
+						h6 {{item.name}} <span v-if="item.doctorId > 0">{{item.doctorName}}</span>
 						p {{item.skill}}
 					.r
 						p ￥{{item.prePrice}}

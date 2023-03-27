@@ -18,7 +18,7 @@
 				<img v-if="item.id == 6" src="@/assets/imgs/tjjf.png" alt="">
 				<img v-if="item.id == 0" src="@/assets/imgs/zjjs.png" alt="">
 				<img v-if="item.id == 1" src="@/assets/imgs/jzxz.png" alt="">
-				<img v-if="item.id == 2" src="@/assets/imgs/yfxx.png" alt="">
+				<img v-if="item.id == 10" src="@/assets/imgs/yfxx.png" alt="">
 				<img v-if="item.id == 3" src="@/assets/imgs/yyjj.png" alt="">
 				<img v-if="item.id == 4" src="@/assets/imgs/yydt.png" alt="">
 				<img v-if="item.id == 9" src="@/assets/imgs/yqwz.png" alt="">
@@ -146,14 +146,14 @@ export default {
 					title: '就诊须知',
 					id: 1
 				},
-				{
-					title: '孕妇学校',
-					id: 2
-				},
 				// {
-				// 	title: '科室介绍',
-				// 	id: 10
+				// 	title: '孕妇学校',
+				// 	id: 2
 				// },
+				{
+					title: '科室介绍',
+					id: 10
+				},
 				{
 					title: '医院简介',
 					id: 3
@@ -313,7 +313,7 @@ export default {
 					path = '/jzjl'
 				break;
 				case 10:
-					path = `/ksjs?id=`
+					path = `/ksjs-list`
 				break;
 			}
 

@@ -347,6 +347,14 @@ const routes = [
 				path: '/tjjf-form',
 				name: 'TjjfForm',
 				component: () => import(/* webpackChunkName: "about" */ '../views/TjjfForm.vue')
+			},
+			{
+				meta: {
+					title: '科室列表'
+				},
+				path: '/ksjs-list',
+				name: 'KsjsList',
+				component: () => import(/* webpackChunkName: "about" */ '../views/KsjsList.vue')
 			}
 		]
 	}
