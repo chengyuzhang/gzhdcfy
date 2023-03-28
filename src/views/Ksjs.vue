@@ -70,11 +70,10 @@ export default {
 				console.log('getDoctorList-err', err)
 			})
 		},
-		toPage(){
-			// this.$router.replace({
-			// 	path: '/'
-			// })
-			this.$router.go(-1)
+		toPage(obj){
+			this.$router.push({
+				path: `/xzhy?id=${this.officeId}`
+			})
 		},
 		toDoctorList(){
 			this.$router.push({
