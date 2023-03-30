@@ -15,7 +15,12 @@
 			ul
 				li(v-for="(item, index) in peopleList" v-if="index < 5" :class="{'active': item.name}" @click="toCodePage(item)")
 					div(v-if="item.name")
-						img.img1(src="@/assets/imgs/people.png")
+						img.img1(v-if="item.age < 18 && item.sex == 1" src="@/assets/imgs/11.png")
+						img.img1(v-if="item.age < 18 && item.sex == 2" src="@/assets/imgs/12.png")
+						img.img1(v-if="item.age >= 18 && item.age <=60 && item.sex == 1" src="@/assets/imgs/21.png")
+						img.img1(v-if="item.age >= 18 && item.age <=60 && item.sex == 2" src="@/assets/imgs/22.png")
+						img.img1(v-if="item.age > 60 && item.sex == 1" src="@/assets/imgs/31.png")
+						img.img1(v-if="item.age > 60 && item.sex == 2" src="@/assets/imgs/32.png")
 						p {{item.relationName}}
 					p(v-if="item.name") {{item.name}}
 				li(v-if="peopleList.length < 5" v-for="item in (5 - peopleList.length)")
