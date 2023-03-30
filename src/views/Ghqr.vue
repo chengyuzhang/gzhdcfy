@@ -35,7 +35,19 @@
 					img(src="@/assets/imgs/r.png")
 			p 请仔细阅读<span @click="toPage">《挂号须知》</span>
 	.btn
-		button(@click="saveAppoint") 确认
+		button(@click="showPopFn") 确认
+	<van-popup v-model="showPop" class="pop" :round="true">
+		<h5>挂号信息确认</h5>
+		<p>预约院区：{{areaName}}</p>
+		<p>院区地址：{{address}}</p>
+		<p>预约科室：{{officeName}}</p>
+		<p>预约医生：{{clinicName}}</p>
+		<p>就诊时间：{{clinicDate}} {{startTime}}-{{endTime}}</p>
+		<div class="btns">
+			<button @click="showPop = false">取消</button>
+			<button @click="saveAppoint">确认</button>
+		</div>
+	</van-popup>
 </template>
 
 <script>
@@ -47,6 +59,7 @@ export default {
 
 	data () {
 		return {
+			showPop: false,
 			clinicDate: '',
 			startTime: '',
 			endTime: '',
@@ -54,7 +67,10 @@ export default {
 			officeName: '',
 			clinicName: '',
 			skill: '',
-			jzrInfo: null
+			jzrInfo: null,
+			add1: '东城区交道口南大街136号',
+			add2: '东城区法华寺南里25号',
+			address: '南院区：东城区交道口南大街136号; 北院区：东城区法华寺南里25号。'
 		}
 	},
 	async created(){
@@ -80,6 +96,17 @@ export default {
 				console.log('getLastAppointPatient-err', err)
 			})
 		},
+		showPopFn(){
+			if(!this.jzrInfo){
+				this.$toast({
+					message: '请添加就诊人',
+					duration: 1200
+				})
+				return
+			}
+
+			this.showPop = true
+		},
 		saveAppoint(){
 			appointAbout.saveAppoint({
 				dutyTimeId: this.id,
@@ -90,7 +117,12 @@ export default {
 					path: `/ghcg?id=${res.data.id}`
 				})
 			}).catch(err => {
-				console.log('saveAppoint-err', err)
+				console.log('saveAppoint-err', err.data.message)
+				this.showPop = false
+				this.$toast({
+					message: err.data.message,
+					duration: 1500
+				})
 			})
 		},
 		appointPreview(){
@@ -106,6 +138,11 @@ export default {
 				this.clinicName = res.data.clinicName
 				this.skill = res.data.skill
 
+				if(this.areaName == '东城妇幼保健院(北区)'){
+					this.address = this.add1
+				}else{
+					this.address = this.add2
+				}
 			}).catch(err => {
 				console.log('appointPreview-err', err)
 			})
@@ -249,4 +286,37 @@ export default {
 			color #fff
 			background #7C509D
 			border-radius .4rem
+	.pop
+		width 6rem
+		padding .32rem
+		h5
+			margin-bottom .3rem
+			font-size .32rem
+			text-align center
+			font-weight bold
+		p
+			margin-bottom .2rem
+			line-height .36rem
+			font-size .24rem
+			color #666
+		.btns
+			display flex
+			justify-content space-between
+			margin-top .88rem
+			width 100%
+			line-height 1.16rem
+			text-align center
+			overflow hidden
+			button
+				width 45%
+				height .84rem
+				line-height .84rem
+				font-size .28rem
+				color #fff
+				background #7C509D
+				border-radius .4rem
+			button:first-of-type
+				color #666
+				background #fff
+				border 1px solid #666
 </style>

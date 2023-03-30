@@ -89,6 +89,7 @@ export default {
 	align-items: center;
 	height: 1rem;
 	padding: 0 .3rem;
+	background: linear-gradient(133deg, #FFFFFF 0%, #F7F2FF 100%);
 }
 .tjjf-container li h5 span{
 	font-size: .32rem;
