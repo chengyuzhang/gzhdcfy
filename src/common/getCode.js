@@ -1,4 +1,6 @@
 
+const util = require('../util/util.js')
+
 function getCode(){
 	let originUrl = location.hash.split('?')[0].slice(1)
 		//首个?的参数
@@ -18,11 +20,27 @@ function getCode(){
 	}
 
 	let callBackUrl = `${location.origin}/#/login?${queryStr}`
-	//测试
-	// location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2399b8b019b5b828&redirect_uri=${encodeURIComponent(callBackUrl)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 
-	//生产
-	location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb26221bc33889015&redirect_uri=${encodeURIComponent(callBackUrl)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+	let callBackUrl1 = `http://weixin.chinadrgs.cn/oauthproxy.html?r=${encodeURIComponent(callBackUrl)}`
+
+	let env = util.getEnv()
+
+
+	console.log('env', env)
+	if(env == 1){
+		console.log('走了微信环境1')
+
+		location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb26221bc33889015&redirect_uri=${encodeURIComponent(callBackUrl)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+		return
+	}
+	if(env == 2){
+		console.log('走了支付宝环境1')
+		let openauth = `https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019010462832021&scope=auth_user&redirect_uri=${encodeURIComponent(callBackUrl)}`
+		console.log('openauth', openauth)
+		location.href = openauth
+
+		return
+	}
 }
 
 export default getCode

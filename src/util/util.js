@@ -126,6 +126,21 @@ const getBirthdayFromIdCard = idCard => {
 	
 	return birthday
 }
+const getEnv = () => {
+	let ua = window.navigator.userAgent
+	let type = 0
+
+	if (ua.indexOf("MicroMessenger") > 0) {
+		type = 1
+	}
+
+	//判断是不是支付宝
+	if (ua.indexOf("AlipayClient") > 0) {
+		type = 2
+	}
+
+	return type
+}
 
 module.exports = {
 	formatTime: formatTime,
@@ -135,5 +150,6 @@ module.exports = {
 	getElRec: getElRec,
 	formatDay,
 	formatNumber,
-	getBirthdayFromIdCard
+	getBirthdayFromIdCard,
+	getEnv
 }

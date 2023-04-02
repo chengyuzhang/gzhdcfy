@@ -318,7 +318,7 @@ const routes = [
 			},
 			{
 				meta: {
-					title: '微信授权'
+					title: '授权页面'
 				},
 				path: '/login',
 				name: 'GetLogin',

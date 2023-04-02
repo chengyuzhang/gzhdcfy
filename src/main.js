@@ -11,15 +11,21 @@ import 'vant/lib/index.css'
 import MintUI from 'mint-ui' // mint-ui 的js
 import 'mint-ui/lib/style.css' // mint-ui 的css
 
+const util = require('./util/util.js')
+let paltformEnv = util.getEnv()
+
 Vue.use(MintUI)
 Vue.use(Vant)
 
 import VConsole from 'vconsole'
 let env = process.env.NODE_ENV
 console.log('env', env)
-if(env !== 'development'){
-	// const vConsole = new VConsole()
+let vConsole = null
+
+if(paltformEnv == 2){
+	// vConsole = new VConsole()
 }
+
 Vue.config.productionTip = false
 let vue = new Vue({
 	router,

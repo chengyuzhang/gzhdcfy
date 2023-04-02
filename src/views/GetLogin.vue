@@ -4,6 +4,7 @@
 <script>
 import getUrlParam from '@/common/getUrlParam.js'
 import { login } from '@/service/api.js'
+const util = require('../util/util.js')
 
 export default {
 
@@ -11,23 +12,48 @@ export default {
 
 	data () {
 		return {
-			code: ''
+			code: '',
+			env: 0
 		}
 	},
 	async created(){
-		this.code = getUrlParam('code')
-		await this.login()
+		this.env = util.getEnv()
+		if(this.env == 1){
+			console.log('走了微信环境2')
+			this.code = getUrlParam('code')
+			await this.login()
+		}
+		if(this.env == 2){
+			console.log('走了支付宝环境22222222')
+			// this.code = getUrlParam('auth_code')
+			this.code = this.$route.query.auth_code
+			console.log('code', this.code)
+			await this.login()
+		}
 	},
 	methods: {
 		async getToken(){
-			await login.getCode({
-				code: this.code
-			}).then(res => {
-				console.log('getcode-res', res)
-				localStorage.setItem('token', res.data)
-			}).catch(err => {
-				console.log('getcode-err', err)
-			})
+			if(this.env == 1){
+				await login.getCode({
+					code: this.code
+				}).then(res => {
+					console.log('getcode-res', res)
+					localStorage.setItem('token', res.data)
+				}).catch(err => {
+					console.log('getcode-err', err)
+				})
+			}
+
+			if(this.env == 2){
+				await login.getCodeForZFB({
+					code: this.code
+				}).then(res => {
+					console.log('getcode-res', res)
+					localStorage.setItem('token', res.data)
+				}).catch(err => {
+					console.log('getcode-err', err)
+				})
+			}
 		},
 		async login(){
 			let query = this.$route.query
@@ -49,7 +75,6 @@ export default {
 			let originUrl = `${this.$route.query.path}?${queryStr}`
 
 			await this.getToken()
-
 			this.$router.replace({
 				path: originUrl
 			})
