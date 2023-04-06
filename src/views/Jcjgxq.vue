@@ -21,7 +21,6 @@
 
 <script>
 import { patientAbout, bgAbout, apiUrl } from '@/service/api.js'
-
 export default {
 
 	name: 'Jcjgxq',

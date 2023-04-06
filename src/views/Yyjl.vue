@@ -150,7 +150,7 @@ export default {
 		},
 		toPage(obj){
 			this.$router.push({
-				path: `/yyjlxq?id=${obj.id}`
+				path: `/yyjlxq?id=${obj.id}&jzrid=${this.jzrInfo.id}`
 			})
 		},
 		cancelOrder(obj){

@@ -45,7 +45,7 @@
 			Item(v-for="(item, index) in yydtList" :key="item.id" :item="item" :Event="toDetailPage")
 		.items(v-if="tabIndex == 1")
 			Item(v-for="(item, index) in yfxxList" :key="item.id" :item="item" :Event="toDetailPage")
-	p.ba(style="position:absolute;left:-10rem;bottom:0rem;opacity:1;") 京ICP备<a href="https://beian.miit.gov.cn/">2022025725号-1</a>
+	//- p.ba(style="position:absolute;left:-10rem;bottom:0rem;opacity:1;") 京ICP备<a href="https://beian.miit.gov.cn/">2022025725号-1</a>
 
 	transition(name="fade")
 		TabBar(v-if="showTabBar" idx="0")

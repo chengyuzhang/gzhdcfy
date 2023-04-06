@@ -2,6 +2,9 @@
 .yyjlxq-container
 	.wrap
 		h5 {{statusStr}}
+		.code
+			p <i>门诊号码</i><em>{{hisMzhm}}</em>
+			img(id="barcode")
 		ul.one
 			li
 				span 就诊人
@@ -41,8 +44,9 @@
 </template>
 
 <script>
-import { appointAbout } from '@/service/api.js'
+import { appointAbout, patientAbout } from '@/service/api.js'
 import { Dialog, Toast } from 'vant'
+import JsBarcode from 'jsbarcode'
 
 export default {
 
@@ -50,6 +54,10 @@ export default {
 
 	data () {
 		return {
+			jzrid: '',
+			hisMzhm: '',
+			name: '',
+			idNo: '',
 			id: '',
 			patientName: '',
 			clinicName: '',
@@ -66,9 +74,12 @@ export default {
 			queueNo: ''
 		}
 	},
-	created(){
+	async created(){
+		this.jzrid = this.$route.query.jzrid
 		this.id = this.$route.query.id
 		this.getAppointDetail()
+		await this.getPatientDetail()
+		this.makeCode()
 	},
 	methods: {
 		getAppointDetail(){
@@ -128,7 +139,26 @@ export default {
 			}).catch(err => {
 				console.log('cancelAppoint-err', err)
 			})
-		}
+		},
+		async getPatientDetail(){
+			await patientAbout.getPatientDetail({
+				id: this.jzrid
+			}).then(res => {
+				console.log('getPatientDetail-res', res)
+				this.hisMzhm = res.data.hisMzhm
+				this.name = res.data.name
+				this.idNo = res.data.idNo
+			}).catch(err => {
+				console.log('getPatientDetail-err', err)
+			})
+		},
+		makeCode(){
+			JsBarcode('#barcode', this.hisMzhm, {
+				height: 65,
+				fontSize: 13,
+				displayValue: false
+			})
+		},
 	}
 }
 </script>
@@ -147,11 +177,30 @@ export default {
 		align-items flex-end
 		>h5
 			width 100%
-			padding .18rem 0
+			padding .24rem
 			padding-left .3rem
 			font-size .32rem
 			line-height .44rem
 			color #333
+		.code
+			display flex
+			flex-direction column
+			align-items center
+			margin-bottom .32rem
+			width 100%
+			padding .24rem
+			background #fff
+			img
+				margin-top .2rem
+				width 6.5rem
+				height 1.6rem
+			p
+				font-size .28rem
+				color #333
+				line-height .40rem
+				font-weight bold
+				i
+					margin-right .1rem
 		ul.one
 			width 100%
 			padding-left .3rem
