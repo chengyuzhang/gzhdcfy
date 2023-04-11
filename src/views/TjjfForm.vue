@@ -66,6 +66,7 @@
 			v-model="currentDate"
 			type="date"
 			title="选择出生日期"
+			:min-date="minDate"
 			:max-date="maxDate"
 			@confirm="getDateFn"
 			@cancel="showDate = false"
@@ -154,7 +155,7 @@ export default {
 			sjhVal: '',
 			timer: null,
 			list: [],
-			minDate: new Date(2020, 0, 1),
+			minDate: new Date(2000, 0, 1),
 			maxDate: new Date(),
 			currentDate: new Date(),
 		}
