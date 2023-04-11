@@ -30,6 +30,12 @@
 		//- 	.r
 		//- 		input(v-model="bj" disabled placeholder="请选班级")
 		//- 		img(src="@/assets/imgs/r.png")
+
+		li(@click="showBirthdayFn")
+			span 出生日期
+			.r
+				input(v-model="csrq" disabled placeholder="请选择幼儿出生日期")
+				img(src="@/assets/imgs/r.png")
 		li
 			span 班级
 			.r
@@ -53,6 +59,16 @@
 			value-key="schoolName"
 			@confirm="getNationFn"
 			@cancel="showNation = false"
+		)
+	</van-popup>
+	<van-popup v-model="showDate" position="bottom">
+		van-datetime-picker(
+			v-model="currentDate"
+			type="date"
+			title="选择出生日期"
+			:max-date="maxDate"
+			@confirm="getDateFn"
+			@cancel="showDate = false"
 		)
 	</van-popup>
 </template>
@@ -128,14 +144,19 @@ export default {
 				"基诺族"
 			],
 			showNation: false,
+			showDate: false,
 			sexIndex: 0,
+			csrq: '',
 			yeymc: '',
 			yexm: '',
 			bj: '',
 			jzxm: '',
 			sjhVal: '',
 			timer: null,
-			list: []
+			list: [],
+			minDate: new Date(2020, 0, 1),
+			maxDate: new Date(),
+			currentDate: new Date(),
 		}
 	},
 	created(){
@@ -144,6 +165,18 @@ export default {
 		this.schoolList()
 	},
 	methods: {
+		getDateFn(v){
+			this.showDate = false
+			let date = new Date(v)
+			let year = date.getFullYear()
+			let mon = date.getMonth() + 1
+			mon = mon >= 10 ? mon : '0' + mon
+			let day = date.getDate() >= 10 ? date.getDate() : '0' + date.getDate()
+			let dateStr = year + '-' + mon  + '-' + day
+
+			this.csrq = dateStr
+			console.log('v', dateStr)
+		},
 		async addOrder(){
 			if(!this.yeymc){
 				this.$toast({
@@ -152,9 +185,9 @@ export default {
 				})
 				return
 			}
-			if(!this.yeymc){
+			if(!this.yexm){
 				this.$toast({
-					message: '请输入幼儿园名称！',
+					message: '请输入幼儿姓名！',
 					duration: 1200
 				})
 				return
@@ -162,6 +195,13 @@ export default {
 			if(!this.sexIndex){
 				this.$toast({
 					message: '请选择性别！',
+					duration: 1200
+				})
+				return
+			}
+			if(!this.csrq){
+				this.$toast({
+					message: '请选择出生日期！',
 					duration: 1200
 				})
 				return
@@ -205,6 +245,7 @@ export default {
 			console.log('sjhVal', this.sjhVal)
 
 			await orderAbout.addOrder({
+				"childBirth": this.csrq,
 				"childGrade": this.bj,
 				"childName": this.yexm,
 				"childSex": this.sexIndex,
@@ -293,6 +334,9 @@ export default {
 		},
 		showNationFn() {
 			this.showNation = true
+		},
+		showBirthdayFn(){
+			this.showDate = true
 		},
 		changeSex(idx){
 			if(this.hasSex) return
