@@ -11,7 +11,6 @@ export const api = {
 
 		if(path !== '/login'){
 			let token = localStorage.getItem('token')
-
 			if(token){
 				headers = Object.assign({token}, headers)
 			}else{

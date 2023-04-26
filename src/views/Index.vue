@@ -190,6 +190,7 @@ export default {
 		this.getYfxxInfoList()
 		this.getAreaList()
 		this.getGhxzDetails()
+		console.log(111)
 		// wxApi.wxAboutConfig()
 
 	},

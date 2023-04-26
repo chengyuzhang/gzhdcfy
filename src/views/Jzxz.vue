@@ -32,7 +32,7 @@ export default {
 			})
 		},
 		toPage(id){
-			let path = ''
+			let path = `/ghlc?id=${id}`
 
 			switch(id){
 				case 1:
