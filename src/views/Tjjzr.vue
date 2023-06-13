@@ -463,14 +463,14 @@ export default {
 				})
 				return
 			}
-			if(!this.typeIndex){
-				this.$toast({
-					message: '请选择费别！',
-					duration: 1200
-				})
-				return
-			}
-			if(!this.ybkhVal && this.typeIndex == 2){
+			// if(!this.typeIndex){
+			// 	this.$toast({
+			// 		message: '请选择费别！',
+			// 		duration: 1200
+			// 	})
+			// 	return
+			// }
+			if(this.typeIndex == 2 && !this.ybkhVal){
 				this.$toast({
 					message: '请输入医保卡号！',
 					duration: 1200
