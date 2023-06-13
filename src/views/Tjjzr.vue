@@ -77,6 +77,21 @@
 				input(v-model="yzmVal" placeholder="请输入验证码")
 				i(v-if="!iBtn") {{numStr}}s
 				button(v-if="iBtn" @click="getCode") 获取验证码
+		li
+			span 儿童体检
+			ol.r
+				li(@click="childrenCheckFn")
+					img(v-if="isChildrenCheck" src="@/assets/imgs/dot.png")
+					img(v-else src="@/assets/imgs/space.png")
+					span 儿童体检
+		li(v-if="isChildrenCheck")
+			span 母亲姓名
+			.r
+				input(v-model="mxmVal" :disabled="hasMxm" placeholder="请输入母亲姓名")
+		li(v-if="isChildrenCheck")
+			span 母亲身份证号
+			.r
+				input(v-model="mzjhmVal" :disabled="hasMzjhm" placeholder="请输入母亲身份证号")
 	.btn(v-if="showList")
 		button(@click="addPatient") 提交就诊人信息
 	ul(v-if="!showList")
@@ -142,6 +157,11 @@ export default {
 
 	data () {
 		return {
+			isChildrenCheck: false,
+			mxmVal: '',
+			mzjhmVal: '',
+			hasMxm: false,
+			hasMzjhm: false,
 			areaList,
 			showZone: false,
 			zoneVal: '',
@@ -274,6 +294,9 @@ export default {
 	mounted(){
 	},
 	methods: {
+		childrenCheckFn(){
+			this.isChildrenCheck = !this.isChildrenCheck
+		},
 		showZoneFn(){
 			this.showZone = true
 		},
@@ -333,6 +356,11 @@ export default {
 					this.addressVal = res.data.address
 					this.zoneVal = res.data.region
 
+					this.isChildrenCheck = res.data.isChildTj == 1 ? true : false
+
+					this.mxmVal = res.data.motherName
+					this.mzjhmVal = res.data.motherIdNo
+
 					if(this.data.addressVal){
 			        	this.hasAddress = true
 			        }
@@ -363,6 +391,13 @@ export default {
 					if(this.sjhVal){
 						this.hasPhone = true
 					}
+					if(this.mxmVal){
+						this.hasMxm = true
+					}
+					if(this.mzjhmVal){
+						this.hasMzjhm = true
+					}
+
 
 					this.cardTypeList.forEach((item, index) => {
 						if(item.id == this.zjlxId){
@@ -471,7 +506,28 @@ export default {
 				return
 			}
 
+			if(this.isChildrenCheck){
+				if(!this.mxmVal){
+					this.$toast({
+						message: '请输入母亲姓名！',
+						duration: 1200
+					})
+					return
+				}
+
+				if(!this.mzjhmVal){
+					this.$toast({
+						message: '请输入母亲身份证号码！',
+						duration: 1200
+					})
+					return
+				}
+			}
+
 			patientAbout.addPatient({
+				isChildTj: this.isChildrenCheck ? 1 : 0,
+				motherName: this.mxmVal,
+				motherIdNo: this.mzjhmVal,
 				birthday: this.srFormat,
 				feeNo: this.ybkhVal,
 				feeType: this.typeIndex,
