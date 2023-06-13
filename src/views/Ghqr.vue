@@ -116,6 +116,8 @@ export default {
 				this.$router.replace({
 					path: `/ghcg?id=${res.data.id}`
 				})
+
+				localStorage.removeItem('jzrInfo')
 			}).catch(err => {
 				console.log('saveAppoint-err', err.data.message)
 				this.showPop = false
