@@ -84,6 +84,14 @@ export default {
 			})
 		},
 		toAddPage(){
+			if(this.jzrList.length >= 5){
+				this.$toast({
+					message: '就诊人最多添加5个',
+					duration: 1200
+				})
+				return
+			}
+			
 			this.$router.push({
 				path: '/tjjzr'
 			})

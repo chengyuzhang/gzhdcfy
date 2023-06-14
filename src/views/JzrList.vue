@@ -9,8 +9,8 @@
 	.none(v-if="!isHas")
 		img(src="@/assets/imgs/none.png")
 		p 暂无预约记录
-	//- .btn
-	//- 	button(@click="toAddPage")
+	.btn
+		button(@click="toAddPage")
 </template>
 
 <script>
@@ -53,11 +53,19 @@ export default {
 				path: `/jzm?id=${obj.id}`
 			})
 		},
-		// toAddPage(){
-		// 	this.$router.push({
-		// 		path: '/tjjzr'
-		// 	})
-		// }
+		toAddPage(){
+			if(this.jzrList.length >= 5){
+				this.$toast({
+					message: '就诊人最多添加5个',
+					duration: 1200
+				})
+				return
+			}
+
+			this.$router.push({
+				path: '/tjjzr'
+			})
+		}
 	},
 	mounted(){
 	}
