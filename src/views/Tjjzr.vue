@@ -301,9 +301,9 @@ export default {
 				return 0;
 			} else {
 				if ((len != 15) && (len != 18))//身份证号码只能为15位或18位其它不合法
-					{
-						return 0;
-					}
+				{
+					return 0;
+				}
 			}
 			var strBirthday = "";
 			if (len == 18)//处理18位的身份证号码从号码中得到生日和性别代码
@@ -313,6 +313,7 @@ export default {
 			if (len == 15) {
 				strBirthday = "19" + identityCard.substr(6, 2) + "/" + identityCard.substr(8, 2) + "/" + identityCard.substr(10, 2);
 			}
+			console.log('strBirthday', strBirthday)
 			//时间字符串里，必须是“/”
 			var birthDate = new Date(strBirthday);
 			var nowDateTime = new Date();
@@ -324,10 +325,13 @@ export default {
 			return age;
 		},
 		childrenCheckFn(){
+			console.log('this.IDAge', this.IDAge)
+
 			if(this.IDAge <= 14){
-				this.isChildrenChec = true
+				this.isChildrenCheck = true
 				return
 			}
+
 			this.isChildrenCheck = !this.isChildrenCheck
 		},
 		showZoneFn(){
@@ -367,17 +371,13 @@ export default {
 				return
 			}
 
-			this.IDAge = this.getAge(this.zjhmVal)
-			if(this.IDAge <= 14){
-				this.isChildrenCheck = true
-			}
-
 			patientAbout.getPatientInfo({
 				idNo: this.zjhmVal
 			}).then(res => {
 				this.showList = true
 
 				console.log('getPatientInfo-res', res)
+				this.IDAge = this.getAge(this.zjhmVal)
 
 				if(res.data){
 					this.srFormat = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
@@ -394,12 +394,14 @@ export default {
 					this.addressVal = res.data.address
 					this.zoneVal = res.data.region
 
-					this.isChildrenCheck = res.data.isChildTj == 1 ? true : false
+					if(this.IDAge <= 14 || res.data.isChildTj == 1){
+						this.isChildrenCheck = true
+					}
 
 					this.mxmVal = res.data.motherName
 					this.mzjhmVal = res.data.motherIdNo
 
-					if(this.data.addressVal){
+					if(this.addressVal){
 			        	this.hasAddress = true
 			        }
 					if(this.xmVal){
@@ -436,7 +438,6 @@ export default {
 						this.hasMzjhm = true
 					}
 
-
 					this.cardTypeList.forEach((item, index) => {
 						if(item.id == this.zjlxId){
 							this.zjlxVal = item.name
@@ -445,6 +446,10 @@ export default {
 				}else{
 					this.srFormat = util.getBirthdayFromIdCard(this.zjhmVal)
 					this.srVal = util.getBirthdayFromIdCard(this.zjhmVal)
+
+					if(this.IDAge <= 14){
+						this.isChildrenCheck = true
+					}
 				}
 
 			}).catch(err => {
