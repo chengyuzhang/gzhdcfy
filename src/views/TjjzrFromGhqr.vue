@@ -333,7 +333,7 @@ export default {
 		},
 		childrenCheckFn(){
 			if(this.IDAge <= 14){
-				this.isChildrenChec = true
+				this.isChildrenCheck = true
 				return
 			}
 			this.isChildrenCheck = !this.isChildrenCheck
@@ -386,11 +386,9 @@ export default {
 			}).then(res => {
 				this.showList = true
 
-				if(res.data){
-					this.canChange = false
-				}
-
 				console.log('getPatientInfo-res', res)
+				this.IDAge = this.getAge(this.zjhmVal)
+
 				if(res.data){
 					this.canChange = false
 					this.srFormat = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
@@ -407,6 +405,16 @@ export default {
 					this.addressVal = res.data.address
 					this.zoneVal = res.data.region
 
+					if(this.IDAge <= 14 || res.data.isChildTj == 1){
+						this.isChildrenCheck = true
+					}
+
+					this.mxmVal = res.data.motherName
+					this.mzjhmVal = res.data.motherIdNo
+
+					if(this.addressVal){
+			        	this.hasAddress = true
+			        }
 					if(this.xmVal){
 						this.hasXm = true
 					}
@@ -449,6 +457,10 @@ export default {
 				}else{
 					this.srFormat = util.getBirthdayFromIdCard(this.zjhmVal)
 					this.srVal = util.getBirthdayFromIdCard(this.zjhmVal)
+
+					if(this.IDAge <= 14){
+						this.isChildrenCheck = true
+					}
 				}
 			}).catch(err => {
 				console.log('getPatientInfo-err', err)
