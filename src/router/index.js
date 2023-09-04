@@ -262,11 +262,27 @@ const routes = [
 			},
 			{
 				meta: {
+					title: '病理报告'
+				},
+				path: '/blbg',
+				name: 'Blbg',
+				component: () => import(/* webpackChunkName: "about" */ '../views/Blbg.vue')
+			},
+			{
+				meta: {
 					title: '体检报告详情'
 				},
 				path: '/tjbgxq',
 				name: 'Tjbgxq',
 				component: () => import(/* webpackChunkName: "about" */ '../views/Tjbgxq.vue')
+			},
+			{
+				meta: {
+					title: '病理报告详情'
+				},
+				path: '/blbgxq',
+				name: 'Blbgxq',
+				component: () => import(/* webpackChunkName: "about" */ '../views/Blbgxq.vue')
 			},
 			{
 				meta: {

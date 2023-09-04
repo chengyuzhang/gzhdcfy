@@ -40,6 +40,9 @@
 			li(@click="toPage(3)")
 				img(src="@/assets/imgs/m4.png")
 				p 体检报告
+			li(@click="toPage(4)")
+				img(src="@/assets/imgs/m4.png")
+				p 病理报告
 	transition(name="fade")
 		TabBar(v-if="showTabBar" idx="1")
 </template>
@@ -146,6 +149,9 @@ export default {
 				break;
 				case 3:
 					path = '/tjbg'
+				break;
+				case 4:
+					path = '/blbg'
 				break;
 			}
 
@@ -259,13 +265,16 @@ export default {
 			color #000
 		ul
 			display flex
+			flex-wrap wrap
 			margin 0 auto
 			width 6.9rem
-			padding .38rem .3rem .3rem
+			padding .38rem .3rem 0rem
 			background #fff
 			border-radius .2rem
 			li
-				width 1.7rem
+				flex-shrink: 0;
+				margin-bottom .3rem
+				width 1.55rem
 				img
 					height .48rem
 					object-fit contain

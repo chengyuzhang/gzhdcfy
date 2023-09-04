@@ -137,7 +137,7 @@ export const jzjlAbout = {
 
 }
 
-//检查/检验报告
+//检查/检验/病理报告
 export const bgAbout = {
 	async getjybgList (data, headers) {
 		return await get(baseURL + `/jy/jybgList`, data, headers)
@@ -150,9 +150,15 @@ export const bgAbout = {
 	},
 	async getTjbgDetail (data, headers) {
 		return await get(baseURL + `/tj/tjjgList`, data, headers)
-	}
-
+	},
+	async getBlbgList (data, headers) {
+		return await get(baseURL + `/patho/pathoList`, data, headers)
+	},
+	async getBlbgDetail (data, headers) {
+		return await get(baseURL + `/patho/pathoDetail`, data, headers)
+	},
 }
+
 
 export const tool = {
 	async smsCode (data, headers) {
