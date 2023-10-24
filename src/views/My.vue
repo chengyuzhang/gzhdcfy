@@ -9,7 +9,7 @@
 				p 就诊人
 				i ({{peopleList.length <= 5 ? peopleList.length : 5}}/5)
 			.r(@click="toJzrglPage")
-				p 就诊管理人
+				p 就诊人管理
 				img(src="@/assets/imgs/r.png")
 		.con
 			ul
@@ -36,7 +36,7 @@
 				p 预约记录
 			li(@click="toPage(2)")
 				img(src="@/assets/imgs/m3.png")
-				p 检查结果
+				p 检验结果
 			li(@click="toPage(3)")
 				img(src="@/assets/imgs/m4.png")
 				p 体检报告

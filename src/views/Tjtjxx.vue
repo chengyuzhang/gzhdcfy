@@ -72,7 +72,7 @@
 		li
 			span 身份证号码
 			.r
-				input(v-model="zjhmVal" placeholder="请输入身份证号码")
+				input(v-model="zjhmVal" @input="getZjhmVal" placeholder="请输入身份证号码")
 	.btn(v-if="!showList")
 		button(@click="getPatientInfo") 查询就诊人信息
 	<van-popup v-model="showDate" position="bottom">
@@ -253,6 +253,10 @@ export default {
 	mounted(){
 	},
 	methods: {
+		getZjhmVal(v){
+			let zjhmVal = this.zjhmVal.toUpperCase()
+			this.zjhmVal = zjhmVal
+		},
 		smsCode(){
 			tool.smsCode({
 				phone: this.sjhVal
@@ -288,7 +292,7 @@ export default {
 					this.srVal = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
 					this.ybkhVal = res.data.feeNo
 					this.typeIndex = res.data.feeType
-					this.zjhmVal = res.data.idNo
+					this.zjhmVal = res.data.idNo.toUpperCase()
 					this.zjlxId = res.data.idType
 					this.xmVal = res.data.name
 					this.mzVal = res.data.nationality

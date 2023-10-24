@@ -179,41 +179,41 @@ export default {
 			console.log('v', dateStr)
 		},
 		async addOrder(){
-			if(!this.yeymc){
-				this.$toast({
-					message: '请输入幼儿园名称！',
-					duration: 1200
-				})
-				return
-			}
-			if(!this.yexm){
-				this.$toast({
-					message: '请输入幼儿姓名！',
-					duration: 1200
-				})
-				return
-			}
-			if(!this.sexIndex){
-				this.$toast({
-					message: '请选择性别！',
-					duration: 1200
-				})
-				return
-			}
-			if(!this.csrq){
-				this.$toast({
-					message: '请选择出生日期！',
-					duration: 1200
-				})
-				return
-			}
-			if(!this.bj){
-				this.$toast({
-					message: '请填写班级！',
-					duration: 1200
-				})
-				return
-			}
+			// if(!this.yeymc){
+			// 	this.$toast({
+			// 		message: '请输入幼儿园名称！',
+			// 		duration: 1200
+			// 	})
+			// 	return
+			// }
+			// if(!this.yexm){
+			// 	this.$toast({
+			// 		message: '请输入幼儿姓名！',
+			// 		duration: 1200
+			// 	})
+			// 	return
+			// }
+			// if(!this.sexIndex){
+			// 	this.$toast({
+			// 		message: '请选择性别！',
+			// 		duration: 1200
+			// 	})
+			// 	return
+			// }
+			// if(!this.csrq){
+			// 	this.$toast({
+			// 		message: '请选择出生日期！',
+			// 		duration: 1200
+			// 	})
+			// 	return
+			// }
+			// if(!this.bj){
+			// 	this.$toast({
+			// 		message: '请填写班级！',
+			// 		duration: 1200
+			// 	})
+			// 	return
+			// }
 
 			if(!this.jzxm){
 				this.$toast({
@@ -245,6 +245,8 @@ export default {
 			console.log('jzxm', this.jzxm)
 			console.log('sjhVal', this.sjhVal)
 
+
+			console.log()
 			await orderAbout.addOrder({
 				"childBirth": this.csrq,
 				"childGrade": this.bj,

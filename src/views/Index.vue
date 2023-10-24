@@ -9,7 +9,7 @@
 		li(@click="toJcjgPage")
 			.l <img src="@/assets/imgs/jcjg.png" alt="">
 			.r
-				h6 检查结果
+				h6 检验结果
 				p 查询结果问医生
 	.line
 	ul.items

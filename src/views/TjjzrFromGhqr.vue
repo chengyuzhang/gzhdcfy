@@ -90,14 +90,14 @@
 		li(v-if="isChildrenCheck")
 			span 母亲身份证号
 			.r
-				input(v-model="mzjhmVal" :disabled="hasMzjhm" placeholder="请输入母亲身份证号")
+				input(v-model="mzjhmVal" @input="getMzjhmVal" :disabled="hasMzjhm" placeholder="请输入母亲身份证号")
 	.btn(v-if="showList")
 		button(@click="addPatient") 提交就诊人信息
 	ul(v-if="!showList")
 		li
 			span 身份证号码
 			.r
-				input(v-model="zjhmVal" placeholder="请输入身份证号码")
+				input(v-model="zjhmVal" @input="getZjhmVal" placeholder="请输入身份证号码")
 	.btn(v-if="!showList")
 		button(@click="getPatientInfo") 查询就诊人信息
 	<van-popup v-model="showDate" position="bottom">
@@ -303,6 +303,14 @@ export default {
 		this.id = this.$route.query.id
 	},
 	methods: {
+		getZjhmVal(v){
+			let zjhmVal = this.zjhmVal.toUpperCase()
+			this.zjhmVal = zjhmVal
+		},
+		getMzjhmVal(v){
+			let mzjhmVal = this.mzjhmVal.toUpperCase()
+			this.mzjhmVal = mzjhmVal
+		},
 		getAge(identityCard) {
 			var len = (identityCard + "").length;
 			if (len == 0) {
@@ -395,7 +403,7 @@ export default {
 					this.srVal = res.data.birthday || util.getBirthdayFromIdCard(this.zjhmVal)
 					this.ybkhVal = res.data.feeNo
 					this.typeIndex = res.data.feeType
-					this.zjhmVal = res.data.idNo
+					this.zjhmVal = res.data.idNo.toUpperCase()
 					this.zjlxId = res.data.idType
 					this.xmVal = res.data.name
 					this.mzVal = res.data.nationality
@@ -410,7 +418,7 @@ export default {
 					}
 
 					this.mxmVal = res.data.motherName
-					this.mzjhmVal = res.data.motherIdNo
+					this.mzjhmVal = res.data.motherIdNo.toUpperCase()
 
 					if(this.addressVal){
 			        	this.hasAddress = true
